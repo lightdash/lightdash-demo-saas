@@ -1,10 +1,10 @@
 version: 2
 models:
-  - name: tictasktoe_accounts
+  - name: accounts
     meta:
       joins:
-        - join: tictasktoe_deals
-          sql_on: ${tictasktoe_accounts.id} = ${tictasktoe_deals.account_id}
+        - join: deals
+          sql_on: ${accounts.id} = ${deals.account_id}
           type: inner      
     columns:
       - name: id
