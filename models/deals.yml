@@ -54,15 +54,15 @@ models:
           dimension:
             type: string
           additional_dimensions:
-            stage_ordered:
-              type: string
+            stage_order:
+              type: number
               sql: case 
-                when stage = 'New' then '1) New'
-                when stage = 'Qualified' then '2) Qualified'
-                when stage = 'PoC' then '3) PoC'
-                when stage = 'Negotiation' then '4) Negotiation'
-                when stage = 'Won' then '5) Won'
-                when stage = 'Lost' then '6) Lost'
+                when stage = 'New' 1
+                when stage = 'Qualified' then 2
+                when stage = 'PoC' then 3
+                when stage = 'Negotiation' then 4
+                when stage = 'Won' then 5
+                when stage = 'Lost' then 6
                 end
       - name: plan
         description: "The plan the prospect is interested in (Basic or Professional)"
@@ -103,3 +103,4 @@ models:
         meta:
           dimension:
             type: date
+            time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
