@@ -127,6 +127,13 @@ models:
               description: The sum of deal amount for selected deals
               format: 'usd'
               round: 0
+            total_amount_thousands:
+              description: The sum of deal amount for selected deals, shown in thousands
+              format: 'usd'
+              type: number
+              sql: round(${total_amount},-3)
+              compact: thousands
+              round: 0
             average_amount:
               type: average
               description: The average deal amount for selected deals

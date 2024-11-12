@@ -1,1 +1,1 @@
-{"_invocation_id": "1f12ef05-17af-4947-8516-5889a8d0d9d5", "linked": {"0": {"name": "model.lightdash_demo_saas.tictasktoe_accounts", "type": "model"}, "1": {"name": "model.lightdash_demo_saas.tictasktoe_deals", "type": "model"}}}
+{"_invocation_id": "9b44a158-ca90-4cfa-afa8-237159719d43", "linked": {"0": {"name": "model.lightdash_demo_saas.accounts", "type": "model"}, "1": {"name": "model.lightdash_demo_saas.deals", "type": "model"}}}
