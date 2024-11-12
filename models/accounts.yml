@@ -5,7 +5,8 @@ models:
       joins:
         - join: deals
           sql_on: ${accounts.id} = ${deals.account_id}
-          type: inner      
+          type: inner
+          fields: [unique_deals, new_deals, won_deals, lost_deals, stage, average_amount, total_amount]
     columns:
       - name: id
         description: "The Account ID from our database"
