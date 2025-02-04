@@ -36,6 +36,11 @@ models:
                 ' ❌ goal missed)')
             end
     columns:
+      - name: deal_id
+        description: "The unique identified for a Deal"
+        meta:
+          dimension:
+            type: string
       - name: account_id
         description: "The Account ID from our database"
         meta:

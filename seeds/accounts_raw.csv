@@ -1,0 +1,101 @@
+account_id,account_name,industry,segment
+10f82875-982a-43dd-ba84-6c286612fc16,Schinner Group,Finance: Consumer Services,Midmarket
+4f50d8f6-948a-402a-b267-418800e22cae,Kub Inc,Consumer Electronics/Appliances,SMB
+770d1375-10e4-42b3-9fa6-60a8892a586d,Abbott-Connelly,Major Pharmaceuticals,Midmarket
+862c0057-ba33-4451-9d32-36dd3917d884,Walker Inc,Oil & Gas Production,SMB
+637177a5-53f3-44b0-b060-c31ed5238922,Rosenbaum-Tromp,n/a,SMB
+f6d7ed6f-4b9b-4379-adb2-29043500901e,Wolf-Leffler,n/a,Midmarket
+12db519b-4b14-4a1e-99e1-736a51faa5e7,Marquardt Inc,Industrial Machinery/Components,Midmarket
+0f31cfb2-38bf-4037-925f-0f946875723c,Bechtelar LLC,n/a,SMB
+c25ed55b-8e64-4112-bc47-f6081efba827,Larson-Walter,Major Banks,Midmarket
+30b146e5-ebbc-4da1-b3ee-819c75022924,Stiedemann-Reichel,Major Pharmaceuticals,SMB
+c56380dc-410a-465d-8e63-67491a020802,Hyatt-Reinger,Investment Managers,Midmarket
+b5a02179-360b-47e8-8523-6e8a4315b967,Ankunding-Walter,Computer Communications Equipment,Midmarket
+17b39605-c85d-48e5-b4bc-9a448f2dd13b,Brown Inc,Real Estate Investment Trusts,Midmarket
+c42acabc-d676-4e0d-a658-122892c27cbc,Kub Group,Other Consumer Services,Midmarket
+69d45b5e-7046-48e2-8733-55980ea313bf,Wiegand and Sons,Oil & Gas Production,Midmarket
+c2586d73-b605-4b3f-ba5e-9c10e313127d,Grady LLC,Biotechnology: Electromedical & Electrotherapeutic Apparatus,Midmarket
+d1903599-8c9f-4e1c-a674-0ae868781365,Rolfson-Pollich,Other Specialty Stores,Enterprise
+9d5bd8c8-2723-48d9-b4c6-bcccabbc1a20,"Rohan, Nitzsche and Kunde",Broadcasting,SMB
+57300d28-6161-438e-9ac1-20c6f1031f7d,"Franecki, Morar and Abshire",Computer Software: Prepackaged Software,Enterprise
+217b3aa7-f0e7-4a16-847c-2a326348e1aa,Blanda-Littel,Major Banks,Midmarket
+f3f35bd0-b914-4f53-bd7a-cfe43b60989f,"Yundt, Raynor and Miller",n/a,SMB
+b21d3e80-96df-4839-b675-f03ab5da4666,"Bradtke, Hayes and Botsford",n/a,Midmarket
+be400a77-e0dc-4b5d-92c4-93fd5bf030fc,"O'Hara, Carter and Schinner",Semiconductors,SMB
+75c9cb96-b58c-434b-9850-63447362ff31,Ebert and Sons,n/a,SMB
+f86fce81-40f2-49ed-b431-964e4f85513c,"Murray, Terry and Bergnaum",Automotive Aftermarket,Midmarket
+6eb551de-4e57-4031-81c9-26ff379ad76c,Bergstrom-Ritchie,Major Pharmaceuticals,SMB
+0a6226d5-05f8-4cf6-ac52-f8c2876758cd,Denesik-Douglas,Major Banks,Midmarket
+875506f1-79c1-4a7b-beb9-6728f569a462,Wiegand-Jacobs,Military/Government/Technical,Midmarket
+8a658391-6e9d-4da0-b917-8d1ccf82d554,Carroll-Zboncak,Major Banks,Midmarket
+caedff61-797f-4d94-b12a-5c30b9659b38,Stracke-Weber,Business Services,Midmarket
+854fe28b-a674-4800-b00c-48888a39d0fe,"Keebler, Farrell and Collins",Business Services,Midmarket
+5a118265-12e7-48c4-8ec5-6cc0ec750b4d,Hammes Group,n/a,SMB
+deaa149b-bcff-4e2a-a06f-505fd79deb64,Cassin and Sons,n/a,Midmarket
+169047f4-0253-4f13-b81a-74dbbb2dbbd9,"Haag, McGlynn and Hammes",Oil & Gas Production,SMB
+f39272c1-7901-40ab-ac83-21e1ec3dfa5c,Kautzer Inc,Biotechnology: Biological Products (No Diagnostic Substances),Midmarket
+264d4b00-5822-41d6-b8e4-d6343e9032a6,"Walter, Schimmel and Turner",Major Banks,Midmarket
+8ac793cc-201e-4b02-afa5-3e435ec81fb6,"Larkin, Fahey and Terry",Broadcasting,SMB
+ccf6c3c5-ed36-4900-9603-42b49ebecc8c,Hane Group,n/a,SMB
+8eb7eba1-b177-4786-a30a-49a239a743dd,Hand-Robel,Major Banks,Midmarket
+f309dda6-529e-4bcb-aa1c-1d962a569dc3,Morar-Friesen,Air Freight/Delivery Services,SMB
+b7fc680f-da81-4009-b238-4952d48a766d,Stiedemann LLC,Major Banks,Midmarket
+b635f2f8-6a2f-407c-9a0b-b73843d5a133,Greenfelder-Hoeger,Multi-Sector Companies,Midmarket
+aa00eec1-164d-47ad-8293-7e43c2484d45,Russel-Davis,RETAIL: Building Materials,SMB
+6c5e8eb0-2a74-421b-8ec4-d6d8ff240b6d,"Gerhold, Kris and Thiel",Medical/Dental Instruments,Midmarket
+570a2763-901d-4e00-9230-b1e9249cee0e,Turner Inc,Finance: Consumer Services,Midmarket
+29e14e0b-6141-43e6-a087-2039692a37f5,"Wilderman, Schowalter and Bogisich",Major Banks,Enterprise
+25fd62cf-881f-4ef0-94c5-f9a0170ae36c,Bartell-Kuhic,Movies/Entertainment,Midmarket
+a8238383-bfb0-4452-87a3-1b6b864f69de,Zieme LLC,Telecommunications Equipment,Midmarket
+549a476e-c768-4722-a4a0-86d851aa094a,Greenfelder Group,n/a,SMB
+53b8a304-0da7-48fe-b3c2-3184178d0828,Erdman LLC,Business Services,Enterprise
+261c648f-cc8e-470c-a53e-551138dd6682,Cormier LLC,Ophthalmic Goods,Midmarket
+2525c927-8ddf-4c69-97fe-e49919901b5d,Bailey and Sons,Mining & Quarrying of Nonmetallic Minerals (No Fuels),Enterprise
+e4901397-fb32-4edd-b1d3-9d40c6e93da8,Altenwerth and Sons,Major Banks,SMB
+63ba8698-e6d4-4d83-a749-f6d1df6647b8,Kub Group,Other Consumer Services,Midmarket
+106747f2-1c2c-4272-900a-0aa1b780cef5,Stiedemann-Reichel,Major Pharmaceuticals,SMB
+dd4763e3-d578-4d1f-8503-1d44fabaff2a,"Batz, Friesen and Hane",Computer Software: Prepackaged Software,Midmarket
+e43c4e64-3ad9-4748-9ed7-c044ecbd5045,"Yundt, Hegmann and Stehr",Radio And Television Broadcasting And Communications Equipment,Midmarket
+1f1c164f-d941-41cc-ab63-e5a6c7f30a39,Walker-Friesen,Property-Casualty Insurers,Midmarket
+dcaf9872-3483-4be4-912b-ccdbd2903bf8,Robel LLC,Biotechnology: Biological Products (No Diagnostic Substances),Midmarket
+d8d96c0c-2fe2-4451-9c03-bfab50ccf6b7,Streich and Sons,Biotechnology: Biological Products (No Diagnostic Substances),Midmarket
+f1bc845a-66e1-425e-a7f8-e8f9c1b9cb4b,"Zemlak, Abshire and Kemmer",Business Services,SMB
+ee0b8b65-7b06-423c-a4b6-e6a90db56f60,Harris Group,Major Banks,Midmarket
+c8910794-2b3a-40bd-b25b-6cf2b144d693,Rogahn-Bogan,Restaurants,SMB
+b6df2856-e21a-480e-94d2-e4b714f0b828,Boyle-Little,n/a,Enterprise
+7b0c4f38-9837-4798-beef-c1b742997439,Hammes-Gibson,Major Pharmaceuticals,SMB
+843780d2-844a-4a12-9832-0e4883702b73,Daugherty-Bednar,Medical/Dental Instruments,SMB
+f8d8f7c6-d4d9-4743-9b25-3b35bd22a1d9,Conn Group,Apparel,Midmarket
+30399d7c-d20e-44e1-b249-a0fdca9c40cf,Friesen and Sons,Computer Software: Prepackaged Software,Midmarket
+d7ddfd6c-8d30-40fe-9b10-9b19204aa50e,Paucek-Vandervort,n/a,SMB
+0cf711fe-c754-4dd6-a20c-f6248ef06d01,Steuber-Zboncak,n/a,SMB
+c7601916-5ec9-42fa-bcae-50f8110d9698,Sauer-Macejkovic,Semiconductors,SMB
+76abf1fd-1d15-415e-827c-d1b2468dc140,Kutch and Sons,n/a,SMB
+3355cd61-93eb-4fbf-aa87-3a0556345012,"Jacobs, O'Hara and Rempel",n/a,Midmarket
+06d6e7ca-ee5a-4896-a01c-1d109a983586,"Rippin, Rutherford and Schamberger",Major Banks,Midmarket
+6bd9dffa-2734-440b-957c-1dbb3aef2a2c,Schneider-Wyman,Auto Parts:O.E.M.,Midmarket
+e1fa8d8b-4191-4796-a4d5-1338d7cb53b0,Fisher Inc,n/a,Enterprise
+185e5ee7-3dfe-47cc-b9c1-242021ccdee4,Kris and Sons,n/a,Midmarket
+4e1de386-91e3-4aa6-9504-a00ef1a230ff,Kohler Inc,Computer Software: Prepackaged Software,SMB
+9aeb3a2d-2a87-4b40-a919-41707e8ed7de,Torphy-O'Connell,Hospital/Nursing Management,SMB
+ffaffbee-43d5-4bd3-9d58-fd28b9e262d9,Rippin-Senger,Investment Bankers/Brokers/Service,Midmarket
+32bb3bf0-5e69-4af0-881e-4b745cb6aa4c,Armstrong and Sons,Packaged Foods,Midmarket
+65292f45-6c98-47c7-9623-7f6b0a96e0f8,Mosciski Inc,Integrated oil Companies,Midmarket
+968acb68-8fcc-47ca-b916-e4036451d949,"Lockman, Von and Torphy",Specialty Insurers,Midmarket
+481d0d84-2f3c-48bb-b43a-af31c92eb45a,Sipes and Sons,Property-Casualty Insurers,Midmarket
+e000e745-e814-47d5-a843-8dd87a2b7961,"Romaguera, Mante and Reichert",Oil & Gas Production,Midmarket
+bfb827c0-4b53-4fd6-b956-2e63a144d335,McLaughlin-Wolff,Building operators,SMB
+6889908b-dcfa-450d-8cc3-8ddcaff73363,"Zboncak, Bosco and Crooks",Recreational Products/Toys,Midmarket
+ed75151d-f631-4c88-857d-54da99d5ca22,Fay-Wolff,Natural Gas Distribution,Midmarket
+ba8064f9-9345-44f2-8889-af18723005ae,Maggio-Thompson,Broadcasting,Midmarket
+1ad640c0-735b-428b-9d1f-87b013b69699,Senger-Koepp,Real Estate Investment Trusts,Midmarket
+8418c8b4-57f6-4604-93cb-5fccbc0eb3fb,Paucek-O'Keefe,n/a,Enterprise
+e86eb855-2795-43bf-9937-d48c85df3620,"Stokes, Mueller and Dibbert",n/a,Midmarket
+0313b08a-fa81-4ef6-af2e-0a983058e4ee,Glover and Sons,n/a,SMB
+73596282-ded4-46d6-841f-86d8d304e88f,Howe Group,n/a,SMB
+44410ada-2b22-4eca-898a-c1495cc41ded,Fisher LLC,Mining & Quarrying of Nonmetallic Minerals (No Fuels),SMB
+8c60ddc9-07e4-4e4c-b52f-0284472ef31b,Kris Group,n/a,SMB
+59e0e07c-bf5a-45e0-9ad0-6ab96ac95a57,"Ortiz, Satterfield and Klein",Property-Casualty Insurers,Midmarket
+e7373557-092c-4cce-9f8e-37bb1ac84aee,"Mayer, Flatley and Witting",Biotechnology: Biological Products (No Diagnostic Substances),Midmarket
+5b65c2d4-2c6d-4d30-b8ca-5c2d33658f6d,"Carroll, Hilll and Hoppe",n/a,SMB
+a11e18bd-1c4d-4e02-bc67-9e948dee70b8,Hermiston and Sons,Major Pharmaceuticals,Midmarket

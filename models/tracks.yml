@@ -1,0 +1,33 @@
+version: 2
+models:
+  - name: tracks
+
+    meta:
+      joins:
+        - join: users
+          sql_on: ${tracks.user_id} = ${users.user_id}
+        - join: accounts
+          sql_on: ${users.account_id} = ${accounts.account_id}
+          type: left
+
+    columns:
+      - name: user_id
+        description: "The unique identifier for a user"
+        meta:
+          dimension:
+            type: string
+      - name: event_id
+        description: "The unique identifier for an event"
+        meta:
+          dimension:
+            type: string
+      - name: event_name
+        description: "The name of the event that has been triggered on the platform"
+        meta:
+          dimension:
+            type: string
+      - name: event_timestamp
+        description: " The timestamp at which the event was triggered"
+        meta:
+          dimension:
+            type: timestamp

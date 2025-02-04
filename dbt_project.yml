@@ -1,7 +1,6 @@
 name: 'lightdash_demo_saas'
-version: '1.7.6'
 config-version: 2
-profile: 'lightdash_demo_saas'
+profile: 'lightdash-demo-saas'
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
