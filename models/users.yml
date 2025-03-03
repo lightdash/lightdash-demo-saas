@@ -8,12 +8,36 @@ models:
           sql_on: ${users.account_id} = ${accounts.account_id}
           type: left
 
+      metrics:
+        percentage_of_users_with_marketing_opt_in:
+          type: number
+          format: percent
+          sql: ${unique_users_with_marketing_opt_in} / ${unique_users}
+          spotlight:
+            visibility: show
+            categories:
+              - marketing
+
     columns:
       - name: user_id
         description: "The unique identifier for a user"
         meta:
           dimension:
             type: string
+          metrics:
+            unique_users:
+              type: count_distinct
+              description: The unique number of users based on distinct users IDs
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+
+            unique_users_with_marketing_opt_in:
+              type: count_distinct
+              hidden: true
+              filters:
+                - is_marketing_opted_in: 'true'
       - name: account_id
         description: "The unique identifier for an account"
         meta:
@@ -33,7 +57,7 @@ models:
         description: "Whether the user is currently opted into marketing"
         meta:
           dimension:
-            type: number
+            type: boolean
       - name: created_at
         description: "Timestamp of when the user was created"
         meta:

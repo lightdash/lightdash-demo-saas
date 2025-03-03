@@ -6,6 +6,7 @@ models:
       joins:
         - join: users
           sql_on: ${tracks.user_id} = ${users.user_id}
+          type: left
         - join: accounts
           sql_on: ${users.account_id} = ${accounts.account_id}
           type: left
@@ -16,18 +17,22 @@ models:
         meta:
           dimension:
             type: string
-      - name: event_id
+          metrics:
+            unique_users:
+              type: count_distinct
+              description: The unique number of users based on distinct users IDs
+      - name: id
         description: "The unique identifier for an event"
         meta:
           dimension:
             type: string
-      - name: event_name
+      - name: name
         description: "The name of the event that has been triggered on the platform"
         meta:
           dimension:
             type: string
-      - name: event_timestamp
-        description: " The timestamp at which the event was triggered"
+      - name: timestamp
+        description: "The timestamp at which the event was triggered"
         meta:
           dimension:
             type: timestamp
