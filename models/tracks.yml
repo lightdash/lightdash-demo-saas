@@ -3,6 +3,11 @@ models:
   - name: tracks
 
     meta:
+      required_filters:
+        - timestamp: 'inThePast 12 months' 
+      required_attributes:
+        is_admin_saas_demo: 'true'
+
       joins:
         - join: users
           sql_on: ${tracks.user_id} = ${users.user_id}
@@ -18,7 +23,7 @@ models:
           dimension:
             type: string
           metrics:
-            unique_users:
+            unique_user_count:
               type: count_distinct
               description: The unique number of users based on distinct users IDs
       - name: id
@@ -26,6 +31,10 @@ models:
         meta:
           dimension:
             type: string
+          metrics:
+            event_count:
+              type: count_distinct  
+              description: The unique number of events
       - name: name
         description: "The name of the event that has been triggered on the platform"
         meta:
@@ -36,3 +45,5 @@ models:
         meta:
           dimension:
             type: timestamp
+            time_intervals: 
+              ['RAW', 'DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER', 'DAY_OF_WEEK_INDEX', 'DAY_OF_MONTH_NUM','DAY_OF_YEAR_NUM','WEEK_NUM','MONTH_NUM','QUARTER_NUM','YEAR_NUM','HOUR_OF_DAY_NUM','DAY_OF_WEEK_NAME','MONTH_NAME','QUARTER_NAME']

@@ -2,6 +2,8 @@ version: 2
 models:
   - name: accounts
     meta:
+      # This filter means that unless you are an admin, you can't see Enterprise account
+      sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment != 'Enterprise' 
       joins:
         - join: deals
           sql_on: ${accounts.account_id} = ${deals.account_id}
@@ -13,6 +15,9 @@ models:
         meta:
           dimension:
             type: number
+            urls:
+              - label: 'Open in CRM'
+                url: https://demo_saas.com/example/account/${ value.raw }
           metrics:
             unique_accounts:
               type: count_distinct
