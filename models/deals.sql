@@ -6,6 +6,6 @@ select
     plan,
     seats,
     amount,
-    created_date
+    date(created_date) as created_date
 from 
     {{ ref('deals_raw') }}

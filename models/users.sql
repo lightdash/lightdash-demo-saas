@@ -8,10 +8,9 @@ select
     created_at,
     first_logged_in_at,
     -- the below cleans synthetically created data
-    -- we may need to expand on this to remove latest logged in at that are before the first logged in at.
     case   
-        when latest_logged_in_at > cast(current_timestamp as datetime) then cast(current_timestamp as datetime) - interval '1' day
         when latest_logged_in_at < first_logged_in_at then first_logged_in_at
+        when latest_logged_in_at > '2024-12-31 11:52:45' then '2024-12-31 11:52:45'
         else latest_logged_in_at
     end as latest_logged_in_at
 from 

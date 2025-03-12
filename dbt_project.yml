@@ -15,3 +15,12 @@ clean-targets:
 models:
   lightdash_demo_saas:
     +materialized: table
+
+seeds:
+  lightdash_demo_saas:
+    +column_types:
+      created_at: timestamp
+      first_logged_in_at: timestamp
+      latest_logged_in_at: timestamp
+      event_timestamp: timestamp
+      created_date: timestamp

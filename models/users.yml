@@ -67,13 +67,28 @@ models:
         meta:
           dimension:
             type: timestamp
+            sql: >
+              timestamp_add(
+                ${TABLE}.created_at,
+                interval timestamp_diff(current_timestamp(), timestamp '2025-01-01 00:00:00', second) second
+              )
       - name: first_logged_in_at
         description: "Timestamp of the first login of the user"
         meta:
           dimension:
             type: timestamp
+            sql: >
+              timestamp_add(
+                ${TABLE}.first_logged_in_at,
+                interval timestamp_diff(current_timestamp(), timestamp '2025-01-01 00:00:00', second) second
+              )
       - name: latest_logged_in_at
         description: "Timestamp showing the latest date that the given user logged in"
         meta:
           dimension:
             type: timestamp
+            sql: >
+              timestamp_add(
+                ${TABLE}.latest_logged_in_at,
+                interval timestamp_diff(current_timestamp(), timestamp '2025-01-01 00:00:00', second) second
+              )
