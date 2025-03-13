@@ -1,1 +1,1 @@
-# lightdash-saas-demo
+# Lightdash SaaS Demo
