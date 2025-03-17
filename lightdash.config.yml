@@ -1,0 +1,11 @@
+spotlight:
+  default_visibility: hide
+
+  categories:
+    kpi:
+      label: Company KPI
+      color: "orange"
+
+    marketing:
+      label: Marketing
+      color: "red"

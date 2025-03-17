@@ -15,7 +15,7 @@ models:
           type: number
           round: 2
           sql: ${lost_deals} / ${won_deals}
-        win_vs_lost_goal:
+        win_vs_lost_goal: # I'm not sure this works super well because it fails when paired with anything else because Lightdash doesn't create a group by
           type: string
           sql: 
             case 
@@ -36,6 +36,11 @@ models:
                 ' ❌ goal missed)')
             end
     columns:
+      - name: deal_id
+        description: "The unique identified for a Deal"
+        meta:
+          dimension:
+            type: string
       - name: account_id
         description: "The Account ID from our database"
         meta:
@@ -103,6 +108,9 @@ models:
         meta:
           dimension:
             type: string
+            colors:
+              'Basic': "#C0C0C0"
+              'Professional': "#FFD700"
       - name: seats
         description: "The number of seats they are purchasing"
         meta:
@@ -121,27 +129,29 @@ models:
         meta:
           dimension:
             type: number
+            format: '$#,##0'
           metrics:
             total_amount:
               type: sum
               description: The sum of deal amount for selected deals
-              format: 'usd'
-              round: 0
+              format: '$#,##0'
             total_amount_thousands:
               description: The sum of deal amount for selected deals, shown in thousands
-              format: 'usd'
+              format: '$#,##0,"K"'
               type: number
               sql: round(${total_amount},-3)
-              compact: thousands
-              round: 0
             average_amount:
               type: average
               description: The average deal amount for selected deals
-              format: 'usd'
-              round: 0
-      - name: create_date
+              format: '$#,##0.00'
+      - name: created_date
         description: "The date the deal was created"
         meta:
           dimension:
             type: date
             time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
+            sql: >
+              date_add(
+                ${TABLE}.created_date,
+                interval date_diff(current_date(), '2025-01-01', day) day
+              )

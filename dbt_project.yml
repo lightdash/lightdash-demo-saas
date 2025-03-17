@@ -1,5 +1,4 @@
 name: 'lightdash_demo_saas'
-version: '1.7.6'
 config-version: 2
 profile: 'lightdash_demo_saas'
 model-paths: ["models"]
@@ -16,3 +15,17 @@ clean-targets:
 models:
   lightdash_demo_saas:
     +materialized: table
+
+seeds:
+  lightdash_demo_saas:
+    users:  
+      +column_types:
+        created_at: timestamp
+        first_logged_in_at: timestamp
+        latest_logged_in_at: timestamp
+    tracks:
+      +column_types:
+        event_timestamp: timestamp
+    deals:
+      +column_types:
+        created_date: timestamp

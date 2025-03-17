@@ -1,8 +1,8 @@
-{{
-  config(
-    materialized='table'
-  )
-}}
 
-select *
-from `lightdash-analytics.lightdash_demo_saas.accounts_raw`
+select
+    account_id,
+    account_name,
+    industry,
+    segment
+from 
+    {{ ref('accounts_raw') }}
