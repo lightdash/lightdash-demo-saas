@@ -4,8 +4,12 @@ spotlight:
   categories:
     kpi:
       label: Company KPI
-      color: "orange"
+      color: "blue"
 
     marketing:
       label: Marketing
       color: "red"
+
+    sales:
+      label: Sales
+      color: green

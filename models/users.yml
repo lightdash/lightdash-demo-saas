@@ -13,6 +13,7 @@ models:
       metrics:
         percentage_of_users_with_marketing_opt_in:
           type: number
+          description: The percentage of users that are currently opted in to marketing
           format: percent
           sql: ${unique_users_with_marketing_opt_in} / ${unique_users}
           spotlight:
@@ -40,6 +41,11 @@ models:
               hidden: true
               filters:
                 - is_marketing_opted_in: 'true'
+              spotlight:
+                visibility: show
+                categories:
+                  - marketing
+
       - name: account_id
         description: "The unique identifier for an account"
         meta:

@@ -5,8 +5,13 @@ models:
       metrics:
         win_rate:
           type: number
+          description: The percentage of deals that have been won
           format: percent
           sql: ${won_deals} / ${unique_deals}
+          spotlight:
+            visibility: show
+            categories:
+              - kpi
         loss_rate:
           type: number
           format: percent
@@ -51,12 +56,22 @@ models:
               type: count_distinct
               groups: ['Deal Counts']
               description: Count unique deals based on Account ID (each account can only have one deal)
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - sales
             new_deals:
               type: count_distinct
               groups: ['Deal Counts']
               description: Count unique deals based on the Account ID and filter to only deals in the New stage
               filters:
                 - stage: 'New'
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - sales
             qualified_deals:
               type: count_distinct
               groups: ['Deal Counts']
@@ -81,12 +96,22 @@ models:
               description: Count unique deals based on the Account ID and filter to only deals in the Won stage
               filters:
                 - stage: 'Won'
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - sales
             lost_deals:
               type: count_distinct
               groups: ['Deal Counts']
               description: Count unique deals based on the Account ID and filter to only deals in the Lost stage
               filters:
                 - stage: 'Lost'
+              spotlight:
+                visibility: show
+                categories:
+                  - sales
+            
       - name: stage
         description: "The deal stage (New, Qualified, PoC, Negotiation, Won, Lost)"
         meta:
@@ -135,6 +160,11 @@ models:
               type: sum
               description: The sum of deal amount for selected deals
               format: '$#,##0'
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - sales
             total_amount_thousands:
               description: The sum of deal amount for selected deals, shown in thousands
               format: '$#,##0,"K"'
@@ -144,6 +174,10 @@ models:
               type: average
               description: The average deal amount for selected deals
               format: '$#,##0.00'
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
       - name: created_date
         description: "The date the deal was created"
         meta:

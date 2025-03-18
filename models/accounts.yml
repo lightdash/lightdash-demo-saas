@@ -22,6 +22,10 @@ models:
             unique_accounts:
               type: count_distinct
               description: The unique number of accounts based on distinct Account IDs
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
             unique_smb_accounts:
               label: Unique SMB Accounts
               type: count_distinct
