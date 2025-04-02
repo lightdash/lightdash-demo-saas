@@ -45,6 +45,11 @@ models:
         meta:
           dimension:
             type: string
+          metrics:
+            distinct_count_of_industries:
+              label: Number of Industries
+              type: count_distinct
+
       - name: segment
         description: "The market Segment for this account (SMB, Midmarket, Enterprise)"
         meta:
