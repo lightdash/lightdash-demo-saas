@@ -1,0 +1,100 @@
+version: 2
+models:
+  - name: users
+
+    meta:
+      order_fields_by: index
+
+      joins:
+        - join: accounts
+          sql_on: ${users.account_id} = ${accounts.account_id}
+          type: left
+
+      metrics:
+        percentage_of_users_with_marketing_opt_in:
+          type: number
+          description: The percentage of users that are currently opted in to marketing
+          format: percent
+          sql: ${unique_users_with_marketing_opt_in} / ${unique_users}
+          spotlight:
+            visibility: show
+            categories:
+              - marketing
+
+    columns:
+      - name: user_id
+        description: "The unique identifier for a user"
+        meta:
+          dimension:
+            type: string
+          metrics:
+            unique_users:
+              type: count_distinct
+              description: The unique number of users based on distinct users IDs
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+
+            unique_users_with_marketing_opt_in:
+              type: count_distinct
+              hidden: true
+              filters:
+                - is_marketing_opted_in: 'true'
+              spotlight:
+                visibility: show
+                categories:
+                  - marketing
+
+      - name: account_id
+        description: "The unique identifier for an account"
+        meta:
+          dimension:
+            type: string
+      - name: email
+        description: "The email of the user"
+        meta:
+          dimension:
+            type: string
+            required_attributes:
+              is_admin_saas_demo: 'true'
+      - name: job_title
+        description: "The job title of the given user"
+        meta:
+          dimension:
+            type: string
+      - name: is_marketing_opted_in
+        description: "Whether the user is currently opted into marketing"
+        meta:
+          dimension:
+            type: boolean
+      - name: created_at
+        description: "Timestamp of when the user was created"
+        meta:
+          dimension:
+            type: timestamp
+            sql: >
+              timestamp_add(
+                ${TABLE}.created_at,
+                interval timestamp_diff(current_timestamp(), timestamp '2025-01-01 00:00:00', second) second
+              )
+      - name: first_logged_in_at
+        description: "Timestamp of the first login of the user"
+        meta:
+          dimension:
+            type: timestamp
+            sql: >
+              timestamp_add(
+                ${TABLE}.first_logged_in_at,
+                interval timestamp_diff(current_timestamp(), timestamp '2025-01-01 00:00:00', second) second
+              )
+      - name: latest_logged_in_at
+        description: "Timestamp showing the latest date that the given user logged in"
+        meta:
+          dimension:
+            type: timestamp
+            sql: >
+              timestamp_add(
+                ${TABLE}.latest_logged_in_at,
+                interval timestamp_diff(current_timestamp(), timestamp '2025-01-01 00:00:00', second) second
+              )
