@@ -1,0 +1,57 @@
+version: 2
+models:
+  - name: fanouts_users
+    columns:
+      - name: user_id
+        description: "Unique identifier for this user"
+        meta:
+          dimension:
+            type: string
+          metrics:
+            unique_users_INFLATED:
+              type: count
+              label: "🚨 INFLATED User Count"
+              description: "❌ WRONG: Each user gets multiplied by (deals × events). 3 users
+                with 2 deals and 4 events = 24 user records!"
+            unique_users:
+              type: count
+              label: "✅ Unique User Count"
+              description: "✅ CORRECT: Uses count_distinct so won't inflate"
+
+      - name: account_id
+        description: "Links to the account table"
+        meta:
+          dimension:
+            type: string
+
+      - name: job_title
+        description: "Role within organization"
+        meta:
+          dimension:
+            type: string
+
+      - name: is_marketing_opted_in
+        description: "Marketing communication preference (0/1)"
+        meta:
+          dimension:
+            type: boolean
+      - name: email
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: created_at
+        description: ""
+        meta:
+          dimension:
+            type: timestamp
+      - name: first_logged_in_at
+        description: ""
+        meta:
+          dimension:
+            type: timestamp
+      - name: latest_logged_in_at
+        description: ""
+        meta:
+          dimension:
+            type: timestamp

@@ -1,0 +1,57 @@
+version: 2
+models:
+  - name: fanouts_tracks
+    columns:
+
+      - name: user_id
+        description: "Links to the users table"
+        meta:
+          dimension:
+            type: string
+      - name: event_id
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: event_name
+        description: ""
+        meta:
+          dimension:
+            type: string
+      - name: timestamp
+        description: ""
+        meta:
+          dimension:
+            type: timestamp
+
+# 🚨 DEMO SCENARIO 🚨
+#
+# Let's say you have:
+# - 1 Account: "Acme Corp"
+# - 2 Deals: $1,000 and $1,500 (total should be $2,500)
+# - 3 Users: Alice, Bob, Charlie  
+# - 4 Events: login, report, download, api_call
+#
+# When you query this schema with all joins:
+#
+# SELECT 
+#   accounts.account_name,
+#   accounts.inflated_account_count,           -- Shows: 24 ❌ (should be 1)
+#   deals.total_amount_INFLATED,               -- Shows: $30,000 ❌ (should be $2,500)  
+#   users.unique_users_INFLATED,               -- Shows: 24 ❌ (should be 3)
+#   tracks.unique_events_INFLATED              -- Shows: 8 ❌ (should be 4)
+# FROM accounts
+#
+# Why? Because the joins create a Cartesian product:
+# - 2 deals × 3 users × 4 events = 24 rows per account
+# - Deal amounts: $1,000 appears 12 times, $1,500 appears 12 times = $30,000
+# - Users: Each user appears 8 times (2 deals × 4 events)  
+# - Events: Each event appears 2 times (once per deal)
+#
+# This is the CLASSIC metrics inflation problem!
+#
+# Perfect for demonstrating why you need:
+# ✅ COUNT(DISTINCT ...) for counts
+# ✅ Separate aggregation queries  
+# ✅ Proper join strategies
+# ✅ Understanding of Cartesian products

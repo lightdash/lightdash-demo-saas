@@ -1,0 +1,68 @@
+version: 2
+models:
+  - name: 1_to_many_join
+    description: |
+      This model demonstrates the classic 1-to-many join problem in analytics:
+      - "Accounts" have many "Deals"
+      When you join these tables, you will multiply each account record by the number of deals,
+      it has. This can lead to inflated metrics if not handled correctly.
+    meta:
+      sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment !=
+        'Enterprise'
+      joins:
+        # 🚨 INTENTIONAL METRICS INFLATION DEMO 🚨
+        # These joins will cause metrics inflation - perfect for demonstrating the problem!
+
+        - join: fanouts_deals
+          sql_on: ${1_to_many_join.account_id} = ${fanouts_deals.account_id}
+          type: left
+          fields:
+            [
+              deal_id,
+              unique_deals,
+              stage,
+              amount,
+              inflated_total_deal_value,
+              inflated_average_deal_value,
+              safe_total_deal_value
+            ]
+
+    columns:
+      - name: account_id
+        description: "The Account ID from our database"
+        meta:
+          dimension:
+            type: string
+            urls:
+              - label: 'Open in CRM'
+                url: https://demo_saas.com/example/account/${ value.raw }
+          metrics:
+            unique_accounts:
+              type: count_distinct
+              label: "✅ Unique Account Count"
+              description: "✅ CORRECT: Uses count_distinct so won't inflate"
+
+            # 🚨 INFLATION DEMO METRICS 🚨
+            inflated_account_count:
+              type: count
+              label: "🚨 INFLATED Account Count"
+              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will inflate based
+                on deals×users×events"
+
+      - name: account_name
+        description: "Name of this company account"
+        meta:
+          dimension:
+            type: string
+
+      - name: industry
+        description: "Stock market industry for this account"
+        meta:
+          dimension:
+            type: string
+
+      - name: segment
+        description: "The market Segment for this account (SMB, Midmarket, Enterprise)"
+        meta:
+          dimension:
+            type: string
