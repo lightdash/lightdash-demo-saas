@@ -11,20 +11,21 @@ models:
         'Enterprise'
       joins:
         # 🚨 INTENTIONAL METRICS INFLATION DEMO 🚨
-        # These joins will cause metrics inflation - perfect for demonstrating the problem!
-
         - join: fanouts_deals
           sql_on: ${1_to_many_join.account_id} = ${fanouts_deals.account_id}
           type: left
           fields:
             [
               deal_id,
-              unique_deals,
+              unique_deal_count,
               stage,
               amount,
               inflated_total_deal_value,
               inflated_average_deal_value,
-              safe_total_deal_value
+              safe_total_deal_value,
+              inflated_deal_count,
+              max_deal_value,
+              min_deal_value
             ]
 
     columns:

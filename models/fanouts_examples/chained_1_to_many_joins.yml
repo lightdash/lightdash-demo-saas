@@ -2,7 +2,7 @@ version: 2
 models:
   - name: chained_1_to_many_joins
     description: |
-      This model demonstrates vhained or sequential 1-to-many joins. 
+      This model demonstrates chained or sequential 1-to-many joins. 
       - "Accounts" have many "users" and each user has many "tracks" (events).
       This means when these tables are joined together, each account record will be multiplied by the number of users and then by the number of tracks for each user.
       users will be multiplied by the number of tracks, but track will not be inflated. 
@@ -12,19 +12,35 @@ models:
         'Enterprise'
       joins:
         # 🚨 INTENTIONAL METRICS INFLATION DEMO 🚨
-        # These joins will cause metrics inflation - perfect for demonstrating the problem!
 
         - join: fanouts_users
           sql_on: ${chained_1_to_many_joins.account_id} = ${fanouts_users.account_id}
           type: left
-          fields: [ user_id, unique_users_INFLATED, job_title, is_marketing_opted_in ]
+          fields:
+            [
+              user_id,
+              unique_user_count,
+              inflated_user_count,
+              job_title,
+              is_marketing_opted_in,
+              unique_job_title_count,
+              inflated_job_title_count,
+              email,
+              created_at,
+              first_logged_in_at
+            ]
 
         - join: fanouts_tracks
           sql_on: ${fanouts_users.user_id} = ${fanouts_tracks.user_id}
           type: left
-          fields: [ unique_events_INFLATED, event_name, timestamp, event_id ]
-          # ⚠️ This creates the triple join: accounts → users → tracks
-          # Combined with the deals join, this will cause massive inflation!
+          fields:
+            [
+              unique_event_count,
+              inflated_event_count,
+              event_name,
+              timestamp,
+              event_id
+            ]
 
     columns:
       - name: account_id
@@ -38,15 +54,15 @@ models:
           metrics:
             unique_accounts:
               type: count_distinct
-              label: "✅ Unique Account Count"
+              label: "✅ FANOUT SAFE Unique Account Count"
               description: "✅ CORRECT: Uses count_distinct so won't inflate"
 
             # 🚨 INFLATION DEMO METRICS 🚨
             inflated_account_count:
               type: count
               label: "🚨 INFLATED Account Count"
-              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will inflate based
-                on deals×users×events"
+              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will inflate if we
+                reference data from joined tables"
 
       - name: account_name
         description: "Name of this company account"

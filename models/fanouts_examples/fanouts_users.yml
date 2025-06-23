@@ -8,14 +8,14 @@ models:
           dimension:
             type: string
           metrics:
-            unique_users_INFLATED:
+            inflated_user_count:
               type: count
               label: "🚨 INFLATED User Count"
-              description: "❌ WRONG: Each user gets multiplied by (deals × events). 3 users
-                with 2 deals and 4 events = 24 user records!"
-            unique_users:
-              type: count
-              label: "✅ Unique User Count"
+              description: "❌ WRONG: If grain of data is not at user level then this will be
+                inflated"
+            unique_user_count:
+              type: count_distinct
+              label: "✅ FANOUT SAFE Unique User Count"
               description: "✅ CORRECT: Uses count_distinct so won't inflate"
 
       - name: account_id
@@ -29,6 +29,16 @@ models:
         meta:
           dimension:
             type: string
+          metrics:
+            unique_job_title_count:
+              type: count_distinct
+              label: "✅ FANOUT SAFE Unique Job Title Count"
+              description: "✅ CORRECT: Uses count_distinct so won't inflate"
+            inflated_job_title_count:
+              type: count
+              label: "🚨 INFLATED Job Title Count"
+              description: "❌ WRONG: this will be incorrect regardless of the grain of the
+                data because job titles are not unique in the users table. "
 
       - name: is_marketing_opted_in
         description: "Marketing communication preference (0/1)"

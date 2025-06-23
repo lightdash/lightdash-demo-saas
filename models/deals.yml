@@ -20,26 +20,15 @@ models:
           type: number
           round: 2
           sql: ${lost_deals} / ${won_deals}
-        win_vs_lost_goal: # I'm not sure this works super well because it fails when paired with anything else because Lightdash doesn't create a group by
+        win_vs_lost_goal:
+          # I'm not sure this works super well because it fails when paired with anything else because Lightdash doesn't create a group by
           type: string
-          sql: 
-            case 
-              when ${win_vs_lost_ratio} > 1.5 
-                then concat(
-                  cast(${won_deals} as string), 
-                  ' won, ', 
-                  cast(${lost_deals} as string), 
-                  ' lost, (',
-                  cast(round(${win_vs_lost_ratio},2) as string),
-                  ' ✅ goal met)')
-              else concat(
-                  cast(${won_deals} as string), 
-                  ' won, ', 
-                  cast(${lost_deals} as string), 
-                  ' lost, (',
-                cast(round(${win_vs_lost_ratio},2) as string), 
-                ' ❌ goal missed)')
-            end
+          sql: case when ${win_vs_lost_ratio} > 1.5 then concat( cast(${won_deals} as
+            string), ' won, ', cast(${lost_deals} as string), ' lost, (',
+            cast(round(${win_vs_lost_ratio},2) as string), ' ✅ goal met)') else
+            concat( cast(${won_deals} as string), ' won, ', cast(${lost_deals}
+            as string), ' lost, (', cast(round(${win_vs_lost_ratio},2) as
+            string), ' ❌ goal missed)') end
     columns:
       - name: deal_id
         description: "The unique identified for a Deal"
@@ -50,12 +39,13 @@ models:
         description: "The Account ID from our database"
         meta:
           dimension:
-            type: number
+            type: string
           metrics:
             unique_deals:
               type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on Account ID (each account can only have one deal)
+              groups: [ 'Deal Counts' ]
+              description: Count unique deals based on Account ID (each account can only have
+                one deal)
               spotlight:
                 visibility: show
                 categories:
@@ -63,8 +53,9 @@ models:
                   - sales
             new_deals:
               type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the New stage
+              groups: [ 'Deal Counts' ]
+              description: Count unique deals based on the Account ID and filter to only deals
+                in the New stage
               filters:
                 - stage: 'New'
               spotlight:
@@ -74,26 +65,30 @@ models:
                   - sales
             qualified_deals:
               type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the Qualified stage
+              groups: [ 'Deal Counts' ]
+              description: Count unique deals based on the Account ID and filter to only deals
+                in the Qualified stage
               filters:
                 - stage: 'Qualified'
             poc_deals:
               type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the PoC stage
+              groups: [ 'Deal Counts' ]
+              description: Count unique deals based on the Account ID and filter to only deals
+                in the PoC stage
               filters:
                 - stage: 'PoC'
             negotiation_deals:
               type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the Negotiation stage
+              groups: [ 'Deal Counts' ]
+              description: Count unique deals based on the Account ID and filter to only deals
+                in the Negotiation stage
               filters:
                 - stage: 'Negotiation'
             won_deals:
               type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the Won stage
+              groups: [ 'Deal Counts' ]
+              description: Count unique deals based on the Account ID and filter to only deals
+                in the Won stage
               filters:
                 - stage: 'Won'
               spotlight:
@@ -103,15 +98,16 @@ models:
                   - sales
             lost_deals:
               type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the Lost stage
+              groups: [ 'Deal Counts' ]
+              description: Count unique deals based on the Account ID and filter to only deals
+                in the Lost stage
               filters:
                 - stage: 'Lost'
               spotlight:
                 visibility: show
                 categories:
                   - sales
-            
+
       - name: stage
         description: "The deal stage (New, Qualified, PoC, Negotiation, Won, Lost)"
         meta:
@@ -120,14 +116,9 @@ models:
           additional_dimensions:
             stage_order:
               type: number
-              sql: case
-                when stage = 'New' then 1
-                when stage = 'Qualified' then 2
-                when stage = 'PoC' then 3
-                when stage = 'Negotiation' then 4
-                when stage = 'Won' then 5
-                when stage = 'Lost' then 6
-                end
+              sql: case when stage = 'New' then 1 when stage = 'Qualified' then 2 when stage =
+                'PoC' then 3 when stage = 'Negotiation' then 4 when stage =
+                'Won' then 5 when stage = 'Lost' then 6 end
       - name: plan
         description: "The plan the prospect is interested in (Basic or Professional)"
         meta:
@@ -183,7 +174,7 @@ models:
         meta:
           dimension:
             type: date
-            time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
+            time_intervals: [ 'DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER' ]
             sql: >
               date_add(
                 ${TABLE}.created_date,

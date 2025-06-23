@@ -8,9 +8,9 @@ models:
           dimension:
             type: string
           metrics:
-            unique_deals:
+            unique_deal_count:
               type: count_distinct
-              label: "✅ Unique Deal Count"
+              label: "✅ FANOUT SAFE Unique Deal Count"
               description: "✅ CORRECT: Count distinct deals"
 
             inflated_deal_count:
@@ -36,7 +36,7 @@ models:
         meta:
           dimension:
             type: number
-            label: "✅ FANOUT SAFE Deal Total Amount"
+            label: "✅ FANOUT SAFE Deal Total Value"
       - name: amount
         description: "Deal value in dollars"
         meta:
@@ -54,6 +54,18 @@ models:
               type: average
               label: "🚨 INFLATED Average Deal Value"
               description: "❌ WRONG: Average is calculated on inflated rows, not actual deals"
+              format: 'usd'
+
+            max_deal_value:
+              type: max
+              label: "✅ FANOUT SAFE Max Deal Value"
+              description: "Maximum deal value in the dataset"
+              format: 'usd'
+
+            min_deal_value:
+              type: max
+              label: "✅ FANOUT SAFE Min Deal Value"
+              description: "Minimum deal value in the dataset"
               format: 'usd'
 
       - name: created_date

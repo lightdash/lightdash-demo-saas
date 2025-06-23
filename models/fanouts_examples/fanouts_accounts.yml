@@ -1,0 +1,133 @@
+version: 2
+models:
+  - name: fanouts_accounts
+    description: |
+      This model demonstrates all three common join patterns that cause metric inflation:
+      1. Simple 1-to-many: Accounts → Deals OR Accounts -> Users
+      2. Chained 1-to-many: Accounts → Users → Events  
+      3. Multiple 1-to-many: Accounts → Deals AND Accounts → Users
+
+      When these tables are joined, each account record gets multiplied by:
+      - Number of deals it has
+      - Number of users it has  
+      - Number of events each user has
+
+      This creates a "fanout" effect that inflates COUNT metrics but leaves COUNT_DISTINCT safe.
+      Note with the way we currently implement joins in Lightdash, tables/models are only added to 
+      a join if we select dimesions or metrics from them. 
+      This means we can use the same models to demonstrate all the joins. 
+
+    meta:
+      sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment !=
+        'Enterprise'
+      joins:
+        # 🚨 INTENTIONAL METRICS INFLATION DEMO 🚨
+
+        # Simple 1-to-many: Accounts → Deals
+        - join: fanouts_deals
+          sql_on: ${fanouts_accounts.account_id} = ${fanouts_deals.account_id}
+          type: left
+          fields:
+            [
+              deal_id,
+              unique_deal_count,
+              stage,
+              amount,
+              inflated_total_deal_value,
+              inflated_average_deal_value,
+              safe_total_deal_value,
+              inflated_deal_count,
+              max_deal_value,
+              min_deal_value
+            ]
+
+        # Multiple 1-to-many: Accounts → Users (runs parallel to deals join)
+        - join: fanouts_users
+          sql_on: ${fanouts_accounts.account_id} = ${fanouts_users.account_id}
+          type: left
+          fields:
+            [
+              user_id,
+              unique_user_count,
+              inflated_user_count,
+              job_title,
+              is_marketing_opted_in,
+              unique_job_title_count,
+              inflated_job_title_count,
+              email,
+              created_at,
+              first_logged_in_at
+            ]
+
+        # Chained 1-to-many: Users → Events (builds on the users join above)
+        - join: fanouts_tracks
+          sql_on: ${fanouts_users.user_id} = ${fanouts_tracks.user_id}
+          type: left
+          fields:
+            [
+              unique_event_count,
+              inflated_event_count,
+              event_name,
+              timestamp,
+              event_id
+            ]
+    columns:
+      - name: account_id
+        description: "The Account ID from our database"
+        meta:
+          dimension:
+            type: string
+          metrics:
+            unique_accounts:
+              type: count_distinct
+              label: "✅ FANOUT SAFE Unique Account Count"
+              description: "✅ CORRECT: Uses count_distinct so won't inflate"
+
+            # 🚨 INFLATION DEMO METRICS 🚨
+            inflated_account_count:
+              type: count
+              label: "🚨 INFLATED Account Count"
+              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will inflate based on the grain of the data"
+
+      - name: account_name
+        description: "Name of this company account"
+        meta:
+          dimension:
+            type: string
+
+      - name: industry
+        description: "Stock market industry for this account"
+        meta:
+          dimension:
+            type: string
+          metrics:
+            unique_industry_count:
+              type: count_distinct
+              label: "✅ SAFE Unique Industry Count"
+              description: "✅ CORRECT: Uses count_distinct so won't inflate regardless of the
+                grain of the data"
+            inflated_industry_count:
+              type: count
+              label: "🚨 ALWAYS INFLATED Industry Count"
+              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will always return
+                inflated count because multiple accounts can fall into the same
+                industry."
+
+
+      - name: segment
+        description: "The market Segment for this account (SMB, Midmarket, Enterprise)"
+        meta:
+          dimension:
+            type: string
+          metrics:
+            unique_segment_count:
+              type: count_distinct
+              label: "✅ SAFE Unique Segment Count"
+              description: "✅ CORRECT: Uses count_distinct so won't inflate regardless of the
+                grain of the data."
+            inflated_segment_count:
+              type: count
+              label: "🚨 ALWAYS INFLATED Segment Count"
+              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will always return
+                inflated count because multiple accounts can fall into the same
+                segment."

@@ -3,18 +3,28 @@ models:
   - name: accounts
     meta:
       # This filter means that unless you are an admin, you can't see Enterprise account
-      sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment != 'Enterprise' 
+      sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment !=
+        'Enterprise'
       joins:
         - join: deals
           sql_on: ${accounts.account_id} = ${deals.account_id}
           type: inner
-          fields: [unique_deals, new_deals, won_deals, lost_deals, stage, average_amount, total_amount]
+          fields:
+            [
+              unique_deals,
+              new_deals,
+              won_deals,
+              lost_deals,
+              stage,
+              average_amount,
+              total_amount
+            ]
     columns:
       - name: account_id
         description: "The Account ID from our database"
         meta:
           dimension:
-            type: number
+            type: string
             urls:
               - label: 'Open in CRM'
                 url: https://demo_saas.com/example/account/${ value.raw }
@@ -29,19 +39,22 @@ models:
             unique_smb_accounts:
               label: Unique SMB Accounts
               type: count_distinct
-              description: The unique number of accounts based on distinct Account IDs for accounts in the SMB Segment
+              description: The unique number of accounts based on distinct Account IDs for
+                accounts in the SMB Segment
               filters:
                 - segment: 'SMB'
             unique_midmarket_accounts:
               label: Unique Midmarket Accounts
               type: count_distinct
-              description: The unique number of Midmarket accounts based on distinct Account IDs for accounts in the Midmarket Segment
+              description: The unique number of Midmarket accounts based on distinct Account
+                IDs for accounts in the Midmarket Segment
               filters:
                 - segment: 'Midmarket'
             unique_enterprise_accounts:
               label: Unique Enterprise Accounts
               type: count_distinct
-              description: The unique number of accounts based on distinct Account IDs for accounts in the Enterprise Segment
+              description: The unique number of accounts based on distinct Account IDs for
+                accounts in the Enterprise Segment
               filters:
                 - segment: 'Enterprise'
       - name: account_name

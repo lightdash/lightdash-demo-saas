@@ -31,21 +31,17 @@ models:
         meta:
           dimension:
             type: string
-            urls:
-              - label: 'Open in CRM'
-                url: https://demo_saas.com/example/account/${ value.raw }
           metrics:
             unique_accounts:
               type: count_distinct
-              label: "✅ Unique Account Count"
+              label: "✅ FANOUT SAFE Unique Account Count"
               description: "✅ CORRECT: Uses count_distinct so won't inflate"
 
             # 🚨 INFLATION DEMO METRICS 🚨
             inflated_account_count:
               type: count
               label: "🚨 INFLATED Account Count"
-              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will inflate based
-                on deals×users×events"
+              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will inflate based on the grain of the data"
 
       - name: account_name
         description: "Name of this company account"
@@ -58,9 +54,35 @@ models:
         meta:
           dimension:
             type: string
+          metrics:
+            unique_industry_count:
+              type: count_distinct
+              label: "✅ SAFE Unique Industry Count"
+              description: "✅ CORRECT: Uses count_distinct so won't inflate regardless of the
+                grain of the data"
+            inflated_industry_count:
+              type: count
+              label: "🚨 ALWAYS INFLATED Industry Count"
+              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will always return
+                inflated count because multiple accounts can fall into the same
+                industry."
+
 
       - name: segment
         description: "The market Segment for this account (SMB, Midmarket, Enterprise)"
         meta:
           dimension:
             type: string
+          metrics:
+            unique_segment_count:
+              type: count_distinct
+              label: "✅ SAFE Unique Segment Count"
+              description: "✅ CORRECT: Uses count_distinct so won't inflate regardless of the
+                grain of the data."
+            inflated_segment_count:
+              type: count
+              label: "🚨 ALWAYS INFLATED Segment Count"
+              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will always return
+                inflated count because multiple accounts can fall into the same
+                segment."
+
