@@ -1,0 +1,14 @@
+user_id,deal_id,role
+e1e6cd80-18c9-41ab-bdef-1863593e373f,55357e8c-4fc5-40d6-b551-536fb6c11271,primary_contact
+683ece6f-329f-4ece-977d-c0c0ca84068e,55357e8c-4fc5-40d6-b551-536fb6c11271,stakeholder
+15e51e79-d39d-4019-8f3f-1b9fcbe32720,1adfb54a-2bca-43db-9f5e-d3c096faedbb,decision_maker
+73075a63-19cd-4aa4-bf42-d9e3ccb3d2de,8e2ec2bd-e718-4f81-aa8c-8a00b4d151a4,technical_contact
+92df33f0-eb2e-4570-ac5f-febcbde3c047,3c9d58d6-24c4-40a8-92b1-564b0fec3eba,primary_contact
+5e301462-7988-4283-bed5-e514f3ca9e12,3c9d58d6-24c4-40a8-92b1-564b0fec3eba,stakeholder
+43540bb8-5ea1-47be-ab40-bf79619d8d96,27149cb3-1fdd-493d-a2e7-87028a25c5e5,primary_contact
+cb92d2ca-ce0d-4b5d-8b86-94c2796b88f6,27149cb3-1fdd-493d-a2e7-87028a25c5e5,decision_maker
+e3043168-7ae3-4352-92ed-0a16c2688783,ea88183a-f792-47e6-b74f-7e871a016aa3,technical_contact
+e1e6cd80-18c9-41ab-bdef-1863593e373f,392f216f-2ff5-437f-9978-b8ca24c27e6f,stakeholder
+683ece6f-329f-4ece-977d-c0c0ca84068e,80b5b48f-ce8b-4fa5-be55-e0040beff504,primary_contact
+15e51e79-d39d-4019-8f3f-1b9fcbe32720,80b5b48f-ce8b-4fa5-be55-e0040beff504,stakeholder
+73075a63-19cd-4aa4-bf42-d9e3ccb3d2de,3c133afd-e1a4-4729-9970-72bdd27e1a9d,decision_maker

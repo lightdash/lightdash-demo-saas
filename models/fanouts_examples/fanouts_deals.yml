@@ -31,12 +31,6 @@ models:
           dimension:
             type: string
 
-      - name: safe_total_deal_value
-        description: "Deal value in dollars, safe from fanout inflation"
-        meta:
-          dimension:
-            type: number
-            label: "✅ FANOUT SAFE Deal Total Value"
       - name: amount
         description: "Deal value in dollars"
         meta:
@@ -66,6 +60,12 @@ models:
               type: max
               label: "✅ FANOUT SAFE Min Deal Value"
               description: "Minimum deal value in the dataset"
+              format: 'usd'
+
+            median_deal_value:
+              type: median
+              label: "🚨 INFLATED Median Deal Value"
+              description: "Median deal value in the dataset"
               format: 'usd'
 
       - name: created_date

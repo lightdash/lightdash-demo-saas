@@ -1,6 +1,14 @@
 version: 2
 models:
   - name: fanouts_users
+    meta:
+      joins:
+        # Simple 1:1 join: Users → Addresses
+        - join: fanouts_addresses
+          sql_on: ${fanouts_users.user_id} = ${fanouts_addresses.user_id}
+          type: left
+          fields: [ address_id, user_id, street_address, city, state, postal_code, country_iso_code, valid_from, valid_to ]
+
     columns:
       - name: user_id
         description: "Unique identifier for this user"

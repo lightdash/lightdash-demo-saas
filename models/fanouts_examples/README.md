@@ -1,13 +1,43 @@
 # Fanout Examples Models
-Here are examples of the different joins we get with metric inflation included.
+Here are examples of the different joins which can cause SQL fanouts also known as metric inflation.
 I have created copies of the models we use in the SaaS demo in the `fanouts_examples` folder and with the prefix `fanouts_`. These models include:
 
-fanouts_accounts
-fanouts_deals
-fanouts_users
-fanouts_tracks
+- fanouts_accounts
+- fanouts_deals
+- fanouts_users
+- fanouts_tracks
+- fanouts_addresses
 
-Here are examples of metric inflation:
+### Entity Relationship Diagram
+```
+ACCOUNTS (Companies) 
+    ↓ account_id
+    ├─► DEALS (Sales Pipeline) [1:many]
+    │     ↓ (accounts.segment/industry + deals.created_at quarter)
+    │     └─► SALES_TARGETS (Quarterly Goals) [many:1]
+    └─► USERS (Individual Contacts) [1:many]
+            ↓ user_id + valid_to is NULL
+            ├─► ADDRESSES (User Addresses) [1:1]
+            │     ↓ country_iso_code
+            │     └─► COUNTRIES (Country Reference) [many:1]
+            └─► TRACKS (Product Usage) [1:many]
+```
+The SQL joins have been defined in the `fanouts_accounts.yml` file and enable the use of the different dimensions and metrics from each of these models in Lightdash. 
+
+The next section details examples of SQL fanouts. I have defined metrics for each model as follows:
+
+Metrics safe from fanouts, these metrics are prefixed with FANOUT SAFE: 
+
+- *unique counts*: will always return a count of unique values which is FANOUT SAFE
+o tracks.  
+- *min* / *max*: will always return the minimum or maximum values no matter the number of times the rows are inflated. 
+
+Metrics affected by fanouts, these metrics are prexied with INFLATED: 
+
+- *counts*: these metrics are only inflated if the data is not at the grain of source table e.g. the count(user_id) metric will be inflated if the users table is joined t
+- *average*: the average is affected because not all rows are inflated equally.
+- *sum*: adding values that are inflated will result in the incorrect sum. 
+- *median*: calculating the median on inflated result will give the incorrect median value. 
 
 ## 1. Single 1-to-Many Joins
 
@@ -118,6 +148,57 @@ Here are examples of metric inflation:
 - Multiplication only happens when both deals AND users exist for an account
 
 ![Example 4: Parallel Joins](image4.png)
+
+## 5. One-to-One Joins
+
+**Description:** This model demonstrates a one-to-one relationship where `users` is joined to `addresses` with a 1:1 relationship. Each user has exactly one address.
+
+**Relationship:** 1 user to 1 address
+
+**Data Grain:** The grain remains at the user level since it's a 1:1 join, so metrics from both tables should remain accurate without inflation.
+
+### Example 5: Users → Addresses (1:1 Join)
+
+**Selected columns:**
+- `fanouts_users.unique_user_count`
+- `fanouts_users.inflated_user_count`
+- `fanouts_addresses.country`
+
+**Key insights:**
+- In a true 1:1 join, there should be **no fanout** - each user appears exactly once
+- The `unique_user_count` should equal the `inflated_user_count` since no duplication occurs
+- Users without addresses will still appear (due to LEFT JOIN) but with NULL address fields
+- This is the safest type of join for metric accuracy since it preserves the original grain
+- Address-based grouping (by city, state, country) maintains accurate user counts
+
+![Example 5: One-to-One Join](image5.png)
+
+## 6. Many-to-One Joins
+
+**Description:** This model demonstrates a many-to-one relationship where `addresses` is joined to `countries` with a many:1 relationship. Many addresses can belong to the same country.
+
+**Relationship:** Many addresses to 1 country
+
+**Data Grain:** The grain remains at the address level since we're starting from addresses, so address metrics remain accurate. Country metrics will be duplicated across all addresses in that country.
+
+### Example 6: Addresses → Countries (Many:1 Join)
+
+**Selected columns:**
+- `fanouts_addresses.city`
+- `fanouts_addresses.unique_address_count`
+- `fanouts_addresses.inflated_address_count`
+- `fanouts_countries.country_name`
+- `fanouts_countries.unique_country_count`
+- `fanouts_countries.inflated_country_count`
+
+**Key insights:**
+- **No fanout occurs** for the "many" side (addresses) - each address appears exactly once
+- **Fanout occurs** for the "one" side (countries) - each country appears once for every address in that country
+- The `unique_address_count` equals `inflated_address_count` since addresses aren't duplicated
+- The `inflated_country_count` shows how many addresses exist in each country (country records are duplicated)
+- For example: If USA has 1,000 addresses, the country "USA" will appear 1,000 times in the result set
+- This is the **reverse** of the typical fanout pattern - here the "one" side gets inflated, not the "many" side
+- Country-level metrics (like `inflated_country_count`) will be incorrect, while address-level metrics remain accurate
 
 ## Key Takeaways
 
