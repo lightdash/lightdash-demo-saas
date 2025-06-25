@@ -1,6 +1,8 @@
 version: 2
 models:
   - name: fanouts_deals
+    meta: 
+      primary_key: deal_id
     columns:
       - name: deal_id
         description: "Unique identifier for this deal"

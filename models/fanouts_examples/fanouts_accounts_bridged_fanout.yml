@@ -1,24 +1,22 @@
 version: 2
 models:
-  - name: fanouts_accounts
+  - name: fanouts_accounts_bridged_fanout
     description: |
-      This model demonstrates all three common join patterns that cause metric inflation:
-      1. Simple 1-to-many: Accounts → Deals OR Accounts -> Users
-      2. Chained 1-to-many: Accounts → Users → Events  
-      3. Multiple 1-to-many: Accounts → Deals AND Accounts → Users
+      This model demonstrates a many-to-many join pattern that creates extreme metric inflation:
+      Accounts → Deals → User_Deals (junction table) → Users
 
-      When these tables are joined, each account record gets multiplied by:
-      - Number of deals it has
-      - Number of users it has  
-      - Number of events each user has
-
-      This creates a "fanout" effect that inflates COUNT metrics but leaves COUNT_DISTINCT safe.
-      Note with the way we currently implement joins in Lightdash, tables/models are only added to 
-      a join if we select dimesions or metrics from them. 
-      This means we can use the same models to demonstrate all the joins. 
+      This creates a complex fanout where:
+      - Each account can have multiple deals
+      - Each deal can have multiple users (through the junction table)
+      - Each user can work on multiple deals (through the junction table)
+      
+      The result is that account records get multiplied by the total number of user-deal combinations,
+      creating extreme fanout that significantly inflates COUNT metrics while leaving COUNT_DISTINCT safe.
+      
+      This demonstrates how many-to-many relationships through junction tables can create 
+      multiplicative fanout effects that are much more severe than simple 1-to-many joins. 
 
     meta:
-      primary_key: account_id
       sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment !=
         'Enterprise'
       joins:
@@ -27,7 +25,7 @@ models:
         # Simple 1-to-many: Accounts → Deals (runs parallel to deals join)
         - join: fanouts_deals
           relationship: one_to_many
-          sql_on: ${fanouts_accounts.account_id} = ${fanouts_deals.account_id}
+          sql_on: ${fanouts_accounts_bridged_fanout.account_id} = ${fanouts_deals.account_id}
           type: left
           fields:
             [
@@ -44,14 +42,27 @@ models:
               created_date
             ]
 
-        # Multiple 1-to-many: Accounts → Users (runs parallel to deals join)
-        - join: fanouts_users
+        # Many-to-many: Deals → User_Deals (junction table)
+        - join: fanouts_user_deals
           relationship: one_to_many
-          sql_on: ${fanouts_accounts.account_id} = ${fanouts_users.account_id}
+          sql_on: ${fanouts_deals.deal_id} = ${fanouts_user_deals.deal_id}
           type: left
           fields:
             [
               user_id,
+              role,
+              unique_role_count,
+              inflated_role_count
+            ]
+
+        # Many-to-many completion: User_Deals → Users
+        - join: fanouts_users
+          relationship: many_to_one
+          sql_on: ${fanouts_user_deals.user_id} = ${fanouts_users.user_id}
+          type: left
+          fields:
+            [
+              user_id, 
               unique_user_count,
               inflated_user_count,
               job_title,
@@ -63,7 +74,7 @@ models:
               first_logged_in_at
             ]
 
-        # Chained 1-to-many: Users → Events (builds on the users join above)
+        # Chained many-to-many: Users → Events (builds on the many-to-many join above)
         - join: fanouts_tracks
           relationship: one_to_many
           sql_on: ${fanouts_users.user_id} = ${fanouts_tracks.user_id}
@@ -96,7 +107,7 @@ models:
             ${fanouts_deals.created_date} BETWEEN ${fanouts_industry_sales_targets.quarter_start_date} AND ${fanouts_industry_sales_targets.quarter_end_date} 
             AND  
               (
-                (${fanouts_deals.stage} = 'Won' AND ${fanouts_accounts.industry} = ${fanouts_industry_sales_targets.target_value} AND ${fanouts_industry_sales_targets.target_type} = 'industry')
+                (${fanouts_deals.stage} = 'Won' AND ${fanouts_accounts_bridged_fanout.industry} = ${fanouts_industry_sales_targets.target_value} AND ${fanouts_industry_sales_targets.target_type} = 'industry')
               )
           type: left
           fields:
@@ -114,7 +125,7 @@ models:
             ${fanouts_deals.created_date} BETWEEN ${fanouts_segment_sales_targets.quarter_start_date} AND ${fanouts_segment_sales_targets.quarter_end_date} 
             AND  
               (
-                (${fanouts_deals.stage} = 'Won' AND ${fanouts_accounts.segment} = ${fanouts_segment_sales_targets.target_value} AND ${fanouts_segment_sales_targets.target_type} = 'segment')
+                (${fanouts_deals.stage} = 'Won' AND ${fanouts_accounts_bridged_fanout.segment} = ${fanouts_segment_sales_targets.target_value} AND ${fanouts_segment_sales_targets.target_type} = 'segment')
               )
           type: left # Since this is a LEFT JOIN, deals that are not 'Won' will appear with NULL sales target data
           fields:

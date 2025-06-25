@@ -6,6 +6,4 @@ SELECT
     target_deals,
     target_amount
 FROM {{ ref('sales_targets_raw') }}
-WHERE 
-    target_type = 'Industry'
    

@@ -1,5 +1,7 @@
 models:
-  - name: fanouts_sales_industry_targets
+  - name: fanouts_sales_targets
+    meta: 
+      primary_key: [target_type, target_value, quarter_start_date]
     columns:
       - name: target_type
         description: "The type of target (industry, segment, or country)"

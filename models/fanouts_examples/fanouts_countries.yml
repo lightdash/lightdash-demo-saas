@@ -1,5 +1,7 @@
 models:
   - name: fanouts_countries
+    meta: 
+      primary_key: iso_code
     columns:
       - name: iso_code
         description: "The iso code of the country."

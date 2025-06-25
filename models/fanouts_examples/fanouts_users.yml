@@ -1,7 +1,8 @@
 version: 2
 models:
   - name: fanouts_users
-    meta:
+    meta: 
+      primary_key: user_id
       joins:
         # Simple 1:1 join: Users → Addresses
         - join: fanouts_addresses
