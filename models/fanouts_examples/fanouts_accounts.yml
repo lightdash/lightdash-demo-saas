@@ -18,6 +18,8 @@ models:
       This means we can use the same models to demonstrate all the joins. 
 
     meta:
+      required_attributes:
+          - is_admin_saas_demo
       primary_key: account_id
       sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment !=
         'Enterprise'

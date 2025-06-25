@@ -1,6 +1,8 @@
 models:
   - name: fanouts_sales_targets
     meta: 
+      required_attributes:
+        - is_admin_saas_demo
       primary_key: [target_type, target_value, quarter_start_date]
     columns:
       - name: target_type

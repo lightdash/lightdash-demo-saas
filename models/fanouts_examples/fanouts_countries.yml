@@ -1,6 +1,8 @@
 models:
   - name: fanouts_countries
     meta: 
+      required_attributes:
+        - is_admin_saas_demo
       primary_key: iso_code
     columns:
       - name: iso_code

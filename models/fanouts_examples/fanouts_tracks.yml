@@ -2,6 +2,8 @@ version: 2
 models:
   - name: fanouts_tracks
     meta: 
+      required_attributes:
+        - is_admin_saas_demo
       primary_key: event_id
     columns:
       - name: user_id

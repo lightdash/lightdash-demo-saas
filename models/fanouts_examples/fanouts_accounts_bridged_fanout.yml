@@ -17,6 +17,8 @@ models:
       multiplicative fanout effects that are much more severe than simple 1-to-many joins. 
 
     meta:
+      required_attributes:
+        - is_admin_saas_demo
       sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment !=
         'Enterprise'
       joins:

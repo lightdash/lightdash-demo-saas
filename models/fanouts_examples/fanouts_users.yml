@@ -2,6 +2,8 @@ version: 2
 models:
   - name: fanouts_users
     meta: 
+      required_attributes:
+        - is_admin_saas_demo
       primary_key: user_id
       joins:
         # Simple 1:1 join: Users → Addresses

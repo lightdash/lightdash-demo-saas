@@ -7,6 +7,8 @@ models:
       - name: deal_id
         description: "Unique identifier for this deal"
         meta:
+          required_attributes:
+            - is_admin_saas_demo
           dimension:
             type: string
           metrics:
