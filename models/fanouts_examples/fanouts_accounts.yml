@@ -18,8 +18,8 @@ models:
       This means we can use the same models to demonstrate all the joins. 
 
     meta:
-      required_attributes:
-          - is_admin_saas_demo
+      required_attributes: 
+        is_admin_saas_demo: 'true'
       primary_key: account_id
       sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment !=
         'Enterprise'
@@ -93,7 +93,7 @@ models:
 
         - join: fanouts_sales_targets
           alias: fanouts_industry_sales_targets
-          relationship: many_to_one # Many deals to one target
+          relationship: many_to_one 
           sql_on: |
             ${fanouts_deals.created_date} BETWEEN ${fanouts_industry_sales_targets.quarter_start_date} AND ${fanouts_industry_sales_targets.quarter_end_date} 
             AND  

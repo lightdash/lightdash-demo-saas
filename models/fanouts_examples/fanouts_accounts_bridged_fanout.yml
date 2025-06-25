@@ -17,8 +17,8 @@ models:
       multiplicative fanout effects that are much more severe than simple 1-to-many joins. 
 
     meta:
-      required_attributes:
-        - is_admin_saas_demo
+      required_attributes: 
+        is_admin_saas_demo: 'true'
       sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment !=
         'Enterprise'
       joins:
@@ -104,7 +104,7 @@ models:
 
         - join: fanouts_sales_targets
           alias: fanouts_industry_sales_targets
-          relationship: many_to_one # Many deals to one target
+          relationship: many_to_one 
           sql_on: |
             ${fanouts_deals.created_date} BETWEEN ${fanouts_industry_sales_targets.quarter_start_date} AND ${fanouts_industry_sales_targets.quarter_end_date} 
             AND  
@@ -122,7 +122,7 @@ models:
             ]
         - join: fanouts_sales_targets
           alias: fanouts_segment_sales_targets
-          relationship: many_to_one # Many deals to one target
+          relationship: many_to_one 
           sql_on: |
             ${fanouts_deals.created_date} BETWEEN ${fanouts_segment_sales_targets.quarter_start_date} AND ${fanouts_segment_sales_targets.quarter_end_date} 
             AND  

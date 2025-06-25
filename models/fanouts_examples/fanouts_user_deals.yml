@@ -2,8 +2,8 @@ version: 2
 models:
   - name: fanouts_user_deals
     meta: 
-      required_attributes:
-        - is_admin_saas_demo
+      required_attributes: 
+        is_admin_saas_demo: 'true'
       primary_key: [deal_id, user_id]
     description: "Junction table demonstrating many-to-many relationship between
       users and deals. Shows how multiple users can work on multiple deals,
