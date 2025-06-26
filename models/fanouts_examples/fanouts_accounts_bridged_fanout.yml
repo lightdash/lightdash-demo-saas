@@ -26,7 +26,7 @@ models:
 
         # Simple 1-to-many: Accounts → Deals (runs parallel to deals join)
         - join: fanouts_deals
-          relationship: one_to_many
+          relationship: one-to-many
           sql_on: ${fanouts_accounts_bridged_fanout.account_id} = ${fanouts_deals.account_id}
           type: left
           fields:
@@ -46,7 +46,7 @@ models:
 
         # Many-to-many: Deals → User_Deals (junction table)
         - join: fanouts_user_deals
-          relationship: one_to_many
+          relationship: one-to-many
           sql_on: ${fanouts_deals.deal_id} = ${fanouts_user_deals.deal_id}
           type: left
           fields:
@@ -59,7 +59,7 @@ models:
 
         # Many-to-many completion: User_Deals → Users
         - join: fanouts_users
-          relationship: many_to_one
+          relationship: many-to-one
           sql_on: ${fanouts_user_deals.user_id} = ${fanouts_users.user_id}
           type: left
           fields:
@@ -78,7 +78,7 @@ models:
 
         # Chained many-to-many: Users → Events (builds on the many-to-many join above)
         - join: fanouts_tracks
-          relationship: one_to_many
+          relationship: one-to-many
           sql_on: ${fanouts_users.user_id} = ${fanouts_tracks.user_id}
           type: left
           fields:
@@ -91,20 +91,20 @@ models:
             ]
 
         - join: fanouts_addresses
-          relationship: one_to_one
+          relationship: one-to-one
           sql_on: ${fanouts_users.user_id} = ${fanouts_addresses.user_id} AND ${fanouts_addresses.valid_to} IS NULL
           type: left
           fields: [ street_address, city, state, postal_code, country_iso_code, valid_from, valid_to, unique_city_count, inflated_city_count ]
 
         - join: fanouts_countries
-          relationship: many_to_one
+          relationship: many-to-one
           sql_on: ${fanouts_addresses.country_iso_code} = ${fanouts_countries.iso_code}
           type: left
           fields: [ country_name, unique_country_count, inflated_country_count ]
 
         - join: fanouts_sales_targets
           alias: fanouts_industry_sales_targets
-          relationship: many_to_one 
+          relationship: many-to-one 
           sql_on: |
             ${fanouts_deals.created_date} BETWEEN ${fanouts_industry_sales_targets.quarter_start_date} AND ${fanouts_industry_sales_targets.quarter_end_date} 
             AND  
@@ -122,7 +122,7 @@ models:
             ]
         - join: fanouts_sales_targets
           alias: fanouts_segment_sales_targets
-          relationship: many_to_one 
+          relationship: many-to-one 
           sql_on: |
             ${fanouts_deals.created_date} BETWEEN ${fanouts_segment_sales_targets.quarter_start_date} AND ${fanouts_segment_sales_targets.quarter_end_date} 
             AND  
