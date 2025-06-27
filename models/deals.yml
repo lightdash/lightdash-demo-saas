@@ -184,8 +184,3 @@ models:
           dimension:
             type: date
             time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
-            sql: >
-              date_add(
-                ${TABLE}.created_date,
-                interval date_diff(current_date(), '2025-01-01', day) day
-              )

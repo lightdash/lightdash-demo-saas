@@ -1,7 +1,6 @@
 version: 2
 models:
   - name: tracks
-
     meta:
       required_filters:
         - timestamp: 'inThePast 12 months'
@@ -65,8 +64,3 @@ models:
                 'MONTH_NAME',
                 'QUARTER_NAME'
               ]
-            sql: >
-              timestamp_add(
-                ${TABLE}.timestamp,
-                interval timestamp_diff(current_timestamp(), timestamp '2025-01-01 00:00:00', second) second
-              )
