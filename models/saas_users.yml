@@ -1,13 +1,13 @@
 version: 2
 models:
-  - name: users
+  - name: saas_users
 
     meta:
       order_fields_by: index
 
       joins:
         - join: accounts
-          sql_on: ${users.account_id} = ${accounts.account_id}
+          sql_on: ${saas_users.account_id} = ${accounts.account_id}
           type: left
 
       metrics:
@@ -40,7 +40,7 @@ models:
               type: count_distinct
               hidden: true
               filters:
-                - is_marketing_opted_in: 'true'
+                - is_marketing_opted_in: "true"
               spotlight:
                 visibility: show
                 categories:
@@ -57,7 +57,7 @@ models:
           dimension:
             type: string
             required_attributes:
-              is_admin_saas_demo: 'true'
+              is_admin_saas_demo: "true"
       - name: job_title
         description: "The job title of the given user"
         meta:
