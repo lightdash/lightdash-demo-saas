@@ -1,6 +1,6 @@
-name: 'lightdash_demo_saas'
+name: "lightdash_demo_saas"
 config-version: 2
-profile: 'lightdash-demo-saas'
+profile: "lightdash-demo-saas"
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
