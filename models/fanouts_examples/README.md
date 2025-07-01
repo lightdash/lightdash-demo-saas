@@ -225,7 +225,6 @@ The next section details examples of SQL fanouts. I have defined metrics for eac
 ### Example 6: Addresses → Countries (Many:1 Join)
 
 **Selected columns:**
-- `fanouts_addresses.city`
 - `fanouts_addresses.unique_address_count`
 - `fanouts_addresses.inflated_address_count`
 - `fanouts_countries.country_name`
@@ -240,6 +239,8 @@ The next section details examples of SQL fanouts. I have defined metrics for eac
 - For example: If USA has 1,000 addresses, the country "USA" will appear 1,000 times in the result set
 - This is the **reverse** of the typical fanout pattern - here the "one" side gets inflated, not the "many" side
 - Country-level metrics (like `inflated_country_count`) will be incorrect, while address-level metrics remain accurate
+
+![Example 6: ManyOne-to-One Join](image6.png)
 
 ---
 
