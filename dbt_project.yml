@@ -1,6 +1,6 @@
 name: 'lightdash_demo_training'
 config-version: 2
-profile: 'lightdash-demo-training'
+profile: 'lightdash_demo_training'
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
