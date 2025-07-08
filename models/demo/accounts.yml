@@ -17,7 +17,6 @@ models:
             type: number
             urls:
               - label: 'Open in CRM'
-                url: https://demo_saas.com/example/account/${ value.raw }
           metrics:
             unique_accounts:
               type: count_distinct

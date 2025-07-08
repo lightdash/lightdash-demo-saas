@@ -1,6 +1,6 @@
-name: 'lightdash_demo_saas'
+name: 'lightdash_demo_training'
 config-version: 2
-profile: 'lightdash-demo-saas'
+profile: 'lightdash-demo-training'
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
@@ -13,11 +13,11 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  lightdash_demo_saas:
+  lightdash_demo_training:
     +materialized: table
 
 seeds:
-  lightdash_demo_saas:
+  lightdash_demo_training:
     +column_types:
       created_at: timestamp
       first_logged_in_at: timestamp
