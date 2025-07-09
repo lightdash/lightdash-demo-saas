@@ -1,6 +1,6 @@
 name: 'lightdash_demo_saas'
 config-version: 2
-profile: 'lightdash-demo-saas'
+profile: 'lightdash_demo_saas'
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]
@@ -15,6 +15,9 @@ clean-targets:
 models:
   lightdash_demo_saas:
     +materialized: table
+    +meta:
+      fanouts_examples:
+        - group: fanouts
 
 seeds:
   lightdash_demo_saas:
