@@ -1,186 +1,187 @@
 version: 2
 models:
-  - name: deals
-    meta:
-      metrics:
-        win_rate:
-          type: number
-          description: The percentage of deals that have been won
-          format: percent
-          sql: ${won_deals} / ${unique_deals}
-          spotlight:
-            visibility: show
-            categories:
-              - kpi
-        loss_rate:
-          type: number
-          format: percent
-          sql: ${lost_deals} / ${unique_deals}
-        win_vs_lost_ratio:
-          type: number
-          round: 2
-          sql: ${lost_deals} / ${won_deals}
-        win_vs_lost_goal: # I'm not sure this works super well because it fails when paired with anything else because Lightdash doesn't create a group by
+- name: deals
+  meta:
+    primary_key: deal_id
+    explores:
+      deals_accounts:
+        required_attributes:
+          is_admin_saas_demo: "true"
+        label: 'Deals w/Accounts'
+        description: The deals table with the Accounts table details included
+        joins:
+        - join: accounts
+          relationship: many-to-one
+          sql_on: ${deals.account_id} = ${accounts.account_id}
+      deals_accounts_no_names:
+        label: 'Deals w/Accounts (no Names)'
+        description: The deals table with the Accounts table details included
+        joins:
+        - join: accounts
+          relationship: many-to-one
+          sql_on: ${deals.account_id} = ${accounts.account_id}
+          fields: [industry, segment, unique_accounts, unique_smb_accounts, unique_midmarket_accounts, unique_enterprise_accounts]
+    metrics:
+      win_rate:
+        type: number
+        description: The percentage of deals that have been won
+        format: percent
+        sql: ${won_deals} / ${unique_deals}
+        spotlight:
+          visibility: show
+          categories:
+            - kpi
+      loss_rate:
+        type: number
+        format: percent
+        sql: ${lost_deals} / ${unique_deals}
+      win_vs_lost_ratio:
+        type: number
+        round: 2
+        sql: ${lost_deals} / ${won_deals}
+
+  columns:
+    - name: deal_id
+      description: "The unique identified for a Deal"
+      meta:
+        dimension:
           type: string
-          sql: 
-            case 
-              when ${win_vs_lost_ratio} > 1.5 
-                then concat(
-                  cast(${won_deals} as string), 
-                  ' won, ', 
-                  cast(${lost_deals} as string), 
-                  ' lost, (',
-                  cast(round(${win_vs_lost_ratio},2) as string),
-                  ' ✅ goal met)')
-              else concat(
-                  cast(${won_deals} as string), 
-                  ' won, ', 
-                  cast(${lost_deals} as string), 
-                  ' lost, (',
-                cast(round(${win_vs_lost_ratio},2) as string), 
-                ' ❌ goal missed)')
-            end
-    columns:
-      - name: deal_id
-        description: "The unique identified for a Deal"
-        meta:
-          dimension:
-            type: string
-      - name: account_id
-        description: "The Account ID from our database"
-        meta:
-          dimension:
+        metrics:
+          unique_deals:
+            type: count_distinct
+            groups: ['Deal Counts']
+            description: Count unique deals based on Account ID (each account can only have one deal)
+            spotlight:
+              visibility: show
+              categories:
+                - kpi
+                - sales
+          new_deals:
+            type: count_distinct
+            groups: ['Deal Counts']
+            description: Count unique deals based on the Account ID and filter to only deals in the New stage
+            filters:
+              - stage: 'New'
+            spotlight:
+              visibility: show
+              categories:
+                - kpi
+                - sales
+          qualified_deals:
+            type: count_distinct
+            groups: ['Deal Counts']
+            description: Count unique deals based on the Account ID and filter to only deals in the Qualified stage
+            filters:
+              - stage: 'Qualified'
+          poc_deals:
+            type: count_distinct
+            groups: ['Deal Counts']
+            description: Count unique deals based on the Account ID and filter to only deals in the PoC stage
+            filters:
+              - stage: 'PoC'
+          negotiation_deals:
+            type: count_distinct
+            groups: ['Deal Counts']
+            description: Count unique deals based on the Account ID and filter to only deals in the Negotiation stage
+            filters:
+              - stage: 'Negotiation'
+          won_deals:
+            type: count_distinct
+            groups: ['Deal Counts']
+            description: Count unique deals based on the Account ID and filter to only deals in the Won stage
+            filters:
+              - stage: 'Won'
+            spotlight:
+              visibility: show
+              categories:
+                - kpi
+                - sales
+          lost_deals:
+            type: count_distinct
+            groups: ['Deal Counts']
+            description: Count unique deals based on the Account ID and filter to only deals in the Lost stage
+            filters:
+              - stage: 'Lost'
+            spotlight:
+              visibility: show
+              categories:
+                - sales
+    - name: account_id
+      description: "The Account ID from our database"
+      meta:
+        dimension:
+          type: number
+          hidden: true
+
+    - name: stage
+      description: "The deal stage (New, Qualified, PoC, Negotiation, Won, Lost)"
+      meta:
+        dimension:
+          type: string
+        additional_dimensions:
+          stage_order:
             type: number
-          metrics:
-            unique_deals:
-              type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on Account ID (each account can only have one deal)
-              spotlight:
-                visibility: show
-                categories:
-                  - kpi
-                  - sales
-            new_deals:
-              type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the New stage
-              filters:
-                - stage: 'New'
-              spotlight:
-                visibility: show
-                categories:
-                  - kpi
-                  - sales
-            qualified_deals:
-              type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the Qualified stage
-              filters:
-                - stage: 'Qualified'
-            poc_deals:
-              type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the PoC stage
-              filters:
-                - stage: 'PoC'
-            negotiation_deals:
-              type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the Negotiation stage
-              filters:
-                - stage: 'Negotiation'
-            won_deals:
-              type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the Won stage
-              filters:
-                - stage: 'Won'
-              spotlight:
-                visibility: show
-                categories:
-                  - kpi
-                  - sales
-            lost_deals:
-              type: count_distinct
-              groups: ['Deal Counts']
-              description: Count unique deals based on the Account ID and filter to only deals in the Lost stage
-              filters:
-                - stage: 'Lost'
-              spotlight:
-                visibility: show
-                categories:
-                  - sales
-            
-      - name: stage
-        description: "The deal stage (New, Qualified, PoC, Negotiation, Won, Lost)"
-        meta:
-          dimension:
-            type: string
-          additional_dimensions:
-            stage_order:
-              type: number
-              sql: case
-                when stage = 'New' then 1
-                when stage = 'Qualified' then 2
-                when stage = 'PoC' then 3
-                when stage = 'Negotiation' then 4
-                when stage = 'Won' then 5
-                when stage = 'Lost' then 6
-                end
-      - name: plan
-        description: "The plan the prospect is interested in (Basic or Professional)"
-        meta:
-          dimension:
-            type: string
-            colors:
-              'Basic': "#C0C0C0"
-              'Professional': "#FFD700"
-      - name: seats
-        description: "The number of seats they are purchasing"
-        meta:
-          dimension:
-            type: number
-          metrics:
-            total_seats:
-              type: sum
-              description: The sum of seats for selected deals
-            average_seats:
-              type: average
-              round: 0
-              description: The average number of seats per deal for selected deals
-      - name: amount
-        description: "The deal amount based on plan price per seat multiplied by seats"
-        meta:
-          dimension:
-            type: number
+            sql: case
+              when stage = 'New' then 1
+              when stage = 'Qualified' then 2
+              when stage = 'PoC' then 3
+              when stage = 'Negotiation' then 4
+              when stage = 'Won' then 5
+              when stage = 'Lost' then 6
+              end
+    - name: plan
+      description: "The plan the prospect is interested in (Basic or Professional)"
+      meta:
+        dimension:
+          type: string
+          colors:
+            'Basic': "#C0C0C0"
+            'Professional': "#FFD700"
+    - name: seats
+      description: "The number of seats they are purchasing"
+      meta:
+        dimension:
+          type: number
+        metrics:
+          total_seats:
+            type: sum
+            description: The sum of seats for selected deals
+          average_seats:
+            type: average
+            round: 0
+            description: The average number of seats per deal for selected deals
+    - name: amount
+      description: "The deal amount based on plan price per seat multiplied by seats"
+      meta:
+        dimension:
+          type: number
+          format: '$#,##0'
+        metrics:
+          total_amount:
+            type: sum
+            description: The sum of deal amount for selected deals
             format: '$#,##0'
-          metrics:
-            total_amount:
-              type: sum
-              description: The sum of deal amount for selected deals
-              format: '$#,##0'
-              spotlight:
-                visibility: show
-                categories:
-                  - kpi
-                  - sales
-            total_amount_thousands:
-              description: The sum of deal amount for selected deals, shown in thousands
-              format: '$#,##0,"K"'
-              type: number
-              sql: round(${total_amount},-3)
-            average_amount:
-              type: average
-              description: The average deal amount for selected deals
-              format: '$#,##0.00'
-              spotlight:
-                visibility: show
-                categories:
-                  - kpi
-      - name: created_date
-        description: "The date the deal was created"
-        meta:
-          dimension:
-            type: date
-            time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
+            spotlight:
+              visibility: show
+              categories:
+                - kpi
+                - sales
+          total_amount_thousands:
+            description: The sum of deal amount for selected deals, shown in thousands
+            format: '$#,##0,"K"'
+            type: number
+            sql: round(${total_amount},-3)
+          average_amount:
+            type: average
+            description: The average deal amount for selected deals
+            format: '$#,##0.00'
+            spotlight:
+              visibility: show
+              categories:
+                - kpi
+    - name: created_date
+      description: "The date the deal was created"
+      meta:
+        dimension:
+          type: date
+          time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']

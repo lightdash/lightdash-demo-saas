@@ -2,6 +2,7 @@ version: 2
 models:
   - name: accounts
     meta:
+      primary_key: account_id
       # This filter means that unless you are an admin, you can't see Enterprise account
       sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment != 'Enterprise' 
       joins:
