@@ -2,7 +2,24 @@ version: 2
 models:
   - name: deals
     meta:
+      primary_key: deal_id
+      description: "This table contains the deals in our demo SaaS application"
+      joins: 
+        - join: accounts
+          relationship: many-to-one
+          sql_on: ${accounts.account_id} = ${deals.account_id}
+          type: inner
       metrics:
+        percentage_of_account_amount_won:
+          type: number
+          description: The percentage of deals that have been won
+          format: percent
+          sql: ${deals.total_amount_won} / ${accounts.total_deal_amount}
+          
+        avg_deals_per_account:
+          type: number
+          description: The average number of deals that have been won per account
+          sql: ${deals.won_deals} / ${accounts.unique_accounts}
         win_rate:
           type: number
           description: The percentage of deals that have been won
@@ -40,17 +57,13 @@ models:
                 cast(round(${win_vs_lost_ratio},2) as string), 
                 ' ❌ goal missed)')
             end
+
     columns:
       - name: deal_id
         description: "The unique identified for a Deal"
         meta:
           dimension:
             type: string
-      - name: account_id
-        description: "The Account ID from our database"
-        meta:
-          dimension:
-            type: number
           metrics:
             unique_deals:
               type: count_distinct
@@ -111,7 +124,12 @@ models:
                 visibility: show
                 categories:
                   - sales
-            
+      - name: account_id
+        description: "The Account ID from our database"
+        meta:
+          dimension:
+            type: number  
+          
       - name: stage
         description: "The deal stage (New, Qualified, PoC, Negotiation, Won, Lost)"
         meta:
@@ -165,6 +183,13 @@ models:
                 categories:
                   - kpi
                   - sales
+            total_amount_won: 
+              type: sum
+              description: The sum of deal amount for won deals
+              format: '$#,##0'
+              filters: 
+                - stage: 'Won' 
+              sql: 'COALESCE(${amount}, 0)'
             total_amount_thousands:
               description: The sum of deal amount for selected deals, shown in thousands
               format: '$#,##0,"K"'
@@ -184,3 +209,4 @@ models:
           dimension:
             type: date
             time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
+     

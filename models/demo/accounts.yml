@@ -2,13 +2,16 @@ version: 2
 models:
   - name: accounts
     meta:
+      primary_key: account_id
+      description: "This table contains the accounts in our demo SaaS application"
       # This filter means that unless you are an admin, you can't see Enterprise account
       sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment != 'Enterprise' 
       joins:
         - join: deals
+          relationship: one-to-many
           sql_on: ${accounts.account_id} = ${deals.account_id}
-          type: inner
-          fields: [unique_deals, new_deals, won_deals, lost_deals, stage, average_amount, total_amount]
+          type: left
+
     columns:
       - name: account_id
         description: "The Account ID from our database"
@@ -19,6 +22,7 @@ models:
               - label: 'Open in CRM'
                 url: https://demo_saas.com/example/account/${ value.raw }
           metrics:
+            
             unique_accounts:
               type: count_distinct
               description: The unique number of accounts based on distinct Account IDs
@@ -26,6 +30,11 @@ models:
                 visibility: show
                 categories:
                   - kpi
+            account_count:
+              type: count
+              label: "Account Count"
+              description: "❌ WRONG: Uses COUNT instead of COUNT_DISTINCT - will inflate based
+                on the grain of the data"
             unique_smb_accounts:
               label: Unique SMB Accounts
               type: count_distinct
@@ -44,6 +53,7 @@ models:
               description: The unique number of accounts based on distinct Account IDs for accounts in the Enterprise Segment
               filters:
                 - segment: 'Enterprise'
+
       - name: account_name
         description: "Name of this company account"
         meta:
@@ -59,3 +69,15 @@ models:
         meta:
           dimension:
             type: string
+      - name: total_won_amount
+        description: "The total amount of won deals for this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            total_deal_amount:
+              type: sum
+              description: "The total revenue from all won deals in this account"
+            
+          
