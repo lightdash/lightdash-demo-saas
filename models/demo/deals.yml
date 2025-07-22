@@ -2,20 +2,21 @@ version: 2
 models:
 - name: deals
   meta:
+    description: All sales deals of any status, pulled from our CRM 
     primary_key: deal_id
     explores:
       deals_accounts:
         required_attributes:
           is_admin_saas_demo: "true"
         label: 'Deals w/Accounts'
-        description: The deals table with the Accounts table details included
+        description: The Deals table with the Accounts table details included (only accessible by admins since it includes account names)
         joins:
         - join: accounts
           relationship: many-to-one
           sql_on: ${deals.account_id} = ${accounts.account_id}
       deals_accounts_no_names:
         label: 'Deals w/Accounts (no Names)'
-        description: The deals table with the Accounts table details included
+        description: The deals table with the Accounts table details included, except for names (to keep anonymous)
         joins:
         - join: accounts
           relationship: many-to-one
