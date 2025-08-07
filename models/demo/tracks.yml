@@ -6,14 +6,16 @@ models:
         - timestamp: 'inThePast 12 months'
       required_attributes:
         is_admin_saas_demo: 'true'
-
+      primary_key: id
       joins:
         - join: users
           sql_on: ${tracks.user_id} = ${users.user_id}
           type: left
+          relationship: many-to-one
         - join: accounts
           sql_on: ${users.account_id} = ${accounts.account_id}
           type: left
+          relationship: many-to-one
 
     columns:
       - name: user_id

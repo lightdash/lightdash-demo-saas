@@ -167,6 +167,17 @@ models:
               categories:
                 - kpi
                 - sales
+            total_won_amount:
+              type: sum
+              description: The sum of deal amount for won deals
+              format: '$#,##0'
+              filters:
+                - stage: 'Won'
+              spotlight:
+              visibility: show
+              categories:
+                - kpi
+                - sales
           total_amount_thousands:
             description: The sum of deal amount for selected deals, shown in thousands
             format: '$#,##0,"K"'
