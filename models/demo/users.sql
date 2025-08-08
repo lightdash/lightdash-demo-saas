@@ -8,6 +8,7 @@ with cleaned_data as (
         case when is_marketing_opted_in = 1 then true else false end as is_marketing_opted_in,
         created_at,
         first_logged_in_at,
+        experience_in_years,
         -- the below cleans synthetically created data
         case   
             when latest_logged_in_at < first_logged_in_at then first_logged_in_at
@@ -24,6 +25,7 @@ select
     email,
     job_title,
     is_marketing_opted_in,
+    experience_in_years,
     -- this code keeps the date fields relevant for the demo environment
     -- it adds the difference between the current date and a fixed date (2025-01-01)
     -- to the original date fields, effectively shifting them into the future

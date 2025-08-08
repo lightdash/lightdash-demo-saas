@@ -1,14 +1,14 @@
 version: 2
 models:
   - name: users
-
     meta:
       order_fields_by: index
-
+      primary_key: user_id
       joins:
         - join: accounts
           sql_on: ${users.account_id} = ${accounts.account_id}
           type: left
+          relationship: many-to-one
 
       metrics:
         percentage_of_users_with_marketing_opt_in:
@@ -63,6 +63,11 @@ models:
         meta:
           dimension:
             type: string
+          metrics:
+            unique_job_title_count:
+              type: count_distinct
+              label: "Unique Job Titles"
+              description: "Distinct count of job titles"
       - name: is_marketing_opted_in
         description: "Whether the user is currently opted into marketing"
         meta:
@@ -83,3 +88,14 @@ models:
         meta:
           dimension:
             type: timestamp
+      - name: experience_in_years
+        description: "The number of years of experience the user has"
+        meta:
+          dimension:
+            type: number
+            description: "Years of experience the user has in their field"
+          metrics:
+            average_experience_in_years:
+              type: average
+              label: "Average Experience in Years"
+              description: "Average years of experience across selected users"
