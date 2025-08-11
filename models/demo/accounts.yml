@@ -11,7 +11,7 @@ models:
           sql_on: ${accounts.account_id} = ${deals.account_id}
           type: left
           relationship: one-to-many
-          fields: [deal_id, unique_deals, new_deals, won_deals, lost_deals, stage, average_amount, total_amount]
+          fields: [deal_id, unique_deals, new_deals, won_deals, lost_deals, stage, average_amount, total_amount, total_won_amount]
         - join: users
           relationship: one-to-many
           sql_on: ${accounts.account_id} = ${users.account_id}

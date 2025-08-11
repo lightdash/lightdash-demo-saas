@@ -159,6 +159,7 @@ models:
           format: '$#,##0'
         metrics:
           total_amount:
+            groups: ['Deal Amounts']
             type: sum
             description: The sum of deal amount for selected deals
             format: '$#,##0'
@@ -167,7 +168,8 @@ models:
               categories:
                 - kpi
                 - sales
-            total_won_amount:
+          total_won_amount:
+              groups: ['Deal Amounts']
               type: sum
               description: The sum of deal amount for won deals
               format: '$#,##0'
@@ -179,11 +181,13 @@ models:
                 - kpi
                 - sales
           total_amount_thousands:
+            groups: ['Deal Amounts']
             description: The sum of deal amount for selected deals, shown in thousands
             format: '$#,##0,"K"'
             type: number
-            sql: round(${total_amount},-3)
+            sql: round(${total_amount},-3)  
           average_amount:
+            groups: ['Deal Amounts']
             type: average
             description: The average deal amount for selected deals
             format: '$#,##0.00'
