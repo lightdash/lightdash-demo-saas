@@ -3,6 +3,8 @@
     DATE_ADD(DATE_ADD({{ quarter_start_column }}, INTERVAL 3 MONTH), INTERVAL -1 DAY)
   {% elif target.type == 'postgres' %}
     ({{ quarter_start_column }} + INTERVAL '3 months' - INTERVAL '1 day')::date
+  {% elif target.type == 'snowflake' %}
+    DATEADD(DAY, -1, DATEADD(MONTH, 3, {{ quarter_start_column }}))
   {% else %}
     {{ exceptions.raise_compiler_error("Unsupported database type: " ~ target.type) }}
   {% endif %}

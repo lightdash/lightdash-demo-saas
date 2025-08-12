@@ -3,7 +3,9 @@
     {{ date_column }} + interval '{{ days }} days'
   {% elif target.type == 'bigquery' %}
     date_add({{ date_column }}, interval {{ days }} day)
+  {% elif target.type == 'snowflake' %}
+    dateadd(day, {{ days }}, {{ date_column }})
   {% else %}
-    {{ date_column }} + interval {{ days }} day
+    {{ exceptions.raise_compiler_error("Unsupported database type: " ~ target.type) }}
   {% endif %}
 {% endmacro %}
