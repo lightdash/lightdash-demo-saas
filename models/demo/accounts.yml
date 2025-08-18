@@ -13,8 +13,8 @@ models:
           relationship: one-to-many
           fields: [deal_id, unique_deals, new_deals, won_deals, lost_deals, stage, average_amount, total_amount, total_won_amount]
         - join: users
-          relationship: one-to-many
-          sql_on: ${accounts.account_id} = ${users.account_id}
+          relationship: many-to-many
+          sql_on: ${accounts.account_id} = ${users.account_id} and ${deals.stage} = 'Won'
           type: left
           fields: [user_id, unique_user_count, job_title, is_marketing_opted_in, unique_job_title_count, email, created_at, first_logged_in_at, experience_in_years, average_experience_in_years]
         - join: tracks
@@ -83,3 +83,4 @@ models:
               label: "Total Estimated Annual Recurring Revenue"
               description: "Sum of all estimated annual recurring revenue"
               format: 'usd'
+            

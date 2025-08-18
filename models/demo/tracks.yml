@@ -66,3 +66,10 @@ models:
                 'MONTH_NAME',
                 'QUARTER_NAME'
               ]
+          additional_dimensions:
+            days_since_user_created:
+              type: number
+              description: "The number of days between when the user was created and this event."
+              sql: DATE_DIFF(${TABLE}.timestamp, ${users.created_at}, DAY)
+            
+        
