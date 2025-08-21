@@ -1,0 +1,40 @@
+name: validate PR
+
+on: 
+# Triggers the workflow on pull request events only to the "main" branch
+# the deployment result should be visible inside the PR itself, and we can 
+# prevent merging if the run throws and error 
+  pull_request: 
+    branches: ['main']
+
+# Allows you to run the workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs: 
+  deploy-dev: 
+    runs-on: ubuntu-latest
+    environment: dev
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Install dbt dependencies
+        uses: whitaker/dbt-action@master
+        with: 
+          dbt command: "dbt deps --target dev"
+        env: 
+          DBT_ENV_DEV_PASSWORD_BIGQUERY: ${{ secrets.BIGQUERY_PASSWORD_DEV }}
+      - name: Seed data
+        uses: whitaker/dbt-action@master
+        with: 
+          dbt_command: "dbt seed --target dev" 
+        env: 
+          DBT_ENV_DEV_PASSWORD_BIGQUERY: ${{ secrets.BIGQUERY_PASSWORD_DEV }}
+
+      - name: Build dbt models
+        uses: whitaker/dbt-action@master
+        with: 
+          dbt_command: "dbt build --threads 32 --target dev" 
+        env: 
+          DBT_ENV_DEV_PASSWORD_BIGQUERY: ${{ secrets.BIGQUERY_PASSWORD_DEV }}
+    
