@@ -29,8 +29,8 @@ select
     -- this code keeps the date fields relevant for the demo environment
     -- it adds the difference between the current date and a fixed date (2025-01-01)
     -- to the original date fields, effectively shifting them into the future
-    {{ date_add_cross_db('created_at', 'date_diff(current_date(), \'2025-01-01\', day)') }} as created_at,
-    {{ date_add_cross_db('first_logged_in_at', 'date_diff(current_date(), \'2025-01-01\', day)') }} as first_logged_in_at,
-    {{ date_add_cross_db('latest_logged_in_at', 'date_diff(current_date(), \'2025-01-01\', day)') }} as latest_logged_in_at
+    {{ date_add_cross_db('created_at', date_diff_cross_db('current_date()', '\'2025-01-01\'', 'day')) }} as created_at,
+    {{ date_add_cross_db('first_logged_in_at', date_diff_cross_db('current_date()', '\'2025-01-01\'', 'day')) }} as first_logged_in_at,
+    {{ date_add_cross_db('latest_logged_in_at', date_diff_cross_db('current_date()', '\'2025-01-01\'', 'day')) }} as latest_logged_in_at
 from 
     cleaned_data
