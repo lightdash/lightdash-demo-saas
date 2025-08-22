@@ -1,6 +1,6 @@
 name: Various Metrics Example
 description: ""
-updatedAt: "2025-08-22T08:09:49.551Z"
+updatedAt: "2025-08-22T08:26:39.756Z"
 tiles:
   - x: 0
     "y": 0
@@ -94,6 +94,27 @@ filters:
         monthly-win-rate-1:
           fieldId: deals_created_date_month
           tableName: deals
+    - target:
+        fieldId: deals_created_date_year
+        fieldName: created_date_year
+        tableName: deals
+      values:
+        - "2025"
+      disabled: false
+      operator: equals
+      tileTargets:
+        overall-loss-rate:
+          fieldId: deals_created_date_year
+          tableName: deals
+        monthly-loss-rate:
+          fieldId: deals_created_date_year
+          tableName: deals
+        overall-win-rate-1:
+          fieldId: deals_created_date_year
+          tableName: deals
+        monthly-win-rate-1:
+          fieldId: deals_created_date_year
+          tableName: deals
   tableCalculations: []
 tabs:
   - name: Win Rate
@@ -105,4 +126,4 @@ tabs:
 slug: various-metrics-example
 spaceSlug: shared
 version: 1
-downloadedAt: "2025-08-22T08:09:55.293Z"
+downloadedAt: "2025-08-22T08:32:45.282Z"
