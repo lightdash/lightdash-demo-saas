@@ -1,4 +1,4 @@
-name: table totals dashboard
+name: New Name - Dash as Code Test
 description: ""
 updatedAt: "2025-08-21T14:51:47.777Z"
 tiles:
@@ -34,4 +34,4 @@ tabs: []
 slug: table-totals-dashboard
 spaceSlug: shared
 version: 1
-downloadedAt: "2025-08-22T08:08:40.010Z"
+downloadedAt: "2025-08-22T08:20:38.987Z"
