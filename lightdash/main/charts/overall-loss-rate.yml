@@ -1,0 +1,51 @@
+name: Overall Loss Rate
+description: ""
+tableName: deals
+updatedAt: "2025-03-03T20:19:50.823Z"
+metricQuery:
+  exploreName: deals
+  dimensions: []
+  metrics:
+    - deals_loss_rate
+  filters:
+    dimensions:
+      id: b6528b31-d9f2-462a-8fb9-fd0013f02824
+      and:
+        - id: 1cec218e-7710-42ed-a6c2-5b532e2ea7f0
+          target:
+            fieldId: deals_stage
+          values:
+            - Won
+            - Lost
+          operator: equals
+          required: false
+  sorts:
+    - fieldId: deals_loss_rate
+      descending: true
+  limit: 500
+  metricOverrides:
+    deals_loss_rate:
+      formatOptions:
+        type: percent
+        round: 0
+        separator: default
+  tableCalculations: []
+  additionalMetrics: []
+  customDimensions: []
+chartConfig:
+  type: big_number
+  config:
+    label: ""
+    flipColors: false
+    selectedField: deals_loss_rate
+    showComparison: false
+    comparisonFormat: raw
+    showBigNumberLabel: false
+dashboardSlug: various-metrics-example
+slug: overall-loss-rate
+tableConfig:
+  columnOrder:
+    - deals_loss_rate
+spaceSlug: shared
+version: 1
+downloadedAt: "2025-08-22T08:09:55.624Z"

@@ -1,0 +1,39 @@
+name: table totals
+description: ""
+tableName: accounts
+updatedAt: "2025-08-19T07:57:24.192Z"
+metricQuery:
+  exploreName: accounts
+  dimensions:
+    - accounts_segment
+  metrics:
+    - deals_total_amount
+  filters: {}
+  sorts:
+    - fieldId: deals_total_amount
+      descending: true
+  limit: 500
+  metricOverrides: {}
+  tableCalculations: []
+  additionalMetrics: []
+  customDimensions: []
+chartConfig:
+  type: table
+  config:
+    columns: {}
+    metricsAsRows: false
+    showSubtotals: false
+    hideRowNumbers: false
+    showTableNames: true
+    showResultsTotal: false
+    showRowCalculation: false
+    showColumnCalculation: true
+    conditionalFormattings: []
+slug: table-totals
+tableConfig:
+  columnOrder:
+    - accounts_segment
+    - deals_total_amount
+spaceSlug: shared
+version: 1
+downloadedAt: "2025-08-22T08:08:40.245Z"
