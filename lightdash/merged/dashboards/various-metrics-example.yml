@@ -1,12 +1,16 @@
+<<<<<<< main
 name: Various Metrics Example2
+=======
+name: Various Metrics Example1
+>>>>>>> preview
+updatedAt: "2025-08-22T08:37:59.946Z"
 description: ""
-updatedAt: "2025-08-22T08:26:39.756Z"
 tiles:
   - x: 0
     "y": 0
     h: 6
     w: 9
-    tabUuid: 08dbeda0-e888-4485-888a-d8ec2a022143
+    tabUuid: 5f8a3a55-2a7c-4a81-8e4c-8a25a48dd86e
     type: saved_chart
     properties:
       title: ""
@@ -30,7 +34,7 @@ tiles:
     "y": 0
     h: 6
     w: 19
-    tabUuid: 08dbeda0-e888-4485-888a-d8ec2a022143
+    tabUuid: 5f8a3a55-2a7c-4a81-8e4c-8a25a48dd86e
     type: saved_chart
     properties:
       title: ""
@@ -42,7 +46,7 @@ tiles:
     "y": 0
     h: 6
     w: 19
-    tabUuid: b4ce5be3-feba-486b-8a87-afd55e383817
+    tabUuid: f8baae07-6a9c-4030-954a-b80001ac357c
     type: saved_chart
     properties:
       title: ""
@@ -50,6 +54,21 @@ tiles:
       chartSlug: monthly-win-rate-1
       chartName: Monthly Win Rate
     tileSlug: monthly-win-rate-1
+<<<<<<< main
+=======
+  - x: 0
+    "y": 6
+    h: 6
+    w: 18
+    tabUuid: f8baae07-6a9c-4030-954a-b80001ac357c
+    type: saved_chart
+    properties:
+      title: ""
+      hideTitle: false
+      chartSlug: subtotal-example
+      chartName: subtotal example
+    tileSlug: subtotal-example
+>>>>>>> preview
 filters:
   metrics: []
   dimensions:
@@ -94,6 +113,7 @@ filters:
         monthly-win-rate-1:
           fieldId: deals_created_date_month
           tableName: deals
+<<<<<<< main
     - target:
         fieldId: deals_created_date_year
         fieldName: created_date_year
@@ -115,15 +135,17 @@ filters:
         monthly-win-rate-1:
           fieldId: deals_created_date_year
           tableName: deals
+=======
+>>>>>>> preview
   tableCalculations: []
 tabs:
   - name: Win Rate
-    uuid: b4ce5be3-feba-486b-8a87-afd55e383817
+    uuid: f8baae07-6a9c-4030-954a-b80001ac357c
     order: 0
   - name: Loss Rate
-    uuid: 08dbeda0-e888-4485-888a-d8ec2a022143
+    uuid: 5f8a3a55-2a7c-4a81-8e4c-8a25a48dd86e
     order: 1
 slug: various-metrics-example
 spaceSlug: shared
 version: 1
-downloadedAt: "2025-08-22T08:48:37.192Z"
+downloadedAt: "2025-08-22T09:11:05.771Z"

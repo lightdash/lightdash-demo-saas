@@ -1,0 +1,43 @@
+name: subtotal example
+description: ""
+tableName: accounts
+updatedAt: "2025-07-21T11:09:07.204Z"
+metricQuery:
+  exploreName: accounts
+  dimensions:
+    - accounts_segment
+    - accounts_industry
+  metrics:
+    - deals_new_deals
+    - accounts_unique_accounts
+  filters: {}
+  sorts:
+    - fieldId: deals_new_deals
+      descending: true
+  limit: 500
+  metricOverrides: {}
+  tableCalculations: []
+  additionalMetrics: []
+  customDimensions: []
+chartConfig:
+  type: table
+  config:
+    columns: {}
+    metricsAsRows: false
+    showSubtotals: true
+    hideRowNumbers: false
+    showTableNames: true
+    showResultsTotal: false
+    showRowCalculation: false
+    showColumnCalculation: true
+    conditionalFormattings: []
+slug: subtotal-example
+tableConfig:
+  columnOrder:
+    - accounts_segment
+    - accounts_industry
+    - deals_new_deals
+    - accounts_unique_accounts
+spaceSlug: shared
+version: 1
+downloadedAt: "2025-08-22T09:11:06.240Z"

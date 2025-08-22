@@ -1,18 +1,18 @@
-name: Monthly Win Rate
+name: Monthly Loss Rate
 description: ""
 tableName: deals
-updatedAt: "2025-08-14T07:40:01.090Z"
+updatedAt: "2025-08-14T07:39:01.947Z"
 metricQuery:
   exploreName: deals
   dimensions:
     - deals_created_date_month
   metrics:
-    - deals_win_rate
+    - deals_loss_rate
   filters:
     dimensions:
-      id: 06e17bfc-cc3a-438a-b068-2a41dec963ec
+      id: e388a768-6d45-4d8a-8e17-ad57c0c5d20b
       and:
-        - id: 82a0053f-4485-41c4-a08d-506423cba9c7
+        - id: 24acbc6f-737a-405e-a30e-901f3ebf4425
           target:
             fieldId: deals_stage
           values:
@@ -21,11 +21,11 @@ metricQuery:
           operator: equals
           required: false
   sorts:
-    - fieldId: deals_created_date_month
+    - fieldId: deals_loss_rate
       descending: true
   limit: 500
   metricOverrides:
-    deals_win_rate:
+    deals_loss_rate:
       formatOptions:
         type: percent
         round: 0
@@ -39,7 +39,7 @@ chartConfig:
     layout:
       xField: deals_created_date_month
       yField:
-        - deals_win_rate
+        - deals_loss_rate
       flipAxes: false
     eChartsConfig:
       xAxis:
@@ -47,7 +47,8 @@ chartConfig:
       yAxis:
         - max: "1"
           min: "0"
-        - {}
+          name: Loss rate
+        - name: ""
       series:
         - type: line
           label:
@@ -57,15 +58,15 @@ chartConfig:
             xRef:
               field: deals_created_date_month
             yRef:
-              field: deals_win_rate
+              field: deals_loss_rate
           yAxisIndex: 0
           isFilteredOut: false
 dashboardSlug: various-metrics-example
-slug: monthly-win-rate-1
+slug: monthly-loss-rate
 tableConfig:
   columnOrder:
     - deals_created_date_month
-    - deals_win_rate
+    - deals_loss_rate
 spaceSlug: shared
 version: 1
-downloadedAt: "2025-08-22T08:48:37.763Z"
+downloadedAt: "2025-08-22T08:32:45.846Z"

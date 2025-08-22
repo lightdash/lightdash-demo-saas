@@ -1,17 +1,17 @@
-name: Overall Win Rate
+name: Overall Loss Rate
 description: ""
 tableName: deals
-updatedAt: "2025-03-03T20:20:07.960Z"
+updatedAt: "2025-03-03T20:19:50.823Z"
 metricQuery:
   exploreName: deals
   dimensions: []
   metrics:
-    - deals_win_rate
+    - deals_loss_rate
   filters:
     dimensions:
-      id: fdaba8f2-c1c6-44d2-9107-8d3924c7319b
+      id: b6528b31-d9f2-462a-8fb9-fd0013f02824
       and:
-        - id: 210878de-f9f5-428a-af80-e4a62fd1df12
+        - id: 1cec218e-7710-42ed-a6c2-5b532e2ea7f0
           target:
             fieldId: deals_stage
           values:
@@ -20,11 +20,11 @@ metricQuery:
           operator: equals
           required: false
   sorts:
-    - fieldId: deals_win_rate
+    - fieldId: deals_loss_rate
       descending: true
   limit: 500
   metricOverrides:
-    deals_win_rate:
+    deals_loss_rate:
       formatOptions:
         type: percent
         round: 0
@@ -35,17 +35,17 @@ metricQuery:
 chartConfig:
   type: big_number
   config:
-    label: Overall Win Rate
+    label: ""
     flipColors: false
-    selectedField: deals_win_rate
+    selectedField: deals_loss_rate
     showComparison: false
     comparisonFormat: raw
     showBigNumberLabel: false
 dashboardSlug: various-metrics-example
-slug: overall-win-rate-1
+slug: overall-loss-rate
 tableConfig:
   columnOrder:
-    - deals_win_rate
+    - deals_loss_rate
 spaceSlug: shared
 version: 1
-downloadedAt: "2025-08-22T08:48:37.763Z"
+downloadedAt: "2025-08-22T09:11:06.240Z"
