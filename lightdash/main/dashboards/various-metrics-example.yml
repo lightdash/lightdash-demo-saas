@@ -1,0 +1,108 @@
+name: Various Metrics Example
+description: ""
+updatedAt: "2025-08-22T08:09:49.551Z"
+tiles:
+  - x: 0
+    "y": 0
+    h: 6
+    w: 9
+    tabUuid: 08dbeda0-e888-4485-888a-d8ec2a022143
+    type: saved_chart
+    properties:
+      title: ""
+      hideTitle: false
+      chartSlug: overall-loss-rate
+      chartName: Overall Loss Rate
+    tileSlug: overall-loss-rate
+  - x: 0
+    "y": 0
+    h: 6
+    w: 9
+    tabUuid: null
+    type: saved_chart
+    properties:
+      title: ""
+      hideTitle: false
+      chartSlug: overall-win-rate-1
+      chartName: Overall Win Rate
+    tileSlug: overall-win-rate-1
+  - x: 9
+    "y": 0
+    h: 6
+    w: 19
+    tabUuid: 08dbeda0-e888-4485-888a-d8ec2a022143
+    type: saved_chart
+    properties:
+      title: ""
+      hideTitle: false
+      chartSlug: monthly-loss-rate
+      chartName: Monthly Loss Rate
+    tileSlug: monthly-loss-rate
+  - x: 9
+    "y": 0
+    h: 6
+    w: 19
+    tabUuid: b4ce5be3-feba-486b-8a87-afd55e383817
+    type: saved_chart
+    properties:
+      title: ""
+      hideTitle: false
+      chartSlug: monthly-win-rate-1
+      chartName: Monthly Win Rate
+    tileSlug: monthly-win-rate-1
+filters:
+  metrics: []
+  dimensions:
+    - target:
+        fieldId: deals_plan
+        fieldName: plan
+        tableName: deals
+      values: []
+      disabled: true
+      operator: equals
+      singleValue: true
+      tileTargets:
+        overall-loss-rate:
+          fieldId: deals_plan
+          tableName: deals
+        monthly-loss-rate:
+          fieldId: deals_plan
+          tableName: deals
+        overall-win-rate-1:
+          fieldId: deals_plan
+          tableName: deals
+        monthly-win-rate-1:
+          fieldId: deals_plan
+          tableName: deals
+    - target:
+        fieldId: deals_created_date_month
+        fieldName: created_date_month
+        tableName: deals
+      values: []
+      disabled: true
+      operator: equals
+      tileTargets:
+        overall-loss-rate:
+          fieldId: deals_created_date_month
+          tableName: deals
+        monthly-loss-rate:
+          fieldId: deals_created_date_month
+          tableName: deals
+        overall-win-rate-1:
+          fieldId: deals_created_date_month
+          tableName: deals
+        monthly-win-rate-1:
+          fieldId: deals_created_date_month
+          tableName: deals
+  tableCalculations: []
+tabs:
+  - name: Win Rate
+    uuid: b4ce5be3-feba-486b-8a87-afd55e383817
+    order: 0
+  - name: Loss Rate
+    uuid: 08dbeda0-e888-4485-888a-d8ec2a022143
+    order: 1
+slug: various-metrics-example
+spaceSlug: shared
+version: 1
+downloadedAt: "2025-08-22T08:09:55.293Z"

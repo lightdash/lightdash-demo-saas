@@ -1,0 +1,72 @@
+name: Monthly Loss Rate
+description: ""
+tableName: deals
+updatedAt: "2025-08-14T07:39:01.947Z"
+metricQuery:
+  exploreName: deals
+  dimensions:
+    - deals_created_date_month
+  metrics:
+    - deals_loss_rate
+  filters:
+    dimensions:
+      id: e388a768-6d45-4d8a-8e17-ad57c0c5d20b
+      and:
+        - id: 24acbc6f-737a-405e-a30e-901f3ebf4425
+          target:
+            fieldId: deals_stage
+          values:
+            - Lost
+            - Won
+          operator: equals
+          required: false
+  sorts:
+    - fieldId: deals_loss_rate
+      descending: true
+  limit: 500
+  metricOverrides:
+    deals_loss_rate:
+      formatOptions:
+        type: percent
+        round: 0
+        separator: default
+  tableCalculations: []
+  additionalMetrics: []
+  customDimensions: []
+chartConfig:
+  type: cartesian
+  config:
+    layout:
+      xField: deals_created_date_month
+      yField:
+        - deals_loss_rate
+      flipAxes: false
+    eChartsConfig:
+      xAxis:
+        - name: Month Deal Created
+      yAxis:
+        - max: "1"
+          min: "0"
+          name: Loss rate
+        - name: ""
+      series:
+        - type: line
+          label:
+            show: true
+            position: top
+          encode:
+            xRef:
+              field: deals_created_date_month
+            yRef:
+              field: deals_loss_rate
+          yAxisIndex: 0
+          isFilteredOut: false
+dashboardSlug: various-metrics-example
+slug: monthly-loss-rate
+tableConfig:
+  columnOrder:
+    - deals_created_date_month
+    - deals_loss_rate
+spaceSlug: shared
+version: 1
+downloadedAt: "2025-08-22T08:09:55.624Z"

@@ -1,0 +1,37 @@
+name: table totals dashboard
+description: ""
+updatedAt: "2025-08-21T14:51:47.777Z"
+tiles:
+  - x: 0
+    "y": 0
+    h: 9
+    w: 15
+    tabUuid: null
+    type: saved_chart
+    properties:
+      title: ""
+      hideTitle: false
+      chartSlug: table-totals
+      chartName: table totals
+    tileSlug: table-totals
+  - x: 15
+    "y": 2
+    h: 9
+    w: 15
+    tabUuid: null
+    type: saved_chart
+    properties:
+      title: renamed
+      hideTitle: false
+      chartSlug: copy-of-table-totals-1755590277433
+      chartName: "renamed chart "
+    tileSlug: copy-of-table-totals-1755590277433
+filters:
+  metrics: []
+  dimensions: []
+  tableCalculations: []
+tabs: []
+slug: table-totals-dashboard
+spaceSlug: shared
+version: 1
+downloadedAt: "2025-08-22T08:08:40.010Z"

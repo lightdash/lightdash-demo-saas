@@ -1,0 +1,51 @@
+name: Overall Win Rate
+description: ""
+tableName: deals
+updatedAt: "2025-03-03T20:20:07.960Z"
+metricQuery:
+  exploreName: deals
+  dimensions: []
+  metrics:
+    - deals_win_rate
+  filters:
+    dimensions:
+      id: fdaba8f2-c1c6-44d2-9107-8d3924c7319b
+      and:
+        - id: 210878de-f9f5-428a-af80-e4a62fd1df12
+          target:
+            fieldId: deals_stage
+          values:
+            - Won
+            - Lost
+          operator: equals
+          required: false
+  sorts:
+    - fieldId: deals_win_rate
+      descending: true
+  limit: 500
+  metricOverrides:
+    deals_win_rate:
+      formatOptions:
+        type: percent
+        round: 0
+        separator: default
+  tableCalculations: []
+  additionalMetrics: []
+  customDimensions: []
+chartConfig:
+  type: big_number
+  config:
+    label: Overall Win Rate
+    flipColors: false
+    selectedField: deals_win_rate
+    showComparison: false
+    comparisonFormat: raw
+    showBigNumberLabel: false
+dashboardSlug: various-metrics-example
+slug: overall-win-rate-1
+tableConfig:
+  columnOrder:
+    - deals_win_rate
+spaceSlug: shared
+version: 1
+downloadedAt: "2025-08-22T08:09:55.624Z"
