@@ -39,7 +39,7 @@ models:
       win_vs_lost_ratio:
         type: number
         round: 2
-        sql: ${lost_deals} / ${won_deals}
+        sql: ${lost_deals} / NULLIF(${won_deals})
 
   columns:
     - name: deal_id
