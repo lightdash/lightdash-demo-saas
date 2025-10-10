@@ -7,13 +7,46 @@ models:
       primary_key: lead_id
       joins:
         - join: users
-          sql_on: ${leads.user_id} = ${users.user_id}
+          sql_on: ${user_id} = ${users.user_id}
           type: left
           relationship: many-to-one
         - join: deals
-          sql_on: ${leads.deal_id} = ${deals.deal_id}
+          sql_on: ${deal_id} = ${deals.deal_id}
           type: left
           relationship: many-to-one
+      metrics:
+        conversion_rate:
+          type: number
+          description: "Percentage of leads that converted"
+          sql: "(${converted_leads} / NULLIF(${unique_lead_count}, 0))"
+          format: percent
+          groups: ['Lead Performance']
+          spotlight:
+          visibility: show
+          categories: ['kpi', 'marketing']
+        avg_days_to_convert:
+          type: average
+          description: "Average number of days it takes for a lead to convert"
+          sql: DATE_DIFF(${converted_at}, ${created_at}, DAY)
+          format: '0.0'
+          groups: ['Lead Performance']
+          spotlight:
+          visibility: show
+          categories:
+           - kpi
+            - marketing
+        cost_per_conversion:
+          type: number
+          description: "Average cost per converted lead"
+          sql: SAFE_DIVIDE(${total_lead_cost}, ${converted_leads})
+          format: '$#,##0.00'
+          groups: ['Lead Performance']
+        roi:
+          type: number
+          description: "Return on marketing spend from converted deals"
+          sql: SAFE_DIVIDE(${deals.total_amount}, ${total_lead_cost})
+          format: '0.0x'
+          groups: ['Funnel Performance']
 
     columns:
       - name: lead_id
@@ -24,13 +57,44 @@ models:
           metrics:
             unique_lead_count:
               type: count_distinct
-              description: The unique number of leads based on distinct lead IDs
+              description: "The unique number of leads based on distinct lead IDs"
               groups: ['Counts']
+            open_leads:
+              type: count_distinct
+              groups: ['Lead Counts']
+              description: Count unique leads with status = 'Open'
+              filters:
+                - lead_status: ['new', 'nurturing', 'qualified']
+            contacted_leads:
+              type: count_distinct
+              groups: ['Lead Counts']
+              description: Count unique leads with status = 'Contacted'
+              filters:
+                - lead_status: 'new'
+            qualified_leads:
+              type: count_distinct
+              groups: ['Lead Counts']
+              description: Count unique leads with status = 'Contacted'
+              filters:
+                - lead_status: 'qualified'
+            converted_leads:
+              type: count_distinct
+              groups: ['Lead Counts']
+              description: Count unique leads with status = 'Converted'
+              filters:
+                - lead_status: 'converted'
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - marketing
+
       - name: user_id
         description: "The identifier for a user"
         meta:
           dimension:
             type: string
+
       - name: deal_id
         description: "The identifier for a deal"
         meta:
@@ -39,8 +103,9 @@ models:
           metrics:
             unique_deal_count:
               type: count_distinct
-              description: The unique number of deals
+              description: "The unique number of deals"
               groups: ['Counts']
+
       - name: lead_source
         description: "The name of the source which drew in the lead"
         meta:
@@ -49,17 +114,20 @@ models:
           additional_dimensions:
             is_paid_marketing:
               type: boolean
-              sql: IF(LOWER(lead_source) in ('google ads', 'facebook ads', 'linkedin'), true, false)
+              sql: IF(LOWER(lead_source) IN ('google ads', 'facebook ads', 'linkedin'), TRUE, FALSE)
+
       - name: campaign_name
         description: "Name of the marketing campaign associated with the lead (if available)"
         meta:
           dimension:
             type: string
+
       - name: utm_medium
         description: "UTM medium used for the lead (e.g., email, cpc, social)"
         meta:
           dimension:
             type: string
+
       - name: lead_cost
         description: "Cost attributed to acquiring this lead"
         meta:
@@ -69,19 +137,21 @@ models:
           metrics:
             total_lead_cost:
               type: sum
-              description: The sum of lead_cost for selected leads
+              description: "The sum of lead_cost for selected leads"
               format: '$#,##0'
               groups: ['Lead Costs']
             avg_lead_cost:
               type: average
-              description: The average lead cost for selected leads
+              description: "The average lead cost for selected leads"
               format: '$#,##0.00'
               groups: ['Lead Costs']
+
       - name: lead_status
         description: "Current status of the lead (e.g., Open, Contacted, Converted, Disqualified)"
         meta:
           dimension:
             type: string
+
       - name: created_at
         description: "The timestamp at which the lead was created"
         meta:
@@ -89,27 +159,12 @@ models:
             type: timestamp
             time_intervals:
               [
-                'DAY',
-                'WEEK',
-                'MONTH',
-                'YEAR',
-                'QUARTER',
-                'DAY_OF_MONTH_NUM',
-                'DAY_OF_YEAR_NUM',
-                'WEEK_NUM',
-                'MONTH_NUM',
-                'QUARTER_NUM',
-                'YEAR_NUM',
-                'HOUR_OF_DAY_NUM',
-                'DAY_OF_WEEK_NAME',
-                'MONTH_NAME',
-                'QUARTER_NAME'
+                'DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER',
+                'DAY_OF_MONTH_NUM', 'DAY_OF_YEAR_NUM', 'WEEK_NUM', 'MONTH_NUM',
+                'QUARTER_NUM', 'YEAR_NUM', 'HOUR_OF_DAY_NUM',
+                'DAY_OF_WEEK_NAME', 'MONTH_NAME', 'QUARTER_NAME'
               ]
-          additional_dimensions:
-            days_since_lead_created:
-              type: number
-              description: "The number of days between when the lead was created and this event."
-              sql: DATE_DIFF(${TABLE}.timestamp, ${leads.created_at}, DAY)
+
       - name: converted_at
         description: "The timestamp at which the lead was converted"
         meta:
@@ -117,41 +172,8 @@ models:
             type: timestamp
             time_intervals:
               [
-                'DAY',
-                'WEEK',
-                'MONTH',
-                'YEAR',
-                'QUARTER',
-                'DAY_OF_MONTH_NUM',
-                'DAY_OF_YEAR_NUM',
-                'WEEK_NUM',
-                'MONTH_NUM',
-                'QUARTER_NUM',
-                'YEAR_NUM',
-                'HOUR_OF_DAY_NUM',
-                'DAY_OF_WEEK_NAME',
-                'MONTH_NAME',
-                'QUARTER_NAME'
+                'DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER',
+                'DAY_OF_MONTH_NUM', 'DAY_OF_YEAR_NUM', 'WEEK_NUM', 'MONTH_NUM',
+                'QUARTER_NUM', 'YEAR_NUM', 'HOUR_OF_DAY_NUM',
+                'DAY_OF_WEEK_NAME', 'MONTH_NAME', 'QUARTER_NAME'
               ]
-
-    # Model-level metrics for leads
-    metrics:
-      time_to_conversion:
-        type: number
-        description: "Average time from lead creation to conversion in days"
-        sql: DATE_DIFF(${converted_at}, ${created_at}, DAY)
-        round: 2
-        groups: ['Time']
-      total_lead_cost:
-        type: sum
-        description: "Total cost of leads"
-        sql: ${lead_cost}
-        format: '$#,##0'
-        groups: ['Lead Costs']
-      avg_lead_cost:
-        type: average
-        description: "Average cost per lead"
-        sql: ${lead_cost}
-        format: '$#,##0.00'
-
-
