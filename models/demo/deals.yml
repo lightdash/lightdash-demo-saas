@@ -27,7 +27,7 @@ models:
         type: number
         description: The percentage of deals that have been won
         format: percent
-        sql: ${won_deals} / ${unique_deals}
+        sql: ${won_deals} / NULLIF(${unique_deals}, 0)
         spotlight:
           visibility: show
           categories:
@@ -35,11 +35,11 @@ models:
       loss_rate:
         type: number
         format: percent
-        sql: ${lost_deals} / ${unique_deals}
+        sql: ${lost_deals} / NULLIF(${unique_deals}, 0)
       win_vs_lost_ratio:
         type: number
         round: 2
-        sql: ${lost_deals} / ${won_deals}
+        sql: ${lost_deals} / NULLIF(${won_deals}, 0)
 
   columns:
     - name: deal_id

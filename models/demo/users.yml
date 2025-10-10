@@ -15,7 +15,7 @@ models:
           type: number
           description: The percentage of users that are currently opted in to marketing
           format: percent
-          sql: ${unique_users_with_marketing_opt_in} / ${unique_users}
+          sql: ${unique_users_with_marketing_opt_in} / NULLIF(${unique_users}, 0)
           spotlight:
             visibility: show
             categories:
