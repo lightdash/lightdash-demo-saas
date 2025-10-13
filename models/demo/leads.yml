@@ -22,8 +22,8 @@ models:
           format: percent
           groups: ['Lead Performance']
           spotlight:
-          visibility: show
-          categories: ['kpi', 'marketing']
+            visibility: show
+            categories: ['kpi', 'marketing']
         avg_days_to_convert:
           type: average
           description: "Average number of days it takes for a lead to convert"
@@ -31,10 +31,8 @@ models:
           format: '0.0'
           groups: ['Lead Performance']
           spotlight:
-          visibility: show
-          categories:
-           - kpi
-            - marketing
+            visibility: show
+            categories: ['kpi', 'marketing']
         cost_per_conversion:
           type: number
           description: "Average cost per converted lead"
