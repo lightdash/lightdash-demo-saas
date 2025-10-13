@@ -43,7 +43,7 @@ models:
           type: number
           description: "Return on marketing spend from converted deals"
           sql: SAFE_DIVIDE(${deals.total_amount}, ${total_lead_cost})
-          format: '0.00x'
+          format: '0.0x'
           groups: ['Funnel Performance']
 
     columns:
