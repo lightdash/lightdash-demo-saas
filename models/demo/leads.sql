@@ -12,8 +12,10 @@ WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}
     , lead_source
     , campaign_name
     , utm_medium
-    , lead_cost
+    , sdr
+    , industry
     , lead_status
+    , lead_cost
 
   FROM source_data
 
