@@ -56,19 +56,19 @@ models:
             unique_lead_count:
               type: count_distinct
               description: "The unique number of leads based on distinct lead IDs"
-              groups: ['Counts']
+              groups: ['Lead Counts']
             open_leads:
               type: count_distinct
               groups: ['Lead Counts']
               description: Count unique leads with status = 'Open'
               filters:
-                - lead_status: ['new', 'nurturing', 'qualified']
+                - lead_status: ['new', 'contacted', 'qualified']
             contacted_leads:
               type: count_distinct
               groups: ['Lead Counts']
               description: Count unique leads with status = 'Contacted'
               filters:
-                - lead_status: 'new'
+                - lead_status: 'contacted'
             qualified_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -86,9 +86,32 @@ models:
                 categories:
                   - kpi
                   - marketing
+            disqualified_leads:
+              type: count_distinct
+              groups: ['Lead Counts']
+              description: Count unique leads with status = 'Disqulified'
+              filters:
+                - lead_status: 'disqualified'
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - marketing
 
       - name: user_id
         description: "The identifier for a user"
+        meta:
+          dimension:
+            type: string
+
+      - name: sdr
+        description: "The Sales Development Representative assigned to the lead"
+        meta:
+          dimension:
+            type: string
+
+      - name: industry
+        description: "The industry associated with the lead's company"
         meta:
           dimension:
             type: string
