@@ -107,7 +107,7 @@ models:
         meta:
           dimension:
             type: timestamp
-            time_intervals: ['DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER']
+            time_intervals: ['DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER', 'MONTH_NAME', 'QUARTER_NAME']
       - name: notes
         description: "Free-text notes for the activity"
         meta:
