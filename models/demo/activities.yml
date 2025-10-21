@@ -1,0 +1,129 @@
+version: 2
+models:
+  - name: activities
+    meta:
+      description: Activities performed on leads (calls, emails, meetings, etc.)
+      primary_key: activity_id
+      joins:
+        - join: leads
+          sql_on: ${activities.lead_id} = ${leads.lead_id}
+          type: left
+          relationship: many-to-one
+
+    metrics:
+      avg_activities_per_lead:
+        type: average
+        description: "Average number of activities per lead"
+        sql: SAFE_DIVIDE(${total_activities}, NULLIF(${lead_id_total_leads},0))
+        groups: ['Activity Performance']
+      demos_held:
+        type: count
+        description: "Total number of demo activities held"
+        sql: CASE WHEN ${activity_type} = 'demo_held' THEN 1 ELSE NULL END
+        groups: ['Activity Performance']
+
+    columns:
+      - name: activity_id
+        description: "Unique identifier for the activity"
+        tests:
+          - not_null
+          - unique
+        meta:
+          dimension:
+            type: string
+          metrics:
+            total_activities:
+              type: count
+              description: "Total number of activity records"
+              groups: ['Activity Performance']
+            activity_id_total_calls_made:
+              label: Total Calls Made
+              description: >-
+                Count of Activity id on the table Activities with filters
+                activities.activity_type
+              type: count
+              format: '#,##0.000'
+              filters:
+                - activity_type: call_made
+              groups: ['Activity Performance']
+            activity_id_total_demos_held:
+              label: Total Demos Held
+              description: >-
+                Count of Activity id on the table Activities with filters
+                activities.activity_type
+              type: count
+              filters:
+                - activity_type: demo_held
+              groups: ['Activity Performance']
+            activity_id_total_contracts_sent:
+              label: Total Contracts Sent
+              description: >-
+                Count of Activity id on the table Activities with filters
+                activities.activity_type
+              type: count
+              filters:
+                - activity_type: contract_sent
+              groups: ['Activity Performance']
+
+      - name: lead_id
+        description: "The lead this activity is associated with"
+        tests:
+          - not_null
+        meta:
+          dimension:
+            type: string
+          lead_id_total_leads:
+            label: Total Leads
+            description: 'Count distinct of Lead id on the table Activities '
+            type: count_distinct
+            format: '#,##0.000'
+            filters: []
+
+      - name: sdr_name
+        description: "Sales Development Rep who performed the activity"
+        tests:
+          - not_null
+        meta:
+          dimension:
+            type: string
+      - name: activity_type
+        description: "Type of activity (Call, Email, Meeting, etc.)"
+        tests:
+          - not_null
+        meta:
+          dimension:
+            type: string
+      - name: activity_channel
+        description: "Channel used for the activity (phone, email, linkedin, etc.)"
+        tests:
+          - not_null
+        meta:
+          dimension:
+            type: string
+      - name: activity_timestamp
+        description: "Timestamp when activity occurred"
+        tests:
+          - not_null
+        meta:
+          dimension:
+            type: timestamp
+            time_intervals: ['DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER']
+      - name: notes
+        description: "Free-text notes for the activity"
+        meta:
+          dimension:
+            type: string
+      - name: call_duration_seconds
+        description: "Duration of call activities in seconds"
+        meta:
+          dimension:
+            type: number
+          metrics:
+            total_call_time:
+              type: sum
+              description: "Total call time in seconds"
+              groups: ['Call Metrics']
+            avg_call_time:
+              type: average
+              description: "Average call time in seconds"
+              groups: ['Call Metrics']
