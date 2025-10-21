@@ -5,6 +5,7 @@ models:
       required_attributes:
         is_admin_saas_demo: 'true'
       primary_key: lead_id
+
       joins:
         - join: users
           sql_on: ${user_id} = ${users.user_id}
@@ -14,6 +15,18 @@ models:
           sql_on: ${deal_id} = ${deals.deal_id}
           type: left
           relationship: many-to-one
+
+      parameters:
+        channel_toggle:
+          label: "Channel/Campaign/Medium"
+          description: "Filter leads by marketing channel or campaign"
+          options:
+                - "lead_source"
+                - "utm_medium"
+                - "campaign_name"
+          default: "channel"
+          multiple: false
+
       metrics:
         conversion_rate:
           type: number

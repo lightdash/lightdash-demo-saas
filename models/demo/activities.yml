@@ -10,6 +10,16 @@ models:
           type: left
           relationship: many-to-one
 
+      parameters:
+        type_channel_toggle:
+          label: "Activity Type/Channel"
+          description: "Filter activities by type or channel"
+          options:
+                - "activity_type"
+                - "activity_channel"
+          default: "type"
+          multiple: false
+
     metrics:
       avg_activities_per_lead:
         type: average
