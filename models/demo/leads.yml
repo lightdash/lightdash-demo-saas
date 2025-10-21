@@ -39,12 +39,6 @@ models:
           sql: SAFE_DIVIDE(${total_lead_cost}, ${converted_leads})
           format: '$#,##0.00'
           groups: ['Lead Performance']
-        roi:
-          type: number
-          description: "Return on marketing spend from converted deals"
-          sql: SAFE_DIVIDE(${deals.total_amount}, ${total_lead_cost})
-          format: '0.0x'
-          groups: ['Funnel Performance']
 
     columns:
       - name: lead_id

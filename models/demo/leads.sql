@@ -5,8 +5,8 @@ WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}
 
   SELECT 
     CAST(lead_id AS STRING) AS lead_id   -- primary key
-    , user_id                            --foriegn key to users table
-    , deal_id                             --foriegn key to deals table
+    , user_id                            -- foriegn key to users table
+    , deal_id                            -- foriegn key to deals table
     , created_at 
     , CAST(converted_at AS TIMESTAMP) AS converted_at
     , lead_source
