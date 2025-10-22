@@ -20,7 +20,7 @@ models:
           relationship: many-to-one
 
       parameters:
-        channel_toggle:
+        utm_toggle:
           label: "Channel/Campaign/Medium"
           description: "Filter leads by marketing channel or campaign"
           options:
@@ -125,6 +125,21 @@ models:
             is_paid_marketing:
               type: boolean
               sql: IF(LOWER(lead_source) IN ('google ads', 'facebook ads', 'linkedin'), TRUE, FALSE)
+            utm_toggle:
+              label: "Channel/Campaign/Medium"
+              description: "Filter leads by marketing channel or campaign"
+              type: string
+              sql: |
+                case 
+                  when ${lightdash.parameters.leads.utm_toggle} = 'lead_source' then ${lead_source}
+                  when ${lightdash.parameters.leads.utm_toggle} = 'utm_medium' then ${utm_medium}
+                  when ${lightdash.parameters.leads.utm_toggle} = 'campaign_name' then ${campaign_name}
+                end
+            selected_dim: 
+              label: Selected dimension
+              type: string
+              description: The dimension that is currently selected in the utm_toggle parameter
+              sql: ${lightdash.parameters.leads.utm_toggle}}
       - name: campaign_name
         description: "Name of the marketing campaign associated with the lead (if available)"
         meta:

@@ -131,6 +131,21 @@ models:
         meta:
           dimension:
             type: string
+          additional_dimensions:
+            type_channel_toggle:
+              label: "Activity Type/Channel"
+              type: string 
+              description: Use this dimension to swap between activity type and activity channel
+              sql: |
+                case 
+                  when ${lightdash.parameters.activities.type_channel_toggle} = 'activity_type' then ${activity_type}
+                  when ${lightdash.parameters.activities.type_channel_toggle} = 'activity_channel' then ${activity_channel}
+                end
+            selected_dim: 
+              label: Selected dimension
+              type: string
+              description: The dimension that is currently selected in the type_channel_toggle parameter
+              sql: ${lightdash.parameters.activities.type_channel_toggle}}
       - name: activity_channel
         description: "Channel used for the activity (phone, email, linkedin, etc.)"
         tests:
