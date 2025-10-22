@@ -8,12 +8,6 @@ models:
           This is an activities table containing sdr activities information and derived facts.
           Use this for sdr performance reporting, or sales pipeline efficiency analysis.
 
-      joins:
-        - join: leads
-          sql_on: ${activities.lead_id} = ${leads.lead_id}
-          type: left
-          relationship: many-to-one
-
       parameters:
         type_channel_toggle:
           label: "Activity Type/Channel"
