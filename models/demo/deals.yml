@@ -4,6 +4,10 @@ models:
   meta:
     description: All sales deals of any status, pulled from our CRM 
     primary_key: deal_id
+    ai_hint: |
+          This is a deals table containing deal activity information and derived facts.
+          Use this for sales reporting, revenue reporting, ARR or MRR reporting.
+          
     explores:
       deals_accounts:
         required_attributes:
@@ -22,6 +26,13 @@ models:
           relationship: many-to-one
           sql_on: ${deals.account_id} = ${accounts.account_id}
           fields: [industry, segment, unique_accounts, unique_smb_accounts, unique_midmarket_accounts, unique_enterprise_accounts]
+
+    joins:
+      - join: activities
+        sql_on: ${deals.deal_id} = ${activities.deal_id}
+        type: left
+        relationship: one-to-many
+
     metrics:
       win_rate:
         type: number

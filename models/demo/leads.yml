@@ -5,6 +5,17 @@ models:
       required_attributes:
         is_admin_saas_demo: 'true'
       primary_key: lead_id
+      ai_hint: |
+          This is a leads table containing lead information and derived facts.
+          Use this for lead or sales stage funnel reporting, marketing efficiency analysis, and sdr reporting.
+      spotlight:
+        categories:
+          sdr_reporting:
+            label: SDR Performance
+            color: "blue"
+          marketing:
+            label: Marketing
+            color: "green"
 
       joins:
         - join: users
@@ -36,7 +47,7 @@ models:
           groups: ['Lead Performance']
           spotlight:
             visibility: show
-            categories: ['kpi', 'marketing']
+            categories: ['marketing']
         avg_days_to_convert:
           type: average
           description: "Average number of days it takes for a lead to convert"
@@ -45,13 +56,16 @@ models:
           groups: ['Lead Performance']
           spotlight:
             visibility: show
-            categories: ['kpi', 'marketing']
+            categories: ['sdr_reporting']
         cost_per_conversion:
           type: number
           description: "Average cost per converted lead"
           sql: SAFE_DIVIDE(${total_lead_cost}, ${converted_leads})
           format: '$#,##0.00'
           groups: ['Lead Performance']
+          spotlight:
+            visibility: show
+            categories: ['marketing']
 
     columns:
       - name: lead_id
@@ -64,18 +78,27 @@ models:
               type: count_distinct
               description: "The unique number of leads based on distinct lead IDs"
               groups: ['Lead Counts']
+              spotlight:
+                visibility: show
+                categories: ['marketing']
             open_leads:
               type: count_distinct
               groups: ['Lead Counts']
               description: Count unique leads with status = 'Open'
               filters:
                 - lead_status: ['new', 'contacted', 'qualified']
+              spotlight:
+                visibility: show
+                categories: ['marketing']
             contacted_leads:
               type: count_distinct
               groups: ['Lead Counts']
               description: Count unique leads with status = 'Contacted'
               filters:
                 - lead_status: 'contacted'
+              spotlight:
+                visibility: show
+                categories: ['marketing']
             qualified_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -90,39 +113,32 @@ models:
                 - lead_status: 'converted'
               spotlight:
                 visibility: show
-                categories:
-                  - kpi
-                  - marketing
+                categories: ['sdr_reporting', 'marketing']
             disqualified_leads:
               type: count_distinct
               groups: ['Lead Counts']
               description: Count unique leads with status = 'Disqulified'
               filters:
                 - lead_status: 'disqualified'
-              spotlight:
+              sppotlight:
                 visibility: show
-                categories:
-                  - kpi
-                  - marketing
+                categories: ['marketing']
 
       - name: user_id
         description: "The identifier for a user"
         meta:
           dimension:
             type: string
-
       - name: sdr
         description: "The Sales Development Representative assigned to the lead"
         meta:
           dimension:
             type: string
-
       - name: industry
         description: "The industry associated with the lead's company"
         meta:
           dimension:
             type: string
-
       - name: deal_id
         description: "The identifier for a deal"
         meta:
@@ -133,7 +149,6 @@ models:
               type: count_distinct
               description: "The unique number of deals"
               groups: ['Counts']
-
       - name: lead_source
         description: "The name of the source which drew in the lead"
         meta:
@@ -143,19 +158,19 @@ models:
             is_paid_marketing:
               type: boolean
               sql: IF(LOWER(lead_source) IN ('google ads', 'facebook ads', 'linkedin'), TRUE, FALSE)
-
+              spotlight:
+                visibility: show
+                categories: ['marketing']
       - name: campaign_name
         description: "Name of the marketing campaign associated with the lead (if available)"
         meta:
           dimension:
             type: string
-
       - name: utm_medium
         description: "UTM medium used for the lead (e.g., email, cpc, social)"
         meta:
           dimension:
             type: string
-
       - name: lead_cost
         description: "Cost attributed to acquiring this lead"
         meta:
@@ -168,18 +183,22 @@ models:
               description: "The sum of lead_cost for selected leads"
               format: '$#,##0'
               groups: ['Lead Costs']
+              spotlight:
+                visibility: show
+                categories: ['marketing']
             avg_lead_cost:
               type: average
               description: "The average lead cost for selected leads"
               format: '$#,##0.00'
               groups: ['Lead Costs']
-
+              spotlight:
+                visibility: show
+                categories: ['marketing']
       - name: lead_status
         description: "Current status of the lead (e.g., Open, Contacted, Converted, Disqualified)"
         meta:
           dimension:
             type: string
-
       - name: created_at
         description: "The timestamp at which the lead was created"
         meta:
@@ -192,7 +211,6 @@ models:
                 'QUARTER_NUM', 'YEAR_NUM', 'HOUR_OF_DAY_NUM',
                 'DAY_OF_WEEK_NAME', 'MONTH_NAME', 'QUARTER_NAME'
               ]
-
       - name: converted_at
         description: "The timestamp at which the lead was converted"
         meta:
