@@ -54,6 +54,28 @@ models:
               filters:
                 - activity_type: call_made
               groups: ['Activity Performance']
+            activity_type_total_calls_2024:
+              label: Total Calls 2024
+              description: >-
+                Count of Total Calls 2024 on the table Activities with filters
+                activities.activity_type, leads.converted_at_year,
+                activities.activity_timestamp_year
+              type: count
+              format: '0'
+              filters:
+                - activity_type: call_made
+                - activity_timestamp_year: '2024'
+            activity_type_total_calls_2025:
+              label: Total Calls 2025
+              description: >-
+                Count of Total Calls 2025 on the table Activities with filters
+                activities.activity_type, leads.converted_at_year,
+                activities.activity_timestamp_year
+              type: count
+              format: '0'
+              filters:
+                - activity_type: call_made
+                - activity_timestamp_year: '2025'
             activity_id_total_demos_held:
               label: Total Demos Held
               description: >-
