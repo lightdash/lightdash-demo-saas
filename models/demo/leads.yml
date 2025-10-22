@@ -19,11 +19,11 @@ models:
 
       joins:
         - join: users
-          sql_on: ${user_id} = ${users.user_id}
+          sql_on: ${leads.user_id} = ${users.user_id}
           type: left
           relationship: many-to-one
         - join: deals
-          sql_on: ${deal_id} = ${deals.deal_id}
+          sql_on: ${leads.deal_id} = ${deals.deal_id}   
           type: left
           relationship: many-to-one
 
@@ -47,7 +47,7 @@ models:
           groups: ['Lead Performance']
           spotlight:
             visibility: show
-            categories: ['marketing']
+            categories: ['sdr_reporting', 'marketing']
         avg_days_to_convert:
           type: average
           description: "Average number of days it takes for a lead to convert"
@@ -56,14 +56,14 @@ models:
           groups: ['Lead Performance']
           spotlight:
             visibility: show
-            categories: ['sdr_reporting']
+            categories: ['sdr_reporting', 'marketing']
         cost_per_conversion:
           type: number
           description: "Average cost per converted lead"
           sql: SAFE_DIVIDE(${total_lead_cost}, ${converted_leads})
           format: '$#,##0.00'
           groups: ['Lead Performance']
-          spotlight:
+          potlight:
             visibility: show
             categories: ['marketing']
 
@@ -80,7 +80,7 @@ models:
               groups: ['Lead Counts']
               spotlight:
                 visibility: show
-                categories: ['marketing']
+                categories: ['sdr_reporting', 'marketing']
             open_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -89,7 +89,7 @@ models:
                 - lead_status: ['new', 'contacted', 'qualified']
               spotlight:
                 visibility: show
-                categories: ['marketing']
+                categories: ['sdr_reporting', 'marketing']
             contacted_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -98,13 +98,16 @@ models:
                 - lead_status: 'contacted'
               spotlight:
                 visibility: show
-                categories: ['marketing']
+                categories: ['sdr_reporting', 'marketing']
             qualified_leads:
               type: count_distinct
               groups: ['Lead Counts']
               description: Count unique leads with status = 'Contacted'
               filters:
                 - lead_status: 'qualified'
+              spotlight:
+                visibility: show
+                categories: ['sdr_reporting', 'marketing']
             converted_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -120,10 +123,9 @@ models:
               description: Count unique leads with status = 'Disqulified'
               filters:
                 - lead_status: 'disqualified'
-              sppotlight:
-                visibility: show
-                categories: ['marketing']
-
+              spotlight:
+                visibility: hide
+                categories: ['sdr_reporting', 'marketing']
       - name: user_id
         description: "The identifier for a user"
         meta:
@@ -149,6 +151,9 @@ models:
               type: count_distinct
               description: "The unique number of deals"
               groups: ['Counts']
+              spotlight:
+                visibility: show
+                categories: ['sdr_reporting']
       - name: lead_source
         description: "The name of the source which drew in the lead"
         meta:
@@ -158,9 +163,6 @@ models:
             is_paid_marketing:
               type: boolean
               sql: IF(LOWER(lead_source) IN ('google ads', 'facebook ads', 'linkedin'), TRUE, FALSE)
-              spotlight:
-                visibility: show
-                categories: ['marketing']
       - name: campaign_name
         description: "Name of the marketing campaign associated with the lead (if available)"
         meta:
