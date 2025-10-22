@@ -37,12 +37,18 @@ models:
           sql: "(${converted_leads} / NULLIF(${unique_lead_count}, 0))"
           format: percent
           groups: ['Lead Performance']
+          ai_hint: |
+            Show this metric to evaluate how well marketing channels and SDRs are converting leads into opportunities.
+            Use with time filters to measure conversion trend over time and compare cohorts.
         avg_days_to_convert:
           type: average
           description: "Average number of days it takes for a lead to convert"
           sql: DATE_DIFF(${converted_at}, ${created_at}, DAY)
           format: '0.0'
           groups: ['Lead Performance']
+          ai_hint: |
+            Use this to understand funnel velocity — lower values indicate faster conversions.
+            Compare by `sdr` and `lead_source` to identify faster converting channels or reps.
         cost_per_conversion:
           type: number
           description: "Average cost per converted lead"
@@ -61,6 +67,9 @@ models:
               type: count_distinct
               description: "The unique number of leads based on distinct lead IDs"
               groups: ['Lead Counts']
+              ai_hint: |
+                Unique lead count for marketing/sales reporting.
+                Use this for customer aquisition analysis and lead funnel reporting.
             open_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -162,6 +171,8 @@ models:
               description: "The sum of lead_cost for selected leads"
               format: '$#,##0'
               groups: ['Lead Costs']
+              ai_hint: |
+                Sum of attributed lead acquisition costs. Useful for calculating CAC and evaluating marketing ROI when joined to `deals.total_amount`.
             avg_lead_cost:
               type: average
               description: "The average lead cost for selected leads"
