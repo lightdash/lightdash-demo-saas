@@ -4,6 +4,10 @@ models:
     meta:
       description: Activities performed on leads (calls, emails, meetings, etc.)
       primary_key: activity_id
+      ai_hint: |
+          This is an activities table containing sdr activities information and derived facts.
+          Use this for sdr performance reporting, or sales pipeline efficiency analysis.
+
       joins:
         - join: leads
           sql_on: ${activities.lead_id} = ${leads.lead_id}
@@ -74,7 +78,6 @@ models:
               filters:
                 - activity_type: contract_sent
               groups: ['Activity Performance']
-
       - name: lead_id
         description: "The lead this activity is associated with"
         tests:
@@ -88,7 +91,18 @@ models:
             type: count_distinct
             format: '#,##0.000'
             filters: []
-
+      - name: deal_id
+        description: "The deal this activity is associated with"
+        tests:
+          - not_null
+        meta:
+          dimension:
+            type: string
+          lead_id_total_leads:
+            label: Total Deals
+            description: 'Count distinct of Lead id on the table Activities '
+            type: count_distinct
+            format: '#,##0.000'
       - name: sdr_name
         description: "Sales Development Rep who performed the activity"
         tests:
