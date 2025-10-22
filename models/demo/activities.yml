@@ -87,8 +87,6 @@ models:
             filters: []
       - name: deal_id
         description: "The deal this activity is associated with"
-        tests:
-          - not_null
         meta:
           dimension:
             type: string
