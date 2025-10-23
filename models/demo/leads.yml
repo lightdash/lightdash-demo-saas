@@ -83,6 +83,7 @@ models:
                 visibility: show
                 categories:
                   - leads
+                  - marketing
               ai_hint: |
                 Unique lead count for marketing/sales reporting.
                 Use this for customer aquisition analysis and lead funnel reporting.
@@ -96,6 +97,7 @@ models:
                 visibility: show
                 categories:
                   - leads
+                  - marketing
             contacted_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -106,6 +108,7 @@ models:
                 visibility: show
                 categories:
                   - leads
+                  - marketing
             qualified_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -116,6 +119,7 @@ models:
                 visibility: show
                 categories:
                   - leads
+                  - marketing
             converted_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -126,6 +130,7 @@ models:
                 visibility: show
                 categories:
                   - leads
+                  - marketing
             disqualified_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -136,6 +141,7 @@ models:
                 visibility: show
                 categories:
                   - leads
+                  - marketing
       - name: user_id
         description: "The identifier for a user"
         meta:
@@ -217,6 +223,7 @@ models:
                 visibility: show
                 categories:
                   - leads
+                  - marketing
             avg_lead_cost:
               type: average
               description: "The average lead cost for selected leads"
@@ -226,6 +233,7 @@ models:
                 visibility: show
                 categories:
                   - leads
+                  - marketing
       - name: lead_status
         description: "Current status of the lead (e.g., Open, Contacted, Converted, Disqualified)"
         meta:
