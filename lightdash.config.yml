@@ -4,12 +4,27 @@ spotlight:
   categories:
     kpi:
       label: Company KPI
-      color: "blue"
+      color: blue
 
     marketing:
       label: Marketing
-      color: "red"
+      color: red
 
     sales:
       label: Sales
       color: green
+
+    leads:
+      label: Leads
+      color: orange
+
+parameters:
+  deal_value_toggle:
+    label: "High Value Deal Toggle"
+    description: "Filter deals by the amount to see high value deals only"
+    options:
+          - 500
+          - 1000
+          - 1500
+    default: 1000
+    multiple: false
