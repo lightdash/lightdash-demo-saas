@@ -37,6 +37,10 @@ models:
           sql: "(${converted_leads} / NULLIF(${unique_lead_count}, 0))"
           format: percent
           groups: ['Lead Performance']
+          spotlight:
+            visibility: show
+            categories:
+              - leads
           ai_hint: |
             Show this metric to evaluate how well marketing channels and SDRs are converting leads into opportunities.
             Use with time filters to measure conversion trend over time and compare cohorts.
@@ -46,6 +50,10 @@ models:
           sql: DATE_DIFF(${converted_at}, ${created_at}, DAY)
           format: '0.0'
           groups: ['Lead Performance']
+          spotlight:
+            visibility: show
+            categories:
+              - leads
           ai_hint: |
             Use this to understand funnel velocity — lower values indicate faster conversions.
             Compare by `sdr` and `lead_source` to identify faster converting channels or reps.
@@ -55,6 +63,10 @@ models:
           sql: SAFE_DIVIDE(${total_lead_cost}, ${converted_leads})
           format: '$#,##0.00'
           groups: ['Lead Performance']
+          spotlight:
+            visibility: show
+            categories:
+              - leads
 
     columns:
       - name: lead_id
@@ -67,6 +79,10 @@ models:
               type: count_distinct
               description: "The unique number of leads based on distinct lead IDs"
               groups: ['Lead Counts']
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
               ai_hint: |
                 Unique lead count for marketing/sales reporting.
                 Use this for customer aquisition analysis and lead funnel reporting.
@@ -76,30 +92,50 @@ models:
               description: Count unique leads with status = 'Open'
               filters:
                 - lead_status: ['new', 'contacted', 'qualified']
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
             contacted_leads:
               type: count_distinct
               groups: ['Lead Counts']
               description: Count unique leads with status = 'Contacted'
               filters:
                 - lead_status: 'contacted'
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
             qualified_leads:
               type: count_distinct
               groups: ['Lead Counts']
               description: Count unique leads with status = 'Contacted'
               filters:
                 - lead_status: 'qualified'
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
             converted_leads:
               type: count_distinct
               groups: ['Lead Counts']
               description: Count unique leads with status = 'Converted'
               filters:
                 - lead_status: 'converted'
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
             disqualified_leads:
               type: count_distinct
               groups: ['Lead Counts']
               description: Count unique leads with status = 'Disqulified'
               filters:
                 - lead_status: 'disqualified'
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
       - name: user_id
         description: "The identifier for a user"
         meta:
@@ -125,6 +161,10 @@ models:
               type: count_distinct
               description: "The unique number of deals"
               groups: ['Counts']
+              spotlight:
+                visibility: show
+                categories:
+                  - sales
       - name: lead_source
         description: "The name of the source which drew in the lead"
         meta:
@@ -173,11 +213,19 @@ models:
               groups: ['Lead Costs']
               ai_hint: |
                 Sum of attributed lead acquisition costs. Useful for calculating CAC and evaluating marketing ROI when joined to `deals.total_amount`.
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
             avg_lead_cost:
               type: average
               description: "The average lead cost for selected leads"
               format: '$#,##0.00'
               groups: ['Lead Costs']
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
       - name: lead_status
         description: "Current status of the lead (e.g., Open, Contacted, Converted, Disqualified)"
         meta:
