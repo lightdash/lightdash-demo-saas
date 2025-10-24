@@ -21,13 +21,13 @@ models:
 
       parameters:
         utm_toggle:
-          label: "Channel/Campaign/Medium"
-          description: "Filter leads by marketing channel or campaign"
+          label: "Lead source toggle"
+          description: "Group leads by marketing lead source, campaign name, or campaign medium"
           options:
                 - "lead_source"
                 - "utm_medium"
                 - "campaign_name"
-          default: "channel"
+          default: "lead_source"
           multiple: false
 
       metrics:
@@ -181,8 +181,8 @@ models:
               type: boolean
               sql: IF(LOWER(lead_source) IN ('google ads', 'facebook ads', 'linkedin'), TRUE, FALSE)
             utm_toggle:
-              label: "Channel/Campaign/Medium"
-              description: "Filter leads by marketing channel or campaign"
+              label: "Lead source toggle"
+              description: "Group leads by marketing lead source, campaign name, or campaign medium"
               type: string
               sql: |
                 case 
@@ -205,6 +205,7 @@ models:
         meta:
           dimension:
             type: string
+            label: Campaign medium
       - name: lead_cost
         description: "Cost attributed to acquiring this lead"
         meta:
