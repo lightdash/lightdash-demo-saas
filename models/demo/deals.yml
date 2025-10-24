@@ -4,6 +4,10 @@ models:
   meta:
     description: All sales deals of any status, pulled from our CRM 
     primary_key: deal_id
+    ai_hint: |
+          This is a deals table containing deal activity information and derived facts.
+          Use this for sales reporting, revenue reporting, ARR or MRR reporting.
+          
     explores:
       deals_accounts:
         required_attributes:
@@ -22,6 +26,24 @@ models:
           relationship: many-to-one
           sql_on: ${deals.account_id} = ${accounts.account_id}
           fields: [industry, segment, unique_accounts, unique_smb_accounts, unique_midmarket_accounts, unique_enterprise_accounts]
+
+    parameters:
+        deal_value_toggle:
+          label: "High Value Deal Toggle"
+          description: "Filter deals by the amount to see high value deals only"
+          options:
+                - 500
+                - 1000
+                - 1500
+          default: 1000
+          multiple: false
+
+    joins:
+      - join: activities
+        sql_on: ${deals.deal_id} = ${activities.deal_id}
+        type: left
+        relationship: one-to-many
+
     metrics:
       win_rate:
         type: number
@@ -113,7 +135,11 @@ models:
         dimension:
           type: number
           hidden: true
-
+    - name: is_high_value_deal
+      meta:
+        dimension:
+          type: boolean
+          sql: ${deals.amount} >= CAST(${lightdash.parameters.deal_value_toggle} AS NUMERIC)
     - name: stage
       description: "The deal stage (New, Qualified, PoC, Negotiation, Won, Lost)"
       meta:
