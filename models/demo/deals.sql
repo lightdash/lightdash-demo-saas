@@ -1,7 +1,7 @@
 
 select 
     deal_id,
-    account_id,
+    account_id AS ACCOUNT_ID,
     stage,
     plan,
     seats,

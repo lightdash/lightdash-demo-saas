@@ -17,14 +17,14 @@ models:
         joins:
         - join: accounts
           relationship: many-to-one
-          sql_on: ${deals.account_id} = ${accounts.account_id}
+          sql_on: ${deals.ACCOUNT_ID} = ${accounts.account_id}
       deals_accounts_no_names:
         label: 'Deals w/Accounts (no Names)'
         description: The deals table with the Accounts table details included, except for names (to keep anonymous)
         joins:
         - join: accounts
           relationship: many-to-one
-          sql_on: ${deals.account_id} = ${accounts.account_id}
+          sql_on: ${deals.ACCOUNT_ID} = ${accounts.account_id}
           fields: [industry, segment, unique_accounts, unique_smb_accounts, unique_midmarket_accounts, unique_enterprise_accounts]
 
     parameters:
@@ -129,7 +129,7 @@ models:
               visibility: show
               categories:
                 - sales
-    - name: account_id
+    - name: ACCOUNT_ID
       description: "The Account ID from our database"
       meta:
         dimension:
@@ -226,4 +226,4 @@ models:
       meta:
         dimension:
           type: date
-          time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
+          time_intervals: ['day', 'week', 'month', 'month_name', 'year', 'quarter']

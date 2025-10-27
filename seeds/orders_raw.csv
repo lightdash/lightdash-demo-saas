@@ -1,0 +1,4 @@
+order_id,order_date,user_id,partner_id,ordered_product_skus,currency,basket_total,profit,referrer
+1,2023-02-09 07:26:59,11,9,[7],USD,95,2.85,instagram
+2,2023-02-11 06:37:09,25,2,[5],USD,50,7.000000000000001,direct
+3,2023-02-11 07:28:43,27,9,"[40, 4, 1, 5]",USD,329,9.87,direct

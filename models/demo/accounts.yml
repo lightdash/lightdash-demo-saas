@@ -8,10 +8,10 @@ models:
       description: List of all customer and prospective customer Accounts pulled from our CRM 
       joins:
         - join: deals
-          sql_on: ${accounts.account_id} = ${deals.account_id}
+          sql_on: ${accounts.account_id} = ${deals.ACCOUNT_ID}
           type: left
           relationship: one-to-many
-          fields: [deal_id, unique_deals, new_deals, won_deals, lost_deals, stage, average_amount, total_amount, total_won_amount]
+          fields: [deal_id, unique_deals, new_deals, won_deals, lost_deals, stage, average_amount, total_amount, total_won_amount, created_date]
         - join: users
           relationship: many-to-many
           sql_on: ${accounts.account_id} = ${users.account_id} and ${deals.stage} = 'Won'

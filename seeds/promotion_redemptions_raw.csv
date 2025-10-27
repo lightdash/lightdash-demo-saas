@@ -1,0 +1,9 @@
+promotion_redemption_id,promotion_id,order_id
+1,1,1
+2,1,2
+3,2,2
+4,3,2
+5,3,3
+6,4,1
+7,4,2
+8,4,3

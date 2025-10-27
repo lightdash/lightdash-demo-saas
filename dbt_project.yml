@@ -1,6 +1,6 @@
 name: 'lightdash_demo_saas'
 config-version: 2
-profile: 'lightdash_demo_saas'
+profile: 'lightdash_demo_saas_snowflake'
 model-paths: ["models"]
 analysis-paths: ["analyses"]
 test-paths: ["tests"]

@@ -1,0 +1,36 @@
+models:
+  - name: promotion_redemptions
+    meta:
+      primary_key: promotion_redemption_id
+      description: "Promotions redeemed on orders our CRM"
+      joins:
+        - join: promotions
+          sql_on: ${promotions.promotion_id} = ${promotion_redemptions.promotion_id}
+          type: left
+          relationship: many-to-one
+          fields: [promotion_name]
+        - join: orders
+          sql_on: ${promotion_redemptions.order_id} = ${orders.order_id}
+          type: left
+          relationship: many-to-one
+    columns:
+      - name: promotion_redemption_id
+        description: ""
+        meta:
+          dimension:
+            type: number
+          metrics: 
+            total_revenue:
+              type: number
+              description: The total revenue from orders
+              sql: ${orders.total_order_revenue}
+      - name: promotion_id
+        description: ""
+        meta:
+          dimension:
+            type: number
+      - name: order_id
+        description: ""
+        meta:
+          dimension:
+            type: number
