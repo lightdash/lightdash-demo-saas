@@ -1,7 +1,7 @@
 
 with cleaned_data as (
     select
-        user_id,
+        user_id AS USER_ID,
         account_id,
         email,
         job_title,
@@ -20,7 +20,7 @@ with cleaned_data as (
 )
 
 select
-    user_id,
+    USER_ID,
     account_id,
     email,
     job_title,

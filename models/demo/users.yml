@@ -1,101 +1,115 @@
 version: 2
 models:
   - name: users
-    meta:
-      order_fields_by: index
-      primary_key: user_id
-      joins:
-        - join: accounts
-          sql_on: ${users.account_id} = ${accounts.account_id}
-          type: left
-          relationship: many-to-one
+    config:
+      meta:
+        order_fields_by: index
+        primary_key: USER_ID
+        joins:
+          - join: accounts
+            sql_on: ${users.account_id} = ${accounts.account_id}
+            type: left
+            relationship: many-to-one
 
-      metrics:
-        percentage_of_users_with_marketing_opt_in:
-          type: number
-          description: The percentage of users that are currently opted in to marketing
-          format: percent
-          sql: ${unique_users_with_marketing_opt_in} / NULLIF(${unique_users}, 0)
-          spotlight:
-            visibility: show
-            categories:
-              - marketing
+        metrics:
+          percentage_of_users_with_marketing_opt_in:
+            type: number
+            description: The percentage of users that are currently opted in to marketing
+            format: percent
+            sql: ${unique_users_with_marketing_opt_in} / NULLIF(${unique_users}, 0)
+            spotlight:
+              visibility: show
+              categories:
+                - marketing
 
     columns:
-      - name: user_id
+      - name: USER_ID
         description: "The unique identifier for a user"
-        meta:
-          dimension:
-            type: string
-          metrics:
-            unique_users:
-              type: count_distinct
-              description: The unique number of users based on distinct users IDs
-              spotlight:
-                visibility: show
-                categories:
-                  - kpi
+        config:
+          meta:
+            dimension:
+              type: string
+            metrics:
+              unique_users:
+                type: count_distinct
+                description: The unique number of users based on distinct users IDs
+                spotlight:
+                  visibility: show
+                  categories:
+                    - kpi
 
-            unique_users_with_marketing_opt_in:
-              type: count_distinct
-              hidden: true
-              filters:
-                - is_marketing_opted_in: 'true'
-              spotlight:
-                visibility: show
-                categories:
-                  - marketing
+              unique_users_with_marketing_opt_in:
+                type: count_distinct
+                hidden: true
+                filters:
+                  - is_marketing_opted_in: 'true'
+                spotlight:
+                  visibility: show
+                  categories:
+                    - marketing
 
       - name: account_id
         description: "The unique identifier for an account"
-        meta:
-          dimension:
-            type: string
+        config:
+          meta:
+            dimension:
+              type: string
       - name: email
         description: "The email of the user"
-        meta:
-          dimension:
-            type: string
-            required_attributes:
-              is_admin_saas_demo: 'true'
+        config:
+          meta:
+            dimension:
+              type: string
+              required_attributes:
+                is_admin_saas_demo: 'true'
       - name: job_title
         description: "The job title of the given user"
-        meta:
-          dimension:
-            type: string
-          metrics:
-            unique_job_title_count:
-              type: count_distinct
-              label: "Unique Job Titles"
-              description: "Distinct count of job titles"
+        config:
+          meta:
+            dimension:
+              type: string
+            metrics:
+              unique_job_title_count:
+                type: count_distinct
+                label: "Unique Job Titles"
+                description: "Distinct count of job titles"
       - name: is_marketing_opted_in
         description: "Whether the user is currently opted into marketing"
-        meta:
-          dimension:
-            type: boolean
+        config:
+          meta:
+            dimension:
+              type: boolean
       - name: created_at
         description: "Timestamp of when the user was created"
-        meta:
-          dimension:
-            type: timestamp
+        config:
+          meta:
+            dimension:
+              type: timestamp
+              time_intervals: ['DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER', 'DAY_OF_MONTH_NUM',
+                'DAY_OF_YEAR_NUM', 'WEEK_NUM', 'MONTH_NUM', 'QUARTER_NUM', 'YEAR_NUM',
+                'HOUR_OF_DAY_NUM', 'DAY_OF_WEEK_NAME', 'MONTH_NAME', 'QUARTER_NAME']
       - name: first_logged_in_at
         description: "Timestamp of the first login of the user"
-        meta:
-          dimension:
-            type: timestamp
+        config:
+          meta:
+            dimension:
+              type: timestamp
       - name: latest_logged_in_at
-        description: "Timestamp showing the latest date that the given user logged in"
-        meta:
-          dimension:
-            type: timestamp
+        description: "Timestamp showing the latest date that the given user logged
+          in"
+        config:
+          meta:
+            dimension:
+              type: timestamp
       - name: experience_in_years
         description: "The number of years of experience the user has"
-        meta:
-          dimension:
-            type: number
-            description: "Years of experience the user has in their field"
-          metrics:
-            average_experience_in_years:
-              type: average
-              label: "Average Experience in Years"
-              description: "Average years of experience across selected users"
+        config:
+          meta:
+            dimension:
+              type: number
+              description: "Years of experience the user has in their field"
+            metrics:
+              average_experience_in_years:
+                type: average
+                label: "Average Experience in Years"
+                description: "Average years of experience across selected users"
