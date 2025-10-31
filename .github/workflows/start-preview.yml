@@ -7,7 +7,7 @@ on:
     branches-ignore: [ "main", "master" ]
 
 env:
-  DBT_VERSION: "1.7.10"
+  DBT_VERSION: "1.9.0"
 
 jobs:
   preview:
@@ -53,7 +53,7 @@ jobs:
 
       - name: Install dbt
         run: |
-          pip install dbt-core==$DBT_VERSION dbt-postgres==$DBT_VERSION dbt-redshift==1.7.7 dbt-snowflake==$DBT_VERSION dbt-bigquery==$DBT_VERSION
+          pip install dbt-core==$DBT_VERSION dbt-bigquery==$DBT_VERSION
           dbt deps --project-dir "$PROJECT_DIR"
       - name: Install lightdash CLI
         run: npm install -g "@lightdash/cli@${{ steps.version.outputs.value }}" || npm install -g @lightdash/cli@latest
