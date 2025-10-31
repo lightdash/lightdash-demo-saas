@@ -19,6 +19,7 @@ WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}
         when sdr in ('Midge', 'Barbie') then 'Team Europe'
         else 'Unknown'
       end as sdr_team
+    , "hello" as test
     , industry
     , lead_status
     , lead_cost
