@@ -13,6 +13,7 @@ WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}
     , campaign_name
     , utm_medium
     , sdr
+    , "hello world" as message
     , industry
     , lead_status
     , lead_cost
