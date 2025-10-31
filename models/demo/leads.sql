@@ -13,6 +13,17 @@ WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}
     , campaign_name
     , utm_medium
     , sdr
+    , case
+        when sdr in ('Tori', 'Jake') then 'Team USA'
+        when sdr = 'Ken' then 'Team Japan'
+        when sdr in ('Midge', 'Barbie') then 'Team Europe'
+        else 'Unknown'
+      end as sdr_team
+    , case
+        when sdr in ('Tori', 'Jake') then 'Team USA'
+        when sdr in ('Midge', 'Barbie') then 'Team Europe'
+        else 'Unknown'
+      end as sdr_team_2
     , industry
     , lead_status
     , lead_cost
