@@ -1,27 +1,26 @@
 #This workflow creates a ligthdash preview env. once a PR is created
+
 name: start-preview
 
 on:
   push:
-    branches-ignore: [ "main"]
-    
+    branches-ignore: [ "main", "master" ]
 
+env:
+  DBT_VERSION: "1.7.10"
 
 jobs:
   preview:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.4.1
       - uses: actions/setup-python@v1
         with:
           python-version: "3.9.x"
-      - name: Get PR number 
-        id: check-pr-number
-        run: echo "::set-output name=PR_NUMBER::$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"
-      - name: Get PR author
-        run: echo "Deploy to ${{ inputs.deploy_target }} by @${{ github.actor }} in PR id ${{steps.check-pr-number.outputs.PR_NUMBER}}"
 
       - name: Copy Google credentials file
         env: 
@@ -54,7 +53,7 @@ jobs:
 
       - name: Install dbt
         run: |
-          pip install dbt-core dbt-postgres dbt-redshift dbt-snowflake dbt-bigquery
+          pip install dbt-core==$DBT_VERSION dbt-postgres==$DBT_VERSION dbt-redshift==$DBT_VERSION dbt-snowflake==$DBT_VERSION dbt-bigquery==$DBT_VERSION
           dbt deps --project-dir "$PROJECT_DIR"
       - name: Install lightdash CLI
         run: npm install -g "@lightdash/cli@${{ steps.version.outputs.value }}" || npm install -g @lightdash/cli@latest
@@ -67,8 +66,8 @@ jobs:
           LIGHTDASH_URL: ${{ secrets.LIGHTDASH_URL }}    
           GOOGLE_APPLICATION_CREDENTIALS: '/tmp/googlecredentials.json'
 
-        run:  lightdash start-preview --exclude "tag:stripe" --project-dir "$PROJECT_DIR" --profiles-dir . --name ${GITHUB_REF##*/}
-        
+        run:  lightdash start-preview --project-dir "$PROJECT_DIR" --profiles-dir . --name ${GITHUB_REF##*/}
+
       - uses: jwalton/gh-find-current-pr@v1
         id: finder
         
@@ -76,6 +75,8 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           number: ${{ steps.finder.outputs.pr }}
+          message: |
+            :rocket: Deployed ${{ github.sha }} to ${{ steps.start-preview.outputs.url }}
           message: |
             :rocket: Deployed ${{ github.sha }} to ${{ steps.start-preview.outputs.url }}
             
