@@ -1,4 +1,5 @@
 # This script generates a Lightdash preview project once you open a PR or push another commit
+
 name: start-preview
 
 on:
@@ -6,7 +7,7 @@ on:
     branches-ignore: [ "main", "master" ]
 
 env:
-  DBT_VERSION: "1.7.1"
+  DBT_VERSION: "1.7.10"
 
 jobs:
   preview:
