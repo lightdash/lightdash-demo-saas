@@ -1,3 +1,4 @@
+#This workflow creates a ligthdash preview env. once a PR is created
 name: start-preview
 
 on:
