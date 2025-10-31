@@ -1,0 +1,44 @@
+lightdash_demo_saas:
+  outputs:
+    dev:
+      dataset: dbt_twhaley
+      location: us
+      method: oauth
+      priority: interactive
+      project: lightdash-healthcare-demo
+      retries: 1
+      threads: 1
+      timeout_seconds: 300
+      type: bigquery
+    prod:
+      type: bigquery
+      project: lightdash-healthcare-demo
+      dataset: lightdash_demo_saas
+      location: us
+      method: oauth
+      priority: interactive
+      retries: 1
+      threads: 1
+      timeout_seconds: 300
+    service:
+      method: service-account-json
+      project: lightdash-healthcare-demo
+      dataset: lightdash_demo_saas
+      location: us
+      priority: interactive
+      retries: 1
+      threads: 1
+      timeout_seconds: 300
+      type: bigquery
+      keyfile_json:
+        type: service_account
+        project_id: "lightdash-healthcare-demo"
+        private_key_id: "7c3115250f14f2a761c8a0c7ec24cedcdcb446bb"
+        private_key: "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDQ9Oy6wShG0DWy\nszNbQSpO1ILBEhLAGbCzi6Ion7SQ0LgR3eHnDuVXFZ9WmF3f6L81yGYPSOoah38o\nzF9H/7gD/dghKxVokr1gTH8GuKckzJV9swwV6/xllC+BsjwaVx6NOB57v+9eiWZI\n88HcINOPl1NmGMHynzeJ69ugcbuiV48Kz0rR+cL5t/SPKCyaoj+eY6rZyrqVylaI\nHA+jPfoGDEgps+6+wI1FWa5yWmlwkasPO1NsXJVeVaGFRPezJFOe7kOM3hkZwL2R\nte4Dji/XoHviTKzw+kfVIbdZybEt62fNicORrMem620qdIUToS4sIaoDIIzYExwk\nfdIVa2tVAgMBAAECggEAR+03G6XnllCPW17h+7R3usDd7VWqTKPLNlKHVBJ9Vify\nZHwLCb0P5qUTvvwdvDhisUG1F+fSZaVkeQe4eJEmp4EWh3xMFz4DoAVU6FxhdIJT\npvwd2eHsdI7It41BsRNx+cxqedB8tf73zX7SqVJHYLMHSyqUgE6cEIa2iAj+PIfl\n0aQWQw8q9vMFYD47ZOnclYEbhaeBDsAA+RGeNPGm1kZnHJ4L9+KOI9f9qRHOqve2\nPbtcI9fmbeHZ9oy7p05FjiybcdPyzdijFeDz5ZvIPLUnt2+LGKqS+yQv2U7gtEQ/\nu0JofU/B+3jh2Dw8RK2kuPPop7cI2weoKDV30YSHNQKBgQDzDyuWNm0DPxFiSreo\n6uKUIwyLTWGauRgncIgaCwCRTlXeqYfuZ5c39V32g1Gkt4GyhWIP/I9d/mN7MjgX\n88YFyogED1aTEq+C/21tgVOKJCuiJN0oDsBnrvTaYjfLAzKayLa9Fsk5nd6JKogS\niHbysfwx3vwTCjDvXWZWJLk2UwKBgQDcFPJWR/1MYAlxZoWmBiNm5sxZFez4ErNY\nN2zW7/NJSNEkxt5Fp6tzCis0SN8IjXV/zUWU7K+m0JgyGV8q5MidJbTE8CmiWsbS\nEq+FmPxKqV/88jlCFjzgHklV3+arLaCkFK0I9QNzZiDcCxyjAxG0Z/5kI45P87ZE\nbbI/hgVStwKBgQDyrG3PPy3eNOTNZ14xp7prPwcyOiM+UJleH0uz/NInQbgYZNlT\n3Vesxi13h6tHMvSqYeQDpB0cMnXutbgtqfVHKOxeaVX954UW3KHL2HipDu4FqJqq\nePf/TT4ooDGmXt3yjn1tE0f7X7Sk7LMJFfj03WG4BTNWazFqe61GSsolAwKBgDWh\n+SijpIvPP53eESXTix8Rka0IFdaioAgYgbKjiRNL5oPi3tn0sWh4iuzT8V5hMsgx\nWwqe33N0lBJpcnK+jFEXlkUEDfFd0+Pv38xb6ue6/QRkdyWuy6kGWHLP/KOsm+BA\nlaaAJxYhRlK5doIXRmJDkZAPxiefycRFQ1INtBBjAoGBAL1WCJ1/0bjbQk3VctFL\n62u8B9NUXiTbH+Ne/V3pI7T8LjrqPS9aGiW0x/WisxpIQ7bwnpVeOrEsqNAPup8d\nR1FYwnEkLAahUhBP3Y+jI6Zq0xOv4LagwnUNZbsc36qdw3OdpklSS14Mm1YS0ug2\ni9rzd0StO8TJT59KphnITA9S\n-----END PRIVATE KEY-----\n"
+        client_email: "lightdash@lightdash-healthcare-demo.iam.gserviceaccount.com"
+        client_id: "114910133705802738555"
+        auth_uri: "https://accounts.google.com/o/oauth2/auth"
+        token_uri: "https://oauth2.googleapis.com/token"
+        auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs"
+        client_x509_cert_url: "https://www.googleapis.com/robot/v1/metadata/x509/lightdash%40lightdash-healthcare-demo.iam.gserviceaccount.com"
+  target: dev
