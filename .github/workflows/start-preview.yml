@@ -5,6 +5,9 @@ on:
   push:
     branches-ignore: [ "main", "master" ]
 
+env:
+  DBT_VERSION: "1.10.0"
+
 jobs:
   preview:
     runs-on: ubuntu-latest
