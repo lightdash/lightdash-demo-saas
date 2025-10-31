@@ -264,3 +264,10 @@ models:
                 'QUARTER_NUM', 'YEAR_NUM', 'HOUR_OF_DAY_NUM',
                 'DAY_OF_WEEK_NAME', 'MONTH_NAME', 'QUARTER_NAME'
               ]
+      - name: sdr_team
+        description: "Based on the location of the SDR"
+        config:
+          meta:
+            dimension:
+              type: string
+              label: SDR Team
