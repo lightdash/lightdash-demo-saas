@@ -1,16 +1,19 @@
-#This workflow compiles all changes pushed to the main branch
-name: compile-lightdash
+
+name: start-preview
 
 on:
   push:
-    branches: [ "main"]
-  pull_request:
-    branches: [ "main"]
+    branches-ignore: [ "main", "master" ]
+
+env:
+  DBT_VERSION: "1.7.10"
 
 jobs:
-  compile:
+  preview:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3.4.1
@@ -19,7 +22,7 @@ jobs:
           python-version: "3.9.x"
 
       - name: Copy Google credentials file
-        env:
+        env: 
           GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
         if: "${{ env.GOOGLE_CREDENTIALS != '' }}"
         id: create-json
@@ -28,38 +31,48 @@ jobs:
           name: "googlecredentials.json"
           json: ${{ env.GOOGLE_CREDENTIALS }}
 
-      - name: Move credentials to /tmp
+      - name: Move credentials to /tmp 
         run: mv googlecredentials.json /tmp || true
 
       - name: Locate dbt_project.yml
         run: echo "PROJECT_DIR=$(find . -name "dbt_project.yml"  | sed  's/dbt_project.yml//g')" >> $GITHUB_ENV
 
-      - name: Get lightdash version
+      - name: Get lightdash version 
         uses: sergeysova/jq-action@v2
-        id: version
+        id: version 
         env:
-          LIGHTDASH_URL: ${{ secrets.LIGHTDASH_URL }}
-        with:
+          LIGHTDASH_URL: ${{ secrets.LIGHTDASH_URL }}   
+        with: 
           cmd: curl -s "${LIGHTDASH_URL}/api/v1/health" | jq -r '.results.version'
 
       - name: Copy profiles.yml
         env:
-          config: ${{ secrets.DBT_PROFILES }}
-        run: echo -e "$config" > profiles.yml
+          config: ${{ secrets.DBT_PROFILES }}          
+        run: echo -e "$config" > profiles.yml      
 
       - name: Install dbt
         run: |
-          pip install dbt-core dbt-postgres dbt-redshift dbt-snowflake dbt-bigquery
+          pip install dbt-core==$DBT_VERSION dbt-postgres==$DBT_VERSION dbt-redshift==$DBT_VERSION dbt-snowflake==$DBT_VERSION dbt-bigquery==$DBT_VERSION
           dbt deps --project-dir "$PROJECT_DIR"
-
       - name: Install lightdash CLI
-        run: npm install -g "@lightdash/cli@${{ steps.version.outputs.value }}" || npm install -g @lightdash/cli@latest 
+        run: npm install -g "@lightdash/cli@${{ steps.version.outputs.value }}" || npm install -g @lightdash/cli@latest
 
-      - name: Lightdash CLI compile
+      - name: Lightdash CLI start preview
+        id: start-preview
         env:
-          LIGHTDASH_API_KEY: ${{ secrets.LIGHTDASH_API_KEY }}
-          LIGHTDASH_PROJECT: ${{ secrets.LIGHTDASH_PROJECT }}
-          LIGHTDASH_URL: ${{ secrets.LIGHTDASH_URL }}
+          LIGHTDASH_API_KEY: ${{ secrets.LIGHTDASH_API_KEY }}          
+          LIGHTDASH_PROJECT: ${{ secrets.LIGHTDASH_PROJECT }}          
+          LIGHTDASH_URL: ${{ secrets.LIGHTDASH_URL }}    
           GOOGLE_APPLICATION_CREDENTIALS: '/tmp/googlecredentials.json'
 
-        run: lightdash compile --project-dir "$PROJECT_DIR" --profiles-dir . --exclude "tag:stripe" || lightdash compile --project-dir "$PROJECT_DIR" --profiles-dir . --exclude "tag:stripe"
+        run:  lightdash start-preview --project-dir "$PROJECT_DIR" --profiles-dir . --name ${GITHUB_REF##*/}
+
+      - uses: jwalton/gh-find-current-pr@v1
+        id: finder
+        
+      - name: Leave a comment after deployment
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          number: ${{ steps.finder.outputs.pr }}
+          message: |
+            :rocket: Deployed ${{ github.sha }} to ${{ steps.start-preview.outputs.url }}
