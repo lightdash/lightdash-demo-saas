@@ -19,11 +19,6 @@ WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}
         when sdr in ('Midge', 'Barbie') then 'Team Europe'
         else 'Unknown'
       end as sdr_team
-    , case
-        when sdr in ('Tori', 'Jake') then 'Team USA'
-        when sdr in ('Midge', 'Barbie') then 'Team Europe'
-        else 'Unknown'
-      end as sdr_team_2
     , industry
     , lead_status
     , lead_cost
