@@ -19,7 +19,7 @@ WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}
         WHEN sdr IN ("Ken", "Midge")
           THEN "Team Japan"
         WHEN sdr = "Barbie"
-          THEN "Team Barbieland"
+          THEN "Team Australia"
         ELSE "Other"
       END AS sdr_team
     , industry
