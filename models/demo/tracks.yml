@@ -27,6 +27,11 @@ models:
             unique_user_count:
               type: count_distinct
               description: The unique number of users based on distinct users IDs
+            user_id_count_of_user_id:
+              label: Count of User id
+              description: "Count of User id on the table Tracks "
+              type: count
+              filters: []
       - name: id
         description: "The unique identifier for an event"
         meta:
@@ -69,7 +74,6 @@ models:
           additional_dimensions:
             days_since_user_created:
               type: number
-              description: "The number of days between when the user was created and this event."
+              description: "The number of days between when the user was created and this
+                event."
               sql: DATE_DIFF(${TABLE}.timestamp, ${users.created_at}, DAY)
-            
-        
