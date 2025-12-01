@@ -227,3 +227,14 @@ models:
         dimension:
           type: date
           time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
+    - name: amount_usd
+      description: "The deal amount in USD"
+      meta:
+        dimension:
+          type: number
+          format: '$#,##0'
+    - name: num_seats
+      description: "The number of seats purchased in the deal"
+      meta:
+        dimension:
+          type: number
