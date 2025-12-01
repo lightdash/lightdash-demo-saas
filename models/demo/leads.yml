@@ -8,6 +8,8 @@ models:
       ai_hint: |
           This is a leads table containing lead information and derived facts.
           Use this for lead or sales stage funnel reporting, marketing efficiency analysis, and sdr reporting.
+      
+      tags: ['closerate_kevin']
 
       joins:
         - join: users

@@ -15,7 +15,7 @@ models:
           options:
                 - "activity_type"
                 - "activity_channel"
-          default: "type"
+          default: "activity_type"
           multiple: false
 
     metrics:
