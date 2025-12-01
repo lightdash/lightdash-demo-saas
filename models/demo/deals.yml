@@ -11,8 +11,6 @@ models:
           Core metrics: `win_rate` (won deals / total deals), stage-specific counts (`new_deals`, `qualified_deals`, `poc_deals`, `negotiation_deals`, `won_deals`, `lost_deals`), `total_amount`, `total_won_amount`.
           Critical for AE performance analysis. Focus on demo-to-close rates (PoC → Negotiation → Won conversion) and identifying aging deals at each stage.
           Default to line charts for trend analysis, with period-over-period comparisons using `created_date` dimensions.
-
-    tags: ['closerate_kevin']
           
     explores:
       deals_accounts:
@@ -250,6 +248,13 @@ models:
               visibility: show
               categories:
                 - kpi
+          max_won_deal_amount:
+            groups: ['Deal Amounts']
+            type: max
+            description: The maximum deal amount for won deals
+            format: '$#,##0'
+            filters:
+              - stage: 'Won'
     - name: created_date
       description: "The date the deal was created"
       meta:

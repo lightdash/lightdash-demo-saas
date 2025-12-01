@@ -12,8 +12,6 @@ models:
           Core metrics: `conversion_rate`, `avg_days_to_convert` (funnel velocity), `unique_lead_count`, and stage-specific counts (`open_leads`, `contacted_leads`, `qualified_leads`, `converted_leads`).
           Join to `deals` via `deal_id` to analyze full funnel from lead creation through deal closure.
           Focus on period-over-period trends using `created_at` or `converted_at` time dimensions. Default to line charts for trend analysis.
-      
-      tags: ['closerate_kevin']
 
       joins:
         - join: users

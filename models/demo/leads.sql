@@ -1,3 +1,6 @@
+{{ config(
+    tags=['closerate_kevin', 'tori']
+) }}
 
 WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}
 

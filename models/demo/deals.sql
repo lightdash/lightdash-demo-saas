@@ -1,3 +1,6 @@
+{{ config(
+    tags=['closerate_kevin', 'tori']
+) }}
 
 select 
     deal_id,
