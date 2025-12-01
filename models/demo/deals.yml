@@ -248,6 +248,13 @@ models:
               visibility: show
               categories:
                 - kpi
+          max_won_deal_amount:
+            groups: ['Deal Amounts']
+            type: max
+            description: The maximum deal amount for won deals
+            format: '$#,##0'
+            filters:
+              - stage: 'Won'
     - name: created_date
       description: "The date the deal was created"
       meta:
