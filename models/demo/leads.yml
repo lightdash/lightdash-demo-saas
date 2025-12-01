@@ -5,7 +5,6 @@ models:
       required_attributes:
         is_admin_saas_demo: 'true'
       primary_key: lead_id
-      tags: ['closerate_kevin', 'tori']
       ai_hint: |
           CloseRate Kevin: This is your primary leads model for analyzing top-of-funnel performance and SDR effectiveness.
           Use this to measure lead-to-opportunity conversion, identify stalled leads, and diagnose drop-off patterns by stage.

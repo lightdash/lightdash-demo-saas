@@ -4,7 +4,6 @@ models:
   meta:
     description: All sales deals of any status, pulled from our CRM 
     primary_key: deal_id
-    tags: ['closerate_kevin', 'tori']
     ai_hint: |
           CloseRate Kevin: This is your primary deals model for analyzing pipeline progression and win/loss performance.
           Use this to measure stage-to-stage conversion (New → Qualified → PoC → Negotiation → Won/Lost), calculate win rates, and identify stalled deals.
