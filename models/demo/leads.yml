@@ -74,6 +74,17 @@ models:
             visibility: show
             categories:
               - leads
+        roi:
+          type: number
+          description: "Return on Investment: (Total Won Amount - Lead Cost) / Lead Cost"
+          sql: SAFE_DIVIDE((${deals.total_won_amount} - ${total_lead_cost}), NULLIF(${total_lead_cost}, 0))
+          format: '0.00'
+          groups: ['Lead Performance']
+          spotlight:
+            visibility: show
+            categories:
+              - leads
+              - marketing
 
     columns:
       - name: lead_id
