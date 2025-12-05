@@ -1,9 +1,9 @@
-version: 2
 models:
 - name: deals
   meta:
     description: All sales deals of any status, pulled from our CRM 
     primary_key: deal_id
+    order_fields_by: 'index'
     ai_hint: |
           CloseRate Kevin: This is your primary deals model for analyzing pipeline progression and win/loss performance.
           Use this to measure stage-to-stage conversion (New → Qualified → PoC → Negotiation → Won/Lost), calculate win rates, and identify stalled deals.
@@ -11,25 +11,6 @@ models:
           Core metrics: `win_rate` (won deals / total deals), stage-specific counts (`new_deals`, `qualified_deals`, `poc_deals`, `negotiation_deals`, `won_deals`, `lost_deals`), `total_amount`, `total_won_amount`.
           Critical for AE performance analysis. Focus on demo-to-close rates (PoC → Negotiation → Won conversion) and identifying aging deals at each stage.
           Default to line charts for trend analysis, with period-over-period comparisons using `created_date` dimensions.
-          
-    explores:
-      deals_accounts:
-        required_attributes:
-          is_admin_saas_demo: "true"
-        label: 'Deals w/Accounts'
-        description: The Deals table with the Accounts table details included (only accessible by admins since it includes account names)
-        joins:
-        - join: accounts
-          relationship: many-to-one
-          sql_on: ${deals.account_id} = ${accounts.account_id}
-      deals_accounts_no_names:
-        label: 'Deals w/Accounts (no Names)'
-        description: The deals table with the Accounts table details included, except for names (to keep anonymous)
-        joins:
-        - join: accounts
-          relationship: many-to-one
-          sql_on: ${deals.account_id} = ${accounts.account_id}
-          fields: [industry, segment, unique_accounts, unique_smb_accounts, unique_midmarket_accounts, unique_enterprise_accounts]
 
     parameters:
         deal_value_toggle:
@@ -48,39 +29,16 @@ models:
         type: left
         relationship: one-to-many
 
-    metrics:
-      win_rate:
-        type: number
-        description: The percentage of deals that have been won
-        format: percent
-        sql: ${won_deals} / NULLIF(${unique_deals}, 0)
-        spotlight:
-          visibility: show
-          categories:
-            - kpi
-        ai_hint: |
-          CloseRate Kevin: Use `win_rate` to measure overall deal closure effectiveness (won deals ÷ total deals).
-          This is a core KPI for AE performance. Break down by time period (week, month, quarter) to identify trends.
-          Compare period-over-period to spot declining win rates early. Pair with `loss_rate` to understand win/loss balance.
-      loss_rate:
-        type: number
-        format: percent
-        sql: ${lost_deals} / NULLIF(${unique_deals}, 0)
-      win_vs_lost_ratio:
-        type: number
-        round: 2
-        sql: ${lost_deals} / NULLIF(${won_deals}, 0)
-
   columns:
     - name: deal_id
       description: "The unique identified for a Deal"
       meta:
         dimension:
           type: string
+          label: Deal ID
         metrics:
           unique_deals:
             type: count_distinct
-            groups: ['Deal Counts']
             description: Count unique deals based on Account ID (each account can only have one deal)
             spotlight:
               visibility: show
@@ -146,6 +104,38 @@ models:
               visibility: show
               categories:
                 - sales
+          win_rate:
+            type: number
+            description: The percentage of deals that have been won
+            format: percent
+            sql: ${won_deals} / NULLIF(${unique_deals}, 0)
+            spotlight:
+              visibility: show
+              categories:
+                - kpi
+            ai_hint: |
+              CloseRate Kevin: Use `win_rate` to measure overall deal closure effectiveness (won deals ÷ total deals).
+              This is a core KPI for AE performance. Break down by time period (week, month, quarter) to identify trends.
+              Compare period-over-period to spot declining win rates early. Pair with `loss_rate` to understand win/loss balance.
+            groups: ['Rates & Ratios']
+          loss_rate:
+            type: number
+            format: percent
+            sql: ${lost_deals} / NULLIF(${unique_deals}, 0)
+            groups: ['Rates & Ratios']
+          win_vs_lost_ratio:
+            type: number
+            round: 2
+            sql: ${lost_deals} / NULLIF(${won_deals}, 0)
+            groups: ['Rates & Ratios']
+
+
+    - name: created_date
+      description: "The date the deal was created"
+      meta:
+        dimension:
+          type: date
+          time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
     - name: account_id
       description: "The Account ID from our database"
       meta:
@@ -190,23 +180,26 @@ models:
       meta:
         dimension:
           type: number
+          hidden: true
         metrics:
           total_seats:
             type: sum
             description: The sum of seats for selected deals
+            groups: ['Seats']
           average_seats:
             type: average
             round: 0
+            groups: ['Seats']
             description: The average number of seats per deal for selected deals
     - name: amount
       description: "The deal amount based on plan price per seat multiplied by seats"
       meta:
         dimension:
           type: number
+          hidden: true
           format: '$#,##0'
         metrics:
           total_amount:
-            groups: ['Deal Amounts']
             type: sum
             description: The sum of deal amount for selected deals
             format: '$#,##0'
@@ -219,16 +212,16 @@ models:
               CloseRate Kevin: Use `total_amount` to measure total pipeline value across all deal stages.
               Track over time to monitor pipeline health and growth. Break down by `stage` to see value distribution across funnel stages.
           total_won_amount:
-              groups: ['Deal Amounts']
-              type: sum
-              description: The sum of deal amount for won deals
-              format: '$#,##0'
-              filters:
-                - stage: 'Won'
-              ai_hint: |
-                CloseRate Kevin: Use `total_won_amount` to measure actual closed revenue—your core revenue KPI.
-                Track by time period (week, month, quarter) to monitor revenue trends. Compare period-over-period for growth analysis.
-              spotlight:
+            groups: ['Deal Amounts']
+            type: sum
+            description: The sum of deal amount for won deals
+            format: '$#,##0'
+            filters:
+              - stage: 'Won'
+            ai_hint: |
+              CloseRate Kevin: Use `total_won_amount` to measure actual closed revenue—your core revenue KPI.
+              Track by time period (week, month, quarter) to monitor revenue trends. Compare period-over-period for growth analysis.
+            spotlight:
               visibility: show
               categories:
                 - kpi
@@ -255,9 +248,3 @@ models:
             format: '$#,##0'
             filters:
               - stage: 'Won'
-    - name: created_date
-      description: "The date the deal was created"
-      meta:
-        dimension:
-          type: date
-          time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']

@@ -26,6 +26,7 @@ models:
         meta:
           dimension:
             type: string
+            label: User ID
           metrics:
             unique_users:
               type: count_distinct
@@ -50,6 +51,7 @@ models:
         meta:
           dimension:
             type: string
+            label: Account ID
       - name: email
         description: "The email of the user"
         meta:

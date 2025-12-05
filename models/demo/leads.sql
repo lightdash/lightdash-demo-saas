@@ -2,9 +2,9 @@
     tags=['closerate_kevin', 'tori']
 ) }}
 
-WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}
+WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}), 
 
-), final AS (
+final AS (
 
   SELECT 
     CAST(lead_id AS STRING) AS lead_id   -- primary key
@@ -31,4 +31,6 @@ WITH source_data AS ( SELECT * FROM {{ ref ('marketing_leads') }}
 
   FROM source_data
 
-) SELECT * FROM final
+) 
+
+SELECT * FROM final

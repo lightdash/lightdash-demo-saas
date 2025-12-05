@@ -38,6 +38,7 @@ models:
         meta:
           dimension:
             type: string
+            label: Activity ID
           metrics:
             total_activities:
               type: count
@@ -78,6 +79,7 @@ models:
         meta:
           dimension:
             type: string
+            label: Lead ID
           lead_id_total_leads:
             label: Total Leads
             description: 'Count distinct of Lead id on the table Activities '
@@ -89,6 +91,7 @@ models:
         meta:
           dimension:
             type: string
+            label: Deal ID
           lead_id_total_leads:
             label: Total Deals
             description: 'Count distinct of Lead id on the table Activities '
@@ -101,6 +104,7 @@ models:
         meta:
           dimension:
             type: string
+            label: SDR Name
       - name: activity_type
         description: "Type of activity (Call, Email, Meeting, etc.)"
         tests:
@@ -156,5 +160,6 @@ models:
               groups: ['Call Metrics']
             avg_call_time:
               type: average
+              label: Average call time
               description: "Average call time in seconds"
               groups: ['Call Metrics']

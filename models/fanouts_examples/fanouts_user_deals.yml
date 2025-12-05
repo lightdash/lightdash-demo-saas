@@ -1,4 +1,3 @@
-version: 2
 models:
   - name: fanouts_user_deals
     meta: 

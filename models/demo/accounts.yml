@@ -27,6 +27,7 @@ models:
         meta:
           dimension:
             type: number
+            label: Account ID
             urls:
               - label: 'Open in CRM'
                 url: https://demo_saas.com/example/account/${ value.raw }
@@ -76,10 +77,11 @@ models:
         meta:
           dimension:
             type: number
+            hidden: true
           metrics:
             total_estimated_annual_recurring_revenue:
               type: sum
-              label: "Total Estimated Annual Recurring Revenue"
+              label: "Total Estimated ARR"
               description: "Sum of all estimated annual recurring revenue"
               format: 'usd'
             

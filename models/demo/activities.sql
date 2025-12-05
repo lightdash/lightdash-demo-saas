@@ -12,7 +12,9 @@ WITH activities_raw AS (
 
   FROM {{ ref('activities_raw') }}
 
-), leads_raw AS (
+), 
+
+leads_raw AS (
 
   SELECT
     lead_id
@@ -20,7 +22,9 @@ WITH activities_raw AS (
 
   FROM {{ ref('leads') }}
 
-), final AS (
+), 
+
+final AS (
 
   SELECT
     a.activity_id
@@ -34,7 +38,9 @@ WITH activities_raw AS (
     , l.deal_id
 
   FROM activities_raw a
-  LEFT JOIN leads_raw l
-    ON CAST(a.lead_id as string) = l.lead_id
+    LEFT JOIN leads_raw l
+      ON CAST(a.lead_id as string) = l.lead_id
 
-) SELECT * FROM final
+) 
+
+SELECT * FROM final

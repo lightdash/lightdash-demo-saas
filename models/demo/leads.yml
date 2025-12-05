@@ -80,11 +80,11 @@ models:
         meta:
           dimension:
             type: string
+            label: Lead ID
           metrics:
             unique_lead_count:
               type: count_distinct
               description: "The unique number of leads based on distinct lead IDs"
-              groups: ['Lead Counts']
               spotlight:
                 visibility: show
                 categories:
@@ -154,11 +154,13 @@ models:
         meta:
           dimension:
             type: string
+            label: User ID
       - name: sdr
         description: "The Sales Development Representative assigned to the lead"
         meta:
           dimension:
             type: string
+            label: "SDR"
           ai_hint: |
             CloseRate Kevin: Use `sdr` to analyze individual SDR performance. Critical for identifying top performers vs. underperformers.
             Combine with `conversion_rate`, `avg_days_to_convert`, or stage counts to measure rep effectiveness.
@@ -173,11 +175,11 @@ models:
         meta:
           dimension:
             type: string
+            label: Deal ID
           metrics:
             unique_deal_count:
               type: count_distinct
               description: "The unique number of deals"
-              groups: ['Counts']
               spotlight:
                 visibility: show
                 categories:
