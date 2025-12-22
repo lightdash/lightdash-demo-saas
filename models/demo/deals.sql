@@ -4,6 +4,7 @@
 
 select 
     deal_id,
+    deal_id AS lead_id,
     account_id,
     stage,
     plan,

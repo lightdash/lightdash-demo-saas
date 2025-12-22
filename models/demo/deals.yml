@@ -28,6 +28,9 @@ models:
         sql_on: ${deals.deal_id} = ${activities.deal_id}
         type: left
         relationship: one-to-many
+      - join: leads
+        sql_on: ${deals.lead_id} = ${leads.lead_id}
+        relationship: many-to-one
 
   columns:
     - name: deal_id
@@ -142,6 +145,12 @@ models:
         dimension:
           type: number
           hidden: true
+        additional_dimensions:
+          account_user_email:
+            type: string
+            label: "Account User Email"
+            description: "Email of the user associated with this account"
+            sql: ${users.email}
     - name: is_high_value_deal
       meta:
         dimension:
@@ -191,6 +200,11 @@ models:
             round: 0
             groups: ['Seats']
             description: The average number of seats per deal for selected deals
+    - name: lead_id
+      description: "The unique identifier for the Lead associated with the Deal"
+      meta:
+        dimension:
+          type: string
     - name: amount
       description: "The deal amount based on plan price per seat multiplied by seats"
       meta:

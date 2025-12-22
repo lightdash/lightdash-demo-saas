@@ -17,10 +17,6 @@ models:
           sql_on: ${leads.user_id} = ${users.user_id}
           type: left
           relationship: many-to-one
-        - join: deals
-          sql_on: ${leads.deal_id} = ${deals.deal_id}   
-          type: left
-          relationship: many-to-one
 
       parameters:
         utm_toggle:
@@ -155,6 +151,11 @@ models:
           dimension:
             type: string
             label: User ID
+          additional_dimensions:
+              created_by_email:
+                type: string
+                label: "Created by email"
+                sql: ${users.email}
       - name: sdr
         description: "The Sales Development Representative assigned to the lead"
         meta:
@@ -207,7 +208,7 @@ models:
               label: Selected dimension
               type: string
               description: The dimension that is currently selected in the utm_toggle parameter
-              sql: ${lightdash.parameters.leads.utm_toggle}}
+              sql: ${lightdash.parameters.leads.utm_toggle}
       - name: campaign_name
         description: "Name of the marketing campaign associated with the lead (if available)"
         meta:
