@@ -1,6 +1,18 @@
 models:
   - name: test_aggregates_quarterly
     columns:
+      - name: family
+        description: "Top-level grouping (like HR Income, HR Operating Expenses)"
+        meta:
+          dimension:
+            type: string
+
+      - name: analytical_tag_name
+        description: "Analytical tag name (like Product sales, Service Sales, COGS, etc.)"
+        meta:
+          dimension:
+            type: string
+
       - name: year
         description: "Year of the quarter"
         meta:
@@ -14,26 +26,31 @@ models:
             type: number
 
       - name: quarter_amount
-        description: "Total rated amount for the quarter"
+        description: "Total rated amount for the quarter (grouped by family and tag)"
         meta:
-          dimension:
-            type: number
-            format: '#,##0.00"€"'
+          metrics:
+            total_quarter_amount:
+              type: sum
+              format: '#,##0.00"€"'
 
       - name: prev_quarter_amount
-        description: "Total rated amount for the previous quarter"
+        description: "Total rated amount for the previous quarter (grouped by family and tag)"
         meta:
-          dimension:
-            type: number
-            format: '#,##0.00"€"'
+          metrics:
+            total_prev_quarter_amount:
+              type: sum
+              format: '#,##0.00"€"'
 
-      # THE CORRECT SOLUTION
-      # QoQ growth should be a DIMENSION on the aggregates table, not a metric on the base table
-      - name: qoq_growth
-        description: "Quarter-over-quarter growth rate (CORRECT approach)"
+      # QoQ growth as a calculated metric that works with subtotals
+      - name: qoq_growth_calc
+        description: "Quarter-over-quarter growth rate (calculated from aggregated amounts)"
         meta:
           dimension:
             type: number
-            sql: (${quarter_amount} - ${prev_quarter_amount}) / NULLIF(${prev_quarter_amount}, 0)
+            sql: "(${quarter_amount} - ${prev_quarter_amount}) / NULLIF(ABS(${prev_quarter_amount}), 0)"
             format: "percent"
-            hidden: false
+          metrics:
+            qoq_growth_rate:
+              type: number
+              format: "percent"
+              sql: "(${total_quarter_amount} - ${total_prev_quarter_amount}) / NULLIF(ABS(${total_prev_quarter_amount}), 0)"

@@ -54,11 +54,29 @@ models:
               type: sum
               sql: COALESCE(${analytical_tag_rate}, 1) * ${amount}
               format: '#,##0.00"€"'
-            # CUSTOMER'S PROBLEMATIC APPROACH
+            # ❌ WRONG APPROACH - kept for comparison
             # This metric references aggregated data from a joined table
             # When used with subtotals, it will incorrectly aggregate the growth %
-            quarterly_growth_rated_amount:
+            qoq_growth_wrong:
               type: min
-              label: "QoQ Growth (WRONG - via metric)"
+              label: "❌ QoQ Growth (WRONG - via metric)"
               sql: (${test_aggregates_quarterly.quarter_amount} - ${test_aggregates_quarterly.prev_quarter_amount}) / NULLIF(${test_aggregates_quarterly.prev_quarter_amount}, 0)
               format: "percent"
+              description: "WRONG: This will incorrectly aggregate with subtotals. Use the dimension from test_aggregates_quarterly instead."
+
+      - name: family
+        description: "Top-level grouping (like HR Income, HR Operating Expenses)"
+        meta:
+          dimension:
+            type: string
+
+      # ✅ CORRECT APPROACH
+      # Reference the pre-calculated dimension from the aggregates table
+      - name: qoq_growth_correct
+        description: "Quarter-over-quarter growth rate (CORRECT - references dimension from aggregates table)"
+        meta:
+          dimension:
+            type: number
+            sql: ${test_aggregates_quarterly.qoq_growth_calc}
+            format: "percent"
+            label: "✅ QoQ Growth (CORRECT - via dimension)"
