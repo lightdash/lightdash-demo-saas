@@ -1,0 +1,64 @@
+models:
+  - name: test_bookkeeping
+    meta:
+      joins:
+        - join: test_aggregates_quarterly
+          sql_on: |
+            EXTRACT(YEAR FROM ${test_bookkeeping.entry_date}) = ${test_aggregates_quarterly.year}
+            AND EXTRACT(QUARTER FROM ${test_bookkeeping.entry_date}) = ${test_aggregates_quarterly.quarter}
+          type: left
+          relationship: many-to-one
+
+    columns:
+      - name: entry_id
+        description: "Unique identifier for bookkeeping entry"
+        meta:
+          dimension:
+            type: number
+
+      - name: amount
+        description: "Bookkeeping entry amount"
+        meta:
+          dimension:
+            type: number
+            format: '#,##0.00"€"'
+
+      - name: entry_date
+        description: "Date of the bookkeeping entry"
+        meta:
+          dimension:
+            type: date
+
+      - name: analytical_tag_name
+        description: "Name of the analytical tag"
+        meta:
+          dimension:
+            type: string
+
+      - name: analytical_tag_rate
+        description: "Rate associated with the analytical tag"
+        meta:
+          dimension:
+            type: number
+
+      # This is the column matching the customer's setup
+      - name: rated_amount
+        description: "Bookkeeping entry amount adjusted by the analytical tag rate."
+        meta:
+          dimension:
+            type: number
+            sql: ${amount} * COALESCE(${analytical_tag_rate}, 1)
+            groups: ['amount_details']
+          metrics:
+            sum_rated_amount:
+              type: sum
+              sql: COALESCE(${analytical_tag_rate}, 1) * ${amount}
+              format: '#,##0.00"€"'
+            # CUSTOMER'S PROBLEMATIC APPROACH
+            # This metric references aggregated data from a joined table
+            # When used with subtotals, it will incorrectly aggregate the growth %
+            quarterly_growth_rated_amount:
+              type: min
+              label: "QoQ Growth (WRONG - via metric)"
+              sql: (${test_aggregates_quarterly.quarter_amount} - ${test_aggregates_quarterly.prev_quarter_amount}) / NULLIF(${test_aggregates_quarterly.prev_quarter_amount}, 0)
+              format: "percent"

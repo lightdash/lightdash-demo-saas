@@ -1,0 +1,39 @@
+models:
+  - name: test_aggregates_quarterly
+    columns:
+      - name: year
+        description: "Year of the quarter"
+        meta:
+          dimension:
+            type: number
+
+      - name: quarter
+        description: "Quarter number (1-4)"
+        meta:
+          dimension:
+            type: number
+
+      - name: quarter_amount
+        description: "Total rated amount for the quarter"
+        meta:
+          dimension:
+            type: number
+            format: '#,##0.00"€"'
+
+      - name: prev_quarter_amount
+        description: "Total rated amount for the previous quarter"
+        meta:
+          dimension:
+            type: number
+            format: '#,##0.00"€"'
+
+      # THE CORRECT SOLUTION
+      # QoQ growth should be a DIMENSION on the aggregates table, not a metric on the base table
+      - name: qoq_growth
+        description: "Quarter-over-quarter growth rate (CORRECT approach)"
+        meta:
+          dimension:
+            type: number
+            sql: (${quarter_amount} - ${prev_quarter_amount}) / NULLIF(${prev_quarter_amount}, 0)
+            format: "percent"
+            hidden: false
