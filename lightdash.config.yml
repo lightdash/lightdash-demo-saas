@@ -18,6 +18,10 @@ spotlight:
       label: Leads
       color: orange
 
+    geography:
+      label: Geography
+      color: pink
+
 parameters:
   deal_value_toggle:
     label: "High Value Deal Toggle"
