@@ -1,0 +1,113 @@
+models:
+  - name: lead_geography
+    meta:
+      required_attributes:
+        is_admin_saas_demo: 'true'
+      primary_key: lead_id
+      ai_hint: |
+          CloseRate Kevin: This is your geographic data model for analyzing lead distribution across regions and visualizing data on map charts.
+          Use this to identify geographic patterns in lead generation, compare performance across countries/states, and analyze regional conversion rates.
+          Key dimensions: `country_name`, `state_or_province_name`, `continent`, `country_code`, `state_code` (for map visualizations).
+          Join to `leads` via `lead_id` to analyze geographic patterns in lead performance, conversion rates by region, and identify high-value territories.
+          Use country_code and state_code for map chart area data to visualize geographic distribution of leads and deals.
+
+      joins:
+        - join: leads
+          sql_on: ${lead_geography.lead_id} = ${leads.lead_id}
+          type: left
+          relationship: one-to-one
+        - join: users
+          sql_on: ${lead_geography.user_id} = ${users.user_id}
+          type: left
+          relationship: many-to-one
+
+    columns:
+      - name: lead_id
+        description: "The unique identifier for a lead (foreign key to leads table)"
+        meta:
+          dimension:
+            type: string
+            label: Lead ID
+          metrics:
+            unique_lead_count:
+              type: count_distinct
+              description: "The unique number of leads in this geography"
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
+                  - geography
+              ai_hint: |
+                CloseRate Kevin: Use `unique_lead_count` to measure lead volume by geographic region.
+                Group by `country_name` or `state_or_province_name` to identify which territories generate the most leads.
+                Compare geographic lead counts against conversion rates to find high-potential regions.
+
+      - name: user_id
+        description: "The identifier for a user (foreign key to users table)"
+        meta:
+          dimension:
+            type: string
+            label: User ID
+
+      - name: continent
+        description: "The continent where the lead is located"
+        meta:
+          dimension:
+            type: string
+            label: Continent
+          ai_hint: |
+            CloseRate Kevin: Use `continent` for high-level geographic grouping.
+            Useful for comparing Asia vs. North America vs. Oceania performance.
+            Combine with conversion metrics to identify which continents have higher close rates.
+
+      - name: country_name
+        description: "The full name of the country where the lead is located"
+        meta:
+          dimension:
+            type: string
+            label: Country
+          ai_hint: |
+            CloseRate Kevin: Use `country_name` for country-level analysis.
+            Essential for comparing United States, Japan, and Australia performance.
+            Group by country when analyzing regional sales effectiveness or market penetration.
+
+      - name: country_code
+        description: "The ISO 2-digit country code (US, JP, AU) - use for map chart area data"
+        meta:
+          dimension:
+            type: string
+            label: Country Code
+          ai_hint: |
+            CloseRate Kevin: Use `country_code` as the area key for map chart visualizations at the country level.
+            This field provides the ISO codes needed for geographic map rendering.
+
+      - name: state_or_province_name
+        description: "The full name of the state or province where the lead is located"
+        meta:
+          dimension:
+            type: string
+            label: State/Province
+          ai_hint: |
+            CloseRate Kevin: Use `state_or_province_name` for detailed regional analysis.
+            Identify top-performing states in the US, prefectures in Japan, or states in Australia.
+            Combine with `unique_lead_count` to find which regions generate the most pipeline.
+
+      - name: state_code
+        description: "The state or province code - use for map chart area data at state/province level"
+        meta:
+          dimension:
+            type: string
+            label: State/Province Code
+          ai_hint: |
+            CloseRate Kevin: Use `state_code` as the area key for map chart visualizations at the state/province level.
+            This field provides the codes needed for regional map rendering (e.g., CA for California, NSW for New South Wales).
+
+      - name: postal_code
+        description: "The postal code for the lead's location"
+        meta:
+          dimension:
+            type: string
+            label: Postal Code
+          ai_hint: |
+            CloseRate Kevin: Use `postal_code` for granular geographic analysis.
+            Useful for identifying specific postal code territories that generate high-value leads.
