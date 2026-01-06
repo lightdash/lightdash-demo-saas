@@ -12,16 +12,6 @@ models:
           Join to `deals` via `deal_id` to analyze full funnel from lead creation through deal closure.
           Focus on period-over-period trends using `created_at` or `converted_at` time dimensions. Default to line charts for trend analysis.
 
-      joins:
-        - join: users
-          sql_on: ${leads.user_id} = ${users.user_id}
-          type: left
-          relationship: many-to-one
-        - join: deals
-          sql_on: ${leads.deal_id} = ${deals.deal_id}   
-          type: left
-          relationship: many-to-one
-
       parameters:
         utm_toggle:
           label: "Lead source toggle"

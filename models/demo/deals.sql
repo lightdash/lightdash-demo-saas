@@ -2,7 +2,7 @@
     tags=['closerate_kevin', 'tori']
 ) }}
 
-select 
+select
     deal_id,
     account_id,
     stage,
@@ -12,6 +12,8 @@ select
     -- this code keeps the date fields relevant for the demo environment
     -- it adds the difference between the current date and a fixed date (2025-01-01)
     -- to the original date fields, effectively shifting them into the future
-    {{ date_add_cross_db('created_date', date_diff_cross_db('current_date()', '\'2025-01-01\'', 'day')) }} as created_date
-from 
+    {{ date_add_cross_db('created_date', date_diff_cross_db('current_date()', '\'2025-01-01\'', 'day')) }} as created_date,
+    {{ date_add_cross_db('created_date', date_diff_cross_db('current_date()', '\'2025-01-01\'', 'day')) }} as first_start_date,
+    extract(year from {{ date_add_cross_db('created_date', date_diff_cross_db('current_date()', '\'2025-01-01\'', 'day')) }}) as year_opened
+from
     {{ ref('deals_raw') }}

@@ -136,6 +136,26 @@ models:
         dimension:
           type: date
           time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
+    - name: first_start_date
+      description: "First start date"
+      meta:
+        dimension:
+          type: date
+          label: First start date
+          time_intervals: [DAY, WEEK, MONTH, YEAR, QUARTER, DAY_OF_YEAR_NUM, WEEK_NUM, MONTH_NUM, QUARTER_NUM, YEAR_NUM, DAY_OF_WEEK_NAME, MONTH_NAME, QUARTER_NAME]
+    - name: year_opened
+      description: "Year opened"
+      meta:
+        dimension:
+          type: number
+          hidden: true
+        additional_dimensions:
+          year_opened_date:
+            hidden: false
+            type: date
+            label: Year opened
+            sql: cast(${year_opened} || '-01-01' as date)
+            time_intervals: [YEAR, YEAR_NUM]
     - name: account_id
       description: "The Account ID from our database"
       meta:

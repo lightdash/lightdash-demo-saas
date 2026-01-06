@@ -5,22 +5,6 @@ models:
       # This filter means that unless you are an admin, you can't see Enterprise account
       sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment != 'Enterprise' 
       description: List of all customer and prospective customer Accounts pulled from our CRM 
-      joins:
-        - join: deals
-          sql_on: ${accounts.account_id} = ${deals.account_id}
-          type: left
-          relationship: one-to-many
-          fields: [deal_id, unique_deals, new_deals, won_deals, lost_deals, stage, average_amount, total_amount, total_won_amount]
-        - join: users
-          relationship: many-to-many
-          sql_on: ${accounts.account_id} = ${users.account_id} and ${deals.stage} = 'Won'
-          type: left
-          fields: [user_id, unique_user_count, job_title, is_marketing_opted_in, unique_job_title_count, email, created_at, first_logged_in_at, experience_in_years, average_experience_in_years]
-        - join: tracks
-          relationship: one-to-many
-          sql_on: ${users.user_id} = ${tracks.user_id}
-          type: left
-          fields: [id, user_id, event_count, name, timestamp, days_since_user_created]
     columns:
       - name: account_id
         description: "The Account ID from our database"
