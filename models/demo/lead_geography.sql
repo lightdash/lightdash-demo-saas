@@ -14,6 +14,8 @@ final AS (
     , continent
     , country_name
     , country_code
+    , latitude
+    , longitude
     , state_or_province_name
     , state_code
     , postal_code
