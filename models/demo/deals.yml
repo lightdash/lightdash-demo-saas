@@ -246,5 +246,3 @@ models:
             type: max
             description: The maximum deal amount for won deals
             format: '$#,##0'
-            filters:
-              - stage: 'Won'
