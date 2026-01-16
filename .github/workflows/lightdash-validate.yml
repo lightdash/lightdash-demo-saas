@@ -70,7 +70,12 @@ jobs:
           GOOGLE_APPLICATION_CREDENTIALS: '/tmp/googlecredentials.json'
         continue-on-error: true
         run: |
-          OUTPUT=$(lightdash validate --project-dir "$PROJECT_DIR" --profiles-dir . --profile prod 2>&1) || OUTPUT=$(lightdash validate --project-dir "$PROJECT_DIR" --profiles-dir . 2>&1)
+          set +e
+          OUTPUT=$(lightdash validate --project-dir "$PROJECT_DIR" --profiles-dir . --profile prod 2>&1)
+          if [ $? -ne 0 ]; then
+            OUTPUT=$(lightdash validate --project-dir "$PROJECT_DIR" --profiles-dir . 2>&1) || true
+          fi
+          set -e
           echo "$OUTPUT"
           echo "validation_output<<EOF" >> $GITHUB_OUTPUT
           echo "$OUTPUT" >> $GITHUB_OUTPUT
