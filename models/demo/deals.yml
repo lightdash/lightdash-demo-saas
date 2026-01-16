@@ -5,12 +5,7 @@ models:
     primary_key: deal_id
     order_fields_by: 'index'
     ai_hint: |
-          CloseRate Kevin: This is your primary deals model for analyzing pipeline progression and win/loss performance.
-          Use this to measure stage-to-stage conversion (New → Qualified → PoC → Negotiation → Won/Lost), calculate win rates, and identify stalled deals.
-          Key dimensions: `stage` (with stages: New, Qualified, PoC, Negotiation, Won, Lost), `created_date` (for cohort analysis).
-          Core metrics: `win_rate` (won deals / total deals), stage-specific counts (`new_deals`, `qualified_deals`, `poc_deals`, `negotiation_deals`, `won_deals`, `lost_deals`), `total_amount`, `total_won_amount`.
-          Critical for AE performance analysis. Focus on demo-to-close rates (PoC → Negotiation → Won conversion) and identifying aging deals at each stage.
-          Default to line charts for trend analysis, with period-over-period comparisons using `created_date` dimensions.
+          CloseRate Kevin: Primary deals model for analyzing pipeline progression and win/loss performance. Use for stage-to-stage conversion analysis and calculating win rates.
 
     parameters:
         deal_value_toggle:
@@ -46,7 +41,7 @@ models:
                 - kpi
                 - sales
             ai_hint: |
-              CloseRate Kevin: Use `unique_deals` as the denominator for win rate and stage conversion calculations.
+              CloseRate Kevin: Use unique_deals as the denominator for win rate and stage conversion calculations.
               This represents total deal volume. Break down by time period to track pipeline growth or contraction.
           new_deals:
             type: count_distinct
@@ -72,8 +67,8 @@ models:
             filters:
               - stage: 'PoC'
             ai_hint: |
-              CloseRate Kevin: Use `poc_deals` to track the "demo" or proof-of-concept stage—critical for demo-to-close analysis.
-              Calculate PoC → Won conversion by dividing `won_deals` by `poc_deals`. Monitor aging PoC deals to identify stalled demos.
+              CloseRate Kevin: Use poc_deals to track the demo or proof-of-concept stage which is critical for demo-to-close analysis.
+              Calculate PoC to Won conversion by dividing won_deals by poc_deals. Monitor aging PoC deals to identify stalled demos.
           negotiation_deals:
             type: count_distinct
             groups: ['Deal Counts']
@@ -92,8 +87,8 @@ models:
                 - kpi
                 - sales
             ai_hint: |
-              CloseRate Kevin: Use `won_deals` as the numerator for win rate calculations and stage conversion analysis.
-              Track over time to measure sales momentum. Compare against `poc_deals` for demo-to-close performance.
+              CloseRate Kevin: Use won_deals as the numerator for win rate calculations and stage conversion analysis.
+              Track over time to measure sales momentum. Compare against poc_deals for demo-to-close performance.
           lost_deals:
             type: count_distinct
             groups: ['Deal Counts']
@@ -114,9 +109,9 @@ models:
               categories:
                 - kpi
             ai_hint: |
-              CloseRate Kevin: Use `win_rate` to measure overall deal closure effectiveness (won deals ÷ total deals).
-              This is a core KPI for AE performance. Break down by time period (week, month, quarter) to identify trends.
-              Compare period-over-period to spot declining win rates early. Pair with `loss_rate` to understand win/loss balance.
+              CloseRate Kevin: Use win_rate to measure overall deal closure effectiveness. This is won deals divided by total deals.
+              Core KPI for AE performance. Break down by time period like week, month, or quarter to identify trends.
+              Compare period-over-period to spot declining win rates early. Pair with loss_rate to understand win/loss balance.
             groups: ['Rates & Ratios']
           loss_rate:
             type: number
@@ -153,9 +148,9 @@ models:
         dimension:
           type: string
         ai_hint: |
-          CloseRate Kevin: Use `stage` to track deals through the sales funnel: New → Qualified → PoC → Negotiation → Won/Lost.
+          CloseRate Kevin: Use stage to track deals through the sales funnel from New to Qualified to PoC to Negotiation to Won or Lost.
           Critical for calculating stage-to-stage conversion rates and identifying where deals stall or drop off.
-          Filter by specific stages to analyze aging deals (e.g., deals stuck in Negotiation). Use `stage_order` for proper funnel sequencing.
+          Filter by specific stages to analyze aging deals like deals stuck in Negotiation. Use stage_order for proper funnel sequencing.
         additional_dimensions:
           stage_order:
             type: number
@@ -209,8 +204,8 @@ models:
                 - kpi
                 - sales
             ai_hint: |
-              CloseRate Kevin: Use `total_amount` to measure total pipeline value across all deal stages.
-              Track over time to monitor pipeline health and growth. Break down by `stage` to see value distribution across funnel stages.
+              CloseRate Kevin: Use total_amount to measure total pipeline value across all deal stages.
+              Track over time to monitor pipeline health and growth. Break down by stage to see value distribution across funnel stages.
           total_won_amount:
             groups: ['Deal Amounts']
             type: sum
@@ -219,8 +214,8 @@ models:
             filters:
               - stage: 'Won'
             ai_hint: |
-              CloseRate Kevin: Use `total_won_amount` to measure actual closed revenue—your core revenue KPI.
-              Track by time period (week, month, quarter) to monitor revenue trends. Compare period-over-period for growth analysis.
+              CloseRate Kevin: Use total_won_amount to measure actual closed revenue which is your core revenue KPI.
+              Track by time period like week, month, or quarter to monitor revenue trends. Compare period-over-period for growth analysis.
             spotlight:
               visibility: show
               categories:
