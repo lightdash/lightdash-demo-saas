@@ -7,7 +7,8 @@ models:
       ai_hint: |
           CloseRate Kevin: This is your geographic data model for analyzing lead distribution across regions and visualizing data on map charts.
           Use this to identify geographic patterns in lead generation, compare performance across countries/states, and analyze regional conversion rates.
-          Key dimensions: `country_name`, `state_or_province_name`, `continent`, `country_code`, `state_code` (for map visualizations).
+          Key dimensions: `country_name`, `state_or_province_name`, `continent`, `country_code`, `state_code` (for area map visualizations).
+          For point-based maps: use `latitude` and `longitude` to plot leads at specific city locations (San Francisco, New York, Tokyo, Osaka, Sydney).
           Join to `leads` via `lead_id` to analyze geographic patterns in lead performance, conversion rates by region, and identify high-value territories.
           Use country_code and state_code for map chart area data to visualize geographic distribution of leads and deals.
 
@@ -72,7 +73,7 @@ models:
             Group by country when analyzing regional sales effectiveness or market penetration.
 
       - name: country_code
-        description: "The ISO 2-digit country code (US, JP, AU) - use for map chart area data"
+        description: "The ISO 3-digit country code (USA, JPN, AUS) - use for map chart area data"
         meta:
           dimension:
             type: string
@@ -111,3 +112,25 @@ models:
           ai_hint: |
             CloseRate Kevin: Use `postal_code` for granular geographic analysis.
             Useful for identifying specific postal code territories that generate high-value leads.
+
+      - name: latitude
+        description: "The latitude coordinate for the lead's location - use for point-based map visualizations"
+        meta:
+          dimension:
+            type: number
+            label: Latitude
+          ai_hint: |
+            CloseRate Kevin: Use `latitude` with `longitude` for point-based map chart visualizations.
+            This enables plotting leads as individual points on a map rather than filled regions.
+            Available city points: San Francisco, New York, Tokyo, Osaka, Sydney.
+
+      - name: longitude
+        description: "The longitude coordinate for the lead's location - use for point-based map visualizations"
+        meta:
+          dimension:
+            type: number
+            label: Longitude
+          ai_hint: |
+            CloseRate Kevin: Use `longitude` with `latitude` for point-based map chart visualizations.
+            This enables plotting leads as individual points on a map rather than filled regions.
+            Available city points: San Francisco, New York, Tokyo, Osaka, Sydney.
