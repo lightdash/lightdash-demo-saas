@@ -211,6 +211,21 @@ models:
             ai_hint: |
               CloseRate Kevin: Use `total_amount` to measure total pipeline value across all deal stages.
               Track over time to monitor pipeline health and growth. Break down by `stage` to see value distribution across funnel stages.
+          total_won_amount:
+            groups: ['Deal Amounts']
+            type: sum
+            description: The sum of deal amount for won deals
+            format: '$#,##0'
+            filters:
+              - stage: 'Won'
+            ai_hint: |
+              CloseRate Kevin: Use `total_won_amount` to measure actual closed revenue—your core revenue KPI.
+              Track by time period (week, month, quarter) to monitor revenue trends. Compare period-over-period for growth analysis.
+            spotlight:
+              visibility: show
+              categories:
+                - kpi
+                - sales
           total_amount_thousands:
             groups: ['Deal Amounts']
             description: The sum of deal amount for selected deals, shown in thousands
