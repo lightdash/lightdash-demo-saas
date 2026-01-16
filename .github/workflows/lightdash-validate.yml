@@ -76,9 +76,11 @@ jobs:
             OUTPUT=$(lightdash validate --project-dir "$PROJECT_DIR" --profiles-dir . 2>&1) || true
           fi
           set -e
-          echo "$OUTPUT"
+          # Filter to show only from "Validating" onwards
+          FILTERED_OUTPUT=$(echo "$OUTPUT" | sed -n '/Validating/,$p')
+          echo "$FILTERED_OUTPUT"
           echo "validation_output<<EOF" >> $GITHUB_OUTPUT
-          echo "$OUTPUT" >> $GITHUB_OUTPUT
+          echo "$FILTERED_OUTPUT" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
 
       - uses: jwalton/gh-find-current-pr@v1
