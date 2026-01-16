@@ -5,12 +5,7 @@ models:
         is_admin_saas_demo: 'true'
       primary_key: lead_id
       ai_hint: |
-          CloseRate Kevin: This is your primary leads model for analyzing top-of-funnel performance and SDR effectiveness.
-          Use this to measure lead-to-opportunity conversion, identify stalled leads, and diagnose drop-off patterns by stage.
-          Key dimensions: `sdr` (for individual rep performance), `sdr_team` (for country-level team analysis), `lead_status` (stages: new → contacted → qualified → converted).
-          Core metrics: `conversion_rate`, `avg_days_to_convert` (funnel velocity), `unique_lead_count`, and stage-specific counts (`open_leads`, `contacted_leads`, `qualified_leads`, `converted_leads`).
-          Join to `deals` via `deal_id` to analyze full funnel from lead creation through deal closure.
-          Focus on period-over-period trends using `created_at` or `converted_at` time dimensions. Default to line charts for trend analysis.
+          CloseRate Kevin: Primary leads model for analyzing top-of-funnel performance and SDR effectiveness. Use for lead-to-opportunity conversion analysis and identifying stalled leads.
 
       joins:
         - join: users
@@ -45,10 +40,10 @@ models:
             categories:
               - leads
           ai_hint: |
-            CloseRate Kevin: Use `conversion_rate` to measure SDR and team effectiveness at converting leads to opportunities.
-            Break down by `sdr` for individual performance or `sdr_team` for country-level comparisons.
-            Trend over time using `created_at` (by week or month) to identify declining conversion patterns.
-            Compare period-over-period (e.g., this month vs. last month) to spot performance changes early.
+            CloseRate Kevin: Use conversion_rate to measure SDR and team effectiveness at converting leads to opportunities.
+            Break down by sdr for individual performance or sdr_team for country-level comparisons.
+            Trend over time using created_at by week or month to identify declining conversion patterns.
+            Compare period-over-period to spot performance changes early.
         avg_days_to_convert:
           type: average
           description: "Average number of days it takes for a lead to convert"
@@ -60,9 +55,9 @@ models:
             categories:
               - leads
           ai_hint: |
-            CloseRate Kevin: Use `avg_days_to_convert` to measure funnel velocity—how quickly SDRs move leads through qualification.
-            Lower values indicate faster pipeline movement. Compare by `sdr` to identify top performers and slower reps.
-            Group by `sdr_team` to compare country-level velocity. Rising values may signal pipeline bottlenecks or stalled leads.
+            CloseRate Kevin: Use avg_days_to_convert to measure funnel velocity and how quickly SDRs move leads through qualification.
+            Lower values indicate faster pipeline movement. Compare by sdr to identify top performers and slower reps.
+            Group by sdr_team to compare country-level velocity. Rising values may signal pipeline bottlenecks or stalled leads.
         cost_per_conversion:
           type: number
           description: "Average cost per converted lead"
@@ -91,9 +86,9 @@ models:
                   - leads
                   - marketing
               ai_hint: |
-                CloseRate Kevin: Use `unique_lead_count` as your base metric for total lead volume.
-                Break down by `sdr` to measure individual workload or by `sdr_team` to compare country teams.
-                Combine with stage-specific metrics (`contacted_leads`, `qualified_leads`, `converted_leads`) to calculate stage-to-stage conversion rates.
+                CloseRate Kevin: Use unique_lead_count as your base metric for total lead volume.
+                Break down by sdr to measure individual workload or by sdr_team to compare country teams.
+                Combine with stage-specific metrics like contacted_leads, qualified_leads, converted_leads to calculate stage-to-stage conversion rates.
             open_leads:
               type: count_distinct
               groups: ['Lead Counts']
@@ -162,9 +157,9 @@ models:
             type: string
             label: "SDR"
           ai_hint: |
-            CloseRate Kevin: Use `sdr` to analyze individual SDR performance. Critical for identifying top performers vs. underperformers.
-            Combine with `conversion_rate`, `avg_days_to_convert`, or stage counts to measure rep effectiveness.
-            Compare individual SDRs within the same `sdr_team` for fair benchmarking.
+            CloseRate Kevin: Use sdr to analyze individual SDR performance. Critical for identifying top performers vs. underperformers.
+            Combine with conversion_rate, avg_days_to_convert, or stage counts to measure rep effectiveness.
+            Compare individual SDRs within the same sdr_team for fair benchmarking.
       - name: industry
         description: "The industry associated with the lead's company"
         meta:
@@ -232,7 +227,7 @@ models:
               format: '$#,##0'
               groups: ['Lead Costs']
               ai_hint: |
-                Sum of attributed lead acquisition costs. Useful for calculating CAC and evaluating marketing ROI when joined to `deals.total_amount`.
+                Sum of attributed lead acquisition costs. Useful for calculating CAC and evaluating marketing ROI when joined to deals.total_amount.
               spotlight:
                 visibility: show
                 categories:
@@ -254,7 +249,7 @@ models:
           dimension:
             type: string
           ai_hint: |
-            CloseRate Kevin: Use `lead_status` to track progression through the funnel (new → contacted → qualified → converted).
+            CloseRate Kevin: Use lead_status to track progression through the funnel from new to contacted to qualified to converted.
             Filter by status to identify stalled leads or analyze drop-off rates at each stage.
             Combine with time dimensions to spot aging leads that need attention.
       - name: created_at
@@ -288,6 +283,6 @@ models:
             type: string
             label: "SDR Team"
           ai_hint: |
-            CloseRate Kevin: Use `sdr_team` to compare performance across country-based SDR teams.
+            CloseRate Kevin: Use sdr_team to compare performance across country-based SDR teams.
             Essential for team-level analysis and understanding regional performance differences.
-            Group by `sdr_team` when measuring aggregate conversion rates, velocity, or lead volume by geography.
+            Group by sdr_team when measuring aggregate conversion rates, velocity, or lead volume by geography.
