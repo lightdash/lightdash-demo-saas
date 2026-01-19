@@ -32,3 +32,13 @@ parameters:
           - 1500
     default: 1000
     multiple: false
+
+  account_segment_toggle:
+    label: "Account Segment"
+    description: "Select which account segment to display in the dynamic segment metric"
+    options:
+      - all
+      - SMB
+      - Midmarket
+      - Enterprise
+    default: all
