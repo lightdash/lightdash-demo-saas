@@ -4,19 +4,7 @@ models:
       primary_key: account_id
       # This filter means that unless you are an admin, you can't see Enterprise account
       sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment != 'Enterprise' 
-      description: List of all customer and prospective customer Accounts pulled from our CRM 
-      metrics:
-        segment_account_count:
-          label: Segment Account Count
-          description: Dynamic metric that returns account counts based on the account_segment_toggle parameter
-          type: number
-          sql: |
-            CASE
-              WHEN ${lightdash.parameters.account_segment_toggle} = 'all' THEN ${accounts.unique_accounts}
-              WHEN ${lightdash.parameters.account_segment_toggle} = 'SMB' THEN ${accounts.unique_smb_accounts}
-              WHEN ${lightdash.parameters.account_segment_toggle} = 'Midmarket' THEN ${accounts.unique_midmarket_accounts}
-              WHEN ${lightdash.parameters.account_segment_toggle} = 'Enterprise' THEN ${accounts.unique_enterprise_accounts}
-            END
+      description: List of all customer and prospective customer Accounts pulled from our CRM
 
     joins:
         - join: deals
