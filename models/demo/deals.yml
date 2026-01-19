@@ -7,28 +7,6 @@ models:
     ai_hint: |
           CloseRate Kevin: Primary deals model for analyzing pipeline progression and win/loss performance. Use for stage-to-stage conversion analysis and calculating win rates.
 
-    parameters:
-        deal_value_toggle:
-          label: "High Value Deal Toggle"
-          description: "Filter deals by the amount to see high value deals only"
-          options:
-                - 500
-                - 1000
-                - 1500
-          default: 1000
-          multiple: false
-
-        kpi_selector:
-          label: "KPI Metric"
-          description: "Select which metric to display in the chart"
-          options:
-                - total_revenue
-                - won_revenue
-                - deal_count
-                - win_rate
-          default: total_revenue
-          multiple: false
-
     metrics:
         selected_kpi:
           label: Selected KPI

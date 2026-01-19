@@ -33,12 +33,13 @@ parameters:
     default: 1000
     multiple: false
 
-  account_segment_toggle:
-    label: "Account Segment"
-    description: "Select which account segment to display in the dynamic segment metric"
+  kpi_selector:
+    label: "KPI Metric"
+    description: "Select which metric to display in the chart"
     options:
-      - all
-      - SMB
-      - Midmarket
-      - Enterprise
-    default: all
+      - total_revenue
+      - won_revenue
+      - deal_count
+      - win_rate
+    default: total_revenue
+    multiple: false
