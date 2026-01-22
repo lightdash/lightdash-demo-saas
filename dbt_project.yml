@@ -18,6 +18,9 @@ models:
     fanouts_examples:
      +meta:
         group_label: fanouts
+    maps_examples:
+     +meta:
+        group_label: maps
 
 seeds:
   lightdash_demo_saas:

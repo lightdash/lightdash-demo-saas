@@ -1,0 +1,20 @@
+region_code,region_name,capital_city,latitude,longitude,customer_count,annual_revenue_eur,employee_count,market_penetration_pct,yoy_growth_pct
+ES-MD,Community of Madrid,Madrid,40.4168,-3.7038,185,1480000,28,8.2,22.5
+ES-CT,Catalonia,Barcelona,41.3851,2.1734,142,1065000,22,6.5,28.4
+ES-AN,Andalusia,Seville,37.3891,-5.9845,98,588000,12,3.2,35.2
+ES-VC,Valencian Community,Valencia,39.4699,-0.3763,72,504000,10,4.8,25.8
+ES-GA,Galicia,Santiago de Compostela,42.8782,-8.5448,48,288000,6,4.2,18.5
+ES-CL,Castile and León,Valladolid,41.6523,-4.7245,42,252000,5,4.5,15.2
+ES-PV,Basque Country,Vitoria-Gasteiz,42.8467,-2.6716,65,520000,8,6.8,24.2
+ES-CM,Castilla-La Mancha,Toledo,39.8628,-4.0273,28,168000,4,3.2,28.5
+ES-CN,Canary Islands,Las Palmas,28.1235,-15.4363,35,210000,5,4.5,32.1
+ES-AR,Aragon,Zaragoza,41.6488,-0.8891,38,266000,5,5.2,22.8
+ES-EX,Extremadura,Mérida,38.9160,-6.3436,18,90000,2,3.8,25.4
+ES-IB,Balearic Islands,Palma,39.5696,2.6502,32,224000,4,5.5,28.2
+ES-MU,Region of Murcia,Murcia,37.9922,-1.1307,24,144000,3,3.5,32.5
+ES-AS,Asturias,Oviedo,43.3619,-5.8494,22,132000,3,4.8,18.2
+ES-NC,Navarre,Pamplona,42.8125,-1.6458,28,196000,4,6.2,21.5
+ES-CB,Cantabria,Santander,43.4623,-3.8100,18,108000,2,5.2,19.8
+ES-RI,La Rioja,Logroño,42.4627,-2.4499,12,84000,2,6.8,24.5
+ES-CE,Ceuta,Ceuta,35.8894,-5.3198,3,15000,1,2.5,15.2
+ES-ML,Melilla,Melilla,35.2923,-2.9381,2,10000,1,2.2,12.8

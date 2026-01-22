@@ -1,0 +1,156 @@
+models:
+  - name: spain_regional_metrics
+    meta:
+      required_attributes:
+        is_admin_saas_demo: 'true'
+      primary_key: region_code
+      ai_hint: |
+          CloseRate Kevin: This model contains metrics for Spain's 17 autonomous communities plus Ceuta and Melilla.
+          Perfect for custom regional map visualizations beyond standard US/World maps.
+          Use `region_code` (ISO 3166-2:ES format like ES-MD, ES-CT) as the area key for Spain regional maps.
+          Includes both lat/long for point maps and region codes for area maps.
+          Color regions by `customer_count`, `annual_revenue_eur`, `market_penetration_pct`, or `yoy_growth_pct`.
+
+    columns:
+      - name: region_code
+        description: "ISO 3166-2:ES region code (e.g., ES-MD for Madrid, ES-CT for Catalonia) - use as area key for Spain regional maps"
+        meta:
+          dimension:
+            type: string
+            label: Region Code
+          ai_hint: |
+            CloseRate Kevin: Use `region_code` as the area key for Spain regional map visualizations.
+            Format is ISO 3166-2:ES (e.g., ES-MD, ES-CT, ES-AN).
+          metrics:
+            region_count:
+              type: count_distinct
+              description: "Number of regions with presence"
+              spotlight:
+                visibility: show
+                categories:
+                  - geography
+                  - spain
+
+      - name: region_name
+        description: "Full name of the autonomous community"
+        meta:
+          dimension:
+            type: string
+            label: Region Name
+
+      - name: capital_city
+        description: "Capital city of the autonomous community"
+        meta:
+          dimension:
+            type: string
+            label: Capital City
+
+      - name: latitude
+        description: "Latitude of the capital city - use with longitude for point maps"
+        meta:
+          dimension:
+            type: number
+            label: Latitude
+          ai_hint: |
+            CloseRate Kevin: Use `latitude` with `longitude` for point-based maps of Spain.
+
+      - name: longitude
+        description: "Longitude of the capital city - use with latitude for point maps"
+        meta:
+          dimension:
+            type: number
+            label: Longitude
+
+      - name: customer_count
+        description: "Number of customers in this region"
+        meta:
+          dimension:
+            type: number
+            label: Customer Count
+            hidden: true
+          metrics:
+            total_spain_customers:
+              type: sum
+              description: "Total customers across Spanish regions"
+              spotlight:
+                visibility: show
+                categories:
+                  - customers
+                  - spain
+              ai_hint: |
+                CloseRate Kevin: Use `total_spain_customers` to color Spain regional maps showing customer distribution.
+
+      - name: annual_revenue_eur
+        description: "Annual revenue from this region in EUR"
+        meta:
+          dimension:
+            type: number
+            label: Annual Revenue (EUR)
+            hidden: true
+          metrics:
+            total_spain_revenue:
+              type: sum
+              description: "Total revenue across Spanish regions"
+              format: 'eur'
+              spotlight:
+                visibility: show
+                categories:
+                  - revenue
+                  - spain
+              ai_hint: |
+                CloseRate Kevin: Use `total_spain_revenue` to color Spain regional maps showing revenue by region.
+
+      - name: employee_count
+        description: "Number of employees in this region"
+        meta:
+          dimension:
+            type: number
+            label: Employee Count
+            hidden: true
+          metrics:
+            total_spain_employees:
+              type: sum
+              description: "Total employees across Spanish regions"
+              spotlight:
+                visibility: show
+                categories:
+                  - employees
+                  - spain
+
+      - name: market_penetration_pct
+        description: "Market penetration percentage in this region"
+        meta:
+          dimension:
+            type: number
+            label: Market Penetration %
+            hidden: true
+          metrics:
+            avg_spain_market_penetration:
+              type: average
+              description: "Average market penetration across Spanish regions"
+              format: 'percent'
+              spotlight:
+                visibility: show
+                categories:
+                  - market
+                  - spain
+
+      - name: yoy_growth_pct
+        description: "Year-over-year growth percentage"
+        meta:
+          dimension:
+            type: number
+            label: YoY Growth %
+            hidden: true
+          metrics:
+            avg_spain_yoy_growth:
+              type: average
+              description: "Average year-over-year growth across Spanish regions"
+              format: 'percent'
+              spotlight:
+                visibility: show
+                categories:
+                  - growth
+                  - spain
+              ai_hint: |
+                CloseRate Kevin: Use `avg_spain_yoy_growth` to identify fastest-growing Spanish regions.
