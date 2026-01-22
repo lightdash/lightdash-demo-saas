@@ -1,0 +1,153 @@
+models:
+  - name: world_country_metrics
+    meta:
+      required_attributes:
+        is_admin_saas_demo: 'true'
+      primary_key: country_code
+      ai_hint: |
+          CloseRate Kevin: This model contains metrics for ~100 countries worldwide - perfect for choropleth/area map visualizations.
+          Use `country_code` (ISO 3166-1 alpha-3) as the area key for world maps.
+          Color countries by `customer_count`, `annual_revenue_usd`, `market_penetration_pct`, or `yoy_growth_pct`.
+          Great for showing global market presence, identifying expansion opportunities, or comparing regional performance.
+
+    columns:
+      - name: country_code
+        description: "ISO 3166-1 alpha-3 country code - use as area key for world map visualizations"
+        meta:
+          dimension:
+            type: string
+            label: Country Code
+          ai_hint: |
+            CloseRate Kevin: Use `country_code` as the area key for world map chart visualizations.
+            This provides the ISO codes needed to color countries on a world map.
+          metrics:
+            country_count:
+              type: count_distinct
+              description: "Number of countries with customers"
+              spotlight:
+                visibility: show
+                categories:
+                  - geography
+                  - expansion
+
+      - name: country_name
+        description: "Full name of the country"
+        meta:
+          dimension:
+            type: string
+            label: Country
+
+      - name: continent
+        description: "Continent where the country is located"
+        meta:
+          dimension:
+            type: string
+            label: Continent
+
+      - name: customer_count
+        description: "Number of customers in this country"
+        meta:
+          dimension:
+            type: number
+            label: Customer Count
+            hidden: true
+          metrics:
+            total_customers:
+              type: sum
+              description: "Total customers across countries"
+              spotlight:
+                visibility: show
+                categories:
+                  - customers
+                  - geography
+              ai_hint: |
+                CloseRate Kevin: Use `total_customers` to color world maps showing customer distribution.
+            avg_customers_per_country:
+              type: average
+              description: "Average customers per country"
+              spotlight:
+                visibility: show
+                categories:
+                  - customers
+
+      - name: annual_revenue_usd
+        description: "Annual revenue from this country in USD"
+        meta:
+          dimension:
+            type: number
+            label: Annual Revenue (USD)
+            hidden: true
+          metrics:
+            total_country_revenue:
+              type: sum
+              description: "Total revenue across all countries"
+              format: 'usd'
+              spotlight:
+                visibility: show
+                categories:
+                  - revenue
+                  - geography
+              ai_hint: |
+                CloseRate Kevin: Use `total_country_revenue` to color world maps showing revenue by country.
+            avg_revenue_per_country:
+              type: average
+              description: "Average revenue per country"
+              format: 'usd'
+
+      - name: avg_deal_size_usd
+        description: "Average deal size in this country"
+        meta:
+          dimension:
+            type: number
+            label: Avg Deal Size (USD)
+            hidden: true
+          metrics:
+            weighted_avg_deal_size:
+              type: average
+              description: "Average deal size across countries"
+              format: 'usd'
+              spotlight:
+                visibility: show
+                categories:
+                  - deals
+
+      - name: market_penetration_pct
+        description: "Market penetration percentage in this country"
+        meta:
+          dimension:
+            type: number
+            label: Market Penetration %
+            hidden: true
+          metrics:
+            avg_market_penetration:
+              type: average
+              description: "Average market penetration across countries"
+              format: 'percent'
+              spotlight:
+                visibility: show
+                categories:
+                  - market
+                  - geography
+              ai_hint: |
+                CloseRate Kevin: Use `avg_market_penetration` to identify mature vs. emerging markets on world maps.
+
+      - name: yoy_growth_pct
+        description: "Year-over-year growth percentage"
+        meta:
+          dimension:
+            type: number
+            label: YoY Growth %
+            hidden: true
+          metrics:
+            avg_yoy_growth:
+              type: average
+              description: "Average year-over-year growth across countries"
+              format: 'percent'
+              spotlight:
+                visibility: show
+                categories:
+                  - growth
+                  - geography
+              ai_hint: |
+                CloseRate Kevin: Use `avg_yoy_growth` to color world maps showing fastest-growing markets.
+                High growth often correlates with emerging markets with low penetration.

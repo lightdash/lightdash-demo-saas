@@ -22,6 +22,42 @@ spotlight:
       label: Geography
       color: pink
 
+    revenue:
+      label: Revenue
+      color: green
+
+    customers:
+      label: Customers
+      color: blue
+
+    employees:
+      label: Employees
+      color: orange
+
+    offices:
+      label: Offices
+      color: blue
+
+    expansion:
+      label: Expansion
+      color: pink
+
+    market:
+      label: Market
+      color: yellow
+
+    growth:
+      label: Growth
+      color: green
+
+    deals:
+      label: Deals
+      color: orange
+
+    spain:
+      label: Spain
+      color: yellow
+
 parameters:
   deal_value_toggle:
     label: "High Value Deal Toggle"
