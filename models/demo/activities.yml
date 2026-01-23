@@ -126,7 +126,7 @@ models:
               label: Selected dimension
               type: string
               description: The dimension that is currently selected in the type_channel_toggle parameter
-              sql: ${lightdash.parameters.activities.type_channel_toggle}}
+              sql: ${lightdash.parameters.activities.type_channel_toggle}
       - name: activity_channel
         description: "Channel used for the activity (phone, email, linkedin, etc.)"
         tests:
