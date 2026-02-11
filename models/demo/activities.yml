@@ -80,23 +80,25 @@ models:
           dimension:
             type: string
             label: Lead ID
-          lead_id_total_leads:
-            label: Total Leads
-            description: 'Count distinct of Lead id on the table Activities '
-            type: count_distinct
-            format: '#,##0.000'
-            filters: []
+          metrics:
+            lead_id_total_leads:
+              label: Total Leads
+              description: 'Count distinct of Lead id on the table Activities '
+              type: count_distinct
+              format: '#,##0.000'
+              filters: []
       - name: deal_id
         description: "The deal this activity is associated with"
         meta:
           dimension:
             type: string
             label: Deal ID
-          lead_id_total_leads:
-            label: Total Deals
-            description: 'Count distinct of Lead id on the table Activities '
-            type: count_distinct
-            format: '#,##0.000'
+          metrics:
+            lead_id_total_leads:
+              label: Total Deals
+              description: 'Count distinct of Lead id on the table Activities '
+              type: count_distinct
+              format: '#,##0.000'
       - name: sdr_name
         description: "Sales Development Rep who performed the activity"
         tests:
@@ -163,3 +165,9 @@ models:
               label: Average call time
               description: "Average call time in seconds"
               groups: ['Call Metrics']
+      - name: app_version
+        description: "Application version number (1-10) for tracking engagement across version releases"
+        meta:
+          dimension:
+            type: number
+            label: App Version

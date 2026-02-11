@@ -9,6 +9,7 @@ WITH activities_raw AS (
     , activity_timestamp
     , call_duration_seconds
     , notes
+    , app_version
 
   FROM {{ ref('activities_raw') }}
 
@@ -35,6 +36,7 @@ final AS (
     , a.activity_timestamp
     , a.call_duration_seconds
     , a.notes
+    , a.app_version
     , l.deal_id
 
   FROM activities_raw a
