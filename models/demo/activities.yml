@@ -166,8 +166,8 @@ models:
               description: "Average call time in seconds"
               groups: ['Call Metrics']
       - name: app_version
-        description: "Application version number (1-10) for tracking engagement across version releases"
+        description: "Application version number (e.g., 5.0, 5.1, 5.2) for tracking engagement across version releases"
         meta:
           dimension:
-            type: number
+            type: string
             label: App Version
