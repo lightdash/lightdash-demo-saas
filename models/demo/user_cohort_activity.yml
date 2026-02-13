@@ -1,0 +1,63 @@
+version: 2
+models:
+  - name: user_cohort_activity
+    description: "One row per user per day with cohort info, daily activity, and unbounded retention flag."
+    meta:
+      primary_key: "user_id || date_day"
+
+    columns:
+      - name: date_day
+        description: "Calendar date"
+        meta:
+          dimension:
+            type: date
+
+      - name: user_id
+        description: "The unique identifier for a user"
+        meta:
+          dimension:
+            type: string
+          metrics:
+            retained_users:
+              type: count_distinct
+              label: "Retained Users"
+              description: "Count of distinct users who are retained"
+              filters:
+                - is_retained: "true"
+
+      - name: user_created_date
+        description: "The date the user was created"
+        meta:
+          dimension:
+            type: date
+
+      - name: cohort_month
+        description: "The user's signup month (first day of the month they were created)"
+        meta:
+          dimension:
+            type: date
+            time_intervals: ['MONTH', 'QUARTER', 'YEAR']
+
+      - name: days_since_signup
+        description: "Number of days since the user signed up (D0 = signup day)"
+        meta:
+          dimension:
+            type: number
+
+      - name: is_active
+        description: "True if the user had activity on this specific day"
+        meta:
+          dimension:
+            type: boolean
+
+      - name: is_retained
+        description: "True if the user was active on this day or any day after"
+        meta:
+          dimension:
+            type: boolean
+
+      - name: cohort_total_users
+        description: "Total distinct users in this cohort month"
+        meta:
+          dimension:
+            type: number
