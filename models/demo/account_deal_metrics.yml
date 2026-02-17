@@ -17,7 +17,7 @@ models:
             The denominator (total_deals_in_segment) is pre-computed in dbt
             and is NOT affected by the plan dimension.
           format: percent
-          sql: CAST(${unique_deals} AS DOUBLE PRECISION) / NULLIF(${segment_total_deals}, 0)
+          sql: CAST(${unique_deals} AS FLOAT64) / NULLIF(${segment_total_deals}, 0)
 
     columns:
       - name: account_id
