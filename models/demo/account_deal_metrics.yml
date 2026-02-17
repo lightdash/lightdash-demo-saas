@@ -17,7 +17,7 @@ models:
             The denominator (total_accounts_in_segment) is pre-computed in dbt
             and is NOT affected by the plan dimension.
           format: percent
-          sql: ${unique_accounts_with_won_deals} / NULLIF(${total_accounts_in_segment}, 0)
+          sql: ${unique_accounts_with_won_deals} / NULLIF(${segment_total_accounts}, 0)
 
     columns:
       - name: account_id
@@ -95,7 +95,7 @@ models:
             type: number
           metrics:
             # Use max since all rows in the same segment have the same value
-            total_accounts_in_segment:
+            segment_total_accounts:
               type: max
               description: >
                 Total accounts in this segment (pre-computed in dbt).
