@@ -4,20 +4,20 @@ models:
       primary_key: deal_id
       description: >
         Demonstrates the workaround for metrics that need different levels of aggregation.
-        This model pre-computes total deals per segment in dbt, so the denominator
+        This model pre-computes total accounts per segment in dbt, so the denominator
         for percentage calculations is always correct, even when grouped by deal-level
         dimensions like plan.
 
       metrics:
-        pct_of_segment_deals:
+        pct_accounts_with_won_deals:
           type: number
-          label: "% of Segment Deals"
+          label: "% Accounts with Won Deals"
           description: >
-            Percentage of a segment's deals that belong to this plan.
-            The denominator (total_deals_in_segment) is pre-computed in dbt
+            Percentage of accounts in a segment that have Won deals.
+            The denominator (total_accounts_in_segment) is pre-computed in dbt
             and is NOT affected by the plan dimension.
           format: percent
-          sql: CAST(${unique_deals} AS DOUBLE PRECISION) / NULLIF(${segment_total_deals}, 0)
+          sql: CAST(${unique_accounts_with_won_deals} AS FLOAT64) / NULLIF(${segment_total_accounts}, 0)
 
     columns:
       - name: account_id
@@ -25,6 +25,17 @@ models:
           dimension:
             type: string
             hidden: true
+          metrics:
+            unique_accounts_with_deals:
+              type: count_distinct
+              description: >
+                Accounts that have at least one deal for the selected plan.
+            unique_accounts_with_won_deals:
+              type: count_distinct
+              description: >
+                Accounts that have at least one Won deal for the selected plan.
+              filters:
+                - stage: 'Won'
 
       - name: account_name
         meta:
@@ -50,7 +61,6 @@ models:
           metrics:
             unique_deals:
               type: count_distinct
-              description: Number of deals for this plan and segment combination.
 
       - name: plan
         description: "Deal plan type (Basic, Professional)"
@@ -74,18 +84,18 @@ models:
               type: sum
               format: 'usd'
 
-      - name: total_deals_in_segment
+      - name: total_accounts_in_segment
         description: >
-          Pre-computed total number of deals in this segment, calculated
+          Pre-computed total number of accounts in this segment, calculated
           independently of the deal plan dimension. This is the DENOMINATOR
           that stays correct regardless of grouping.
         meta:
           dimension:
             type: number
           metrics:
-            segment_total_deals:
+            segment_total_accounts:
               type: max
               description: >
-                Total deals in this segment (pre-computed in dbt).
+                Total accounts in this segment (pre-computed in dbt).
                 Use this as the denominator for percentage calculations.
                 It is NOT affected by the plan or stage dimensions.
