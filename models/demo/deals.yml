@@ -7,16 +7,18 @@ models:
     ai_hint: |
           CloseRate Kevin: Primary deals model for analyzing pipeline progression and win/loss performance. Use for stage-to-stage conversion analysis and calculating win rates.
 
-    parameters:
-        deal_value_toggle:
-          label: "High Value Deal Toggle"
-          description: "Filter deals by the amount to see high value deals only"
-          options:
-                - 500
-                - 1000
-                - 1500
-          default: 1000
-          multiple: false
+    metrics:
+        selected_kpi:
+          label: Selected KPI
+          description: Dynamic metric that changes based on the KPI Metric parameter selection
+          type: number
+          sql: |
+            CASE
+              WHEN ${lightdash.parameters.kpi_selector} = 'total_revenue' THEN ${deals.total_amount}
+              WHEN ${lightdash.parameters.kpi_selector} = 'won_revenue' THEN ${deals.total_won_amount}
+              WHEN ${lightdash.parameters.kpi_selector} = 'deal_count' THEN ${deals.unique_deals}
+              WHEN ${lightdash.parameters.kpi_selector} = 'win_rate' THEN ${deals.win_rate} * 100
+            END
 
     joins:
       - join: activities
