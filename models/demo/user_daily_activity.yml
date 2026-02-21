@@ -1,0 +1,45 @@
+version: 2
+models:
+  - name: user_daily_activity
+    description: "One row per user per day since signup, with a boolean indicating if they logged in. Used for retention analysis."
+    meta:
+      primary_key: "user_id || date_day"
+
+    columns:
+      - name: date_day
+        description: "Calendar date"
+        meta:
+          dimension:
+            type: date
+
+      - name: user_id
+        description: "The unique identifier for a user"
+        meta:
+          dimension:
+            type: string
+          metrics:
+            retained_users:
+              type: count_distinct
+              label: "Retained Users"
+              description: "Count of distinct users who logged in"
+              filters:
+                - logged_in: "true"
+
+      - name: user_created_date
+        description: "The date the user was created"
+        meta:
+          dimension:
+            type: date
+            time_intervals: ['DAY', 'WEEK', 'MONTH', 'YEAR']
+
+      - name: days_since_signup
+        description: "Number of days since the user signed up (D0 = signup day)"
+        meta:
+          dimension:
+            type: number
+
+      - name: logged_in
+        description: "Whether the user had a login_successful event on this day"
+        meta:
+          dimension:
+            type: boolean
