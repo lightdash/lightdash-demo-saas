@@ -37,6 +37,25 @@ models:
           dimension:
             type: string
             label: Region Name
+          additional_dimensions:
+            geojson_region_name:
+              type: string
+              label: "GeoJSON Region Name"
+              description: "Region name mapped to match the click_that_hood Spain GeoJSON 'name' property"
+              sql: |
+                CASE ${region_name}
+                  WHEN 'Community of Madrid' THEN 'Madrid'
+                  WHEN 'Catalonia' THEN 'Cataluña'
+                  WHEN 'Andalusia' THEN 'Andalucia'
+                  WHEN 'Valencian Community' THEN 'Valencia'
+                  WHEN 'Castile and León' THEN 'Castilla-Leon'
+                  WHEN 'Basque Country' THEN 'Pais Vasco'
+                  WHEN 'Canary Islands' THEN 'Canarias'
+                  WHEN 'Balearic Islands' THEN 'Baleares'
+                  WHEN 'Region of Murcia' THEN 'Murcia'
+                  WHEN 'Navarre' THEN 'Navarra'
+                  ELSE ${region_name}
+                END
 
       - name: capital_city
         description: "Capital city of the autonomous community"
