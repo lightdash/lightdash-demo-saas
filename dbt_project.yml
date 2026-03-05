@@ -21,6 +21,9 @@ models:
     maps_examples:
      +meta:
         group_label: maps
+    lod:
+     +meta:
+        group_label: lod
 
 seeds:
   lightdash_demo_saas:

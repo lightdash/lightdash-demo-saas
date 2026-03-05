@@ -1,0 +1,95 @@
+models:
+  - name: lod_pct_of_total_demo
+    meta:
+      label: "LOD Demo: % of Total (Broken)"
+      description: >
+        Demonstrates the LOD "percentage of total with different denominator grain" problem.
+
+
+        When you calculate "% of customers purchasing each product", the denominator
+        (total customers) should be 12 regardless of which product you're looking at.
+        But because Product B only has sales in the North region, when Lightdash groups
+        by product_name the South region's 2 customers are lost from the denominator.
+
+
+        CORRECT results (what LOD EXCLUDE should produce):
+
+          - Product A: 4 / 12 = 33.3%
+
+          - Product B: 2 / 12 = 16.7%
+
+
+        BROKEN results (current behavior):
+
+          - Product A: 4 / 12 = 33.3% (correct by coincidence — Product A spans all regions)
+
+          - Product B: 2 / 10 = 20.0% (WRONG — South's 2 customers excluded)
+
+
+        This is an acceptance test for LOD EXCLUDE. When LOD is implemented,
+        the total_customers metric should support:
+
+          lod:
+
+            exclude: [product_name]
+
+
+        Related: GitHub #16181, #19665
+
+      metrics:
+        pct_of_total_customers:
+          type: number
+          label: "% of Total Customers (Broken)"
+          description: >
+            Percentage of total customers who purchased each product.
+            THIS METRIC IS BROKEN for sparse product/region combinations.
+            Product B shows 20% instead of the correct 16.7% because the
+            denominator loses the South region's 2 customers.
+          format: percent
+          sql: SAFE_DIVIDE(${total_customers_purchasing}, ${total_customers_in_all_regions})
+
+    columns:
+      - name: product_name
+        description: "The product being purchased"
+        meta:
+          dimension:
+            type: string
+
+      - name: region
+        description: "Geographic sales region (North or South)"
+        meta:
+          dimension:
+            type: string
+
+      - name: customers_purchasing
+        description: "Number of distinct customers who purchased this product in this region"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            total_customers_purchasing:
+              type: sum
+              label: "Customers Purchasing"
+              description: >
+                Total distinct customers who purchased this product.
+                This is the NUMERATOR and is correct — it should be grouped by product_name.
+
+      - name: total_customers_in_region
+        description: >
+          Pre-computed total customers in this region (across all products).
+          Joined from a region-level aggregate. When grouped by product_name,
+          sparse products lose regions they have no sales in, making this
+          denominator too small.
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            total_customers_in_all_regions:
+              type: sum
+              label: "Total Customers (Denominator)"
+              description: >
+                Sum of regional customer totals. SHOULD always be 12 for every product,
+                but Product B only gets 10 because there is no Product B + South row.
+                With LOD EXCLUDE on product_name, this would correctly sum to 12.
