@@ -21,7 +21,7 @@ models:
     maps_examples:
      +meta:
         group_label: maps
-    lod:
+    lod_examples:
      +meta:
         group_label: lod
 
