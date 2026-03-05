@@ -1,0 +1,122 @@
+models:
+  - name: lod_benchmark_demo
+    meta:
+      label: "LOD Demo: Benchmark Unaffected by Filters"
+      description: >
+        Demonstrates the need for benchmark/target metrics that stay constant
+        regardless of dimension filters.
+
+
+        Shows each plan's win rate alongside the overall win rate benchmark.
+        When a user filters to a specific plan, the benchmark SHOULD remain
+        the same (reflecting all plans), but without LOD it gets filtered too.
+
+
+        The workaround here is a CROSS JOIN that pre-computes the overall
+        benchmark in dbt. This works but is static — it cannot respond
+        dynamically to date filters or other WHERE clauses the user might add.
+
+
+        With LOD FIXED (empty), the benchmark metric would ignore all
+        dimensions and filters:
+
+          overall_win_rate:
+
+            lod:
+
+              fixed: []
+
+            sql: ${won_deals} / NULLIF(${closed_deals}, 0)
+
+
+        Related customers: Wellthy, Circula
+
+        Related issues: GitHub #16181
+
+      metrics:
+        plan_win_rate:
+          type: number
+          label: "Plan Win Rate"
+          description: >
+            Win rate for this specific plan. Correctly affected by the plan dimension.
+          format: percent
+          sql: SAFE_DIVIDE(CAST(${plan_won_deals} AS FLOAT64), ${plan_closed_deals})
+
+        overall_win_rate_benchmark:
+          type: number
+          label: "Overall Win Rate (Benchmark)"
+          description: >
+            Overall win rate across all plans. Pre-computed via CROSS JOIN
+            as a workaround. With LOD FIXED, this would be a single metric
+            that ignores all filters.
+          format: percent
+          sql: SAFE_DIVIDE(CAST(${benchmark_won_deals} AS FLOAT64), ${benchmark_closed_deals})
+
+    columns:
+      - name: plan
+        description: "Deal plan type (Basic, Professional)"
+        meta:
+          dimension:
+            type: string
+
+      - name: won_deals
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            plan_won_deals:
+              type: sum
+              label: "Won Deals"
+              hidden: true
+
+      - name: lost_deals
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            plan_lost_deals:
+              type: sum
+              label: "Lost Deals"
+
+      - name: closed_deals
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            plan_closed_deals:
+              type: sum
+              label: "Closed Deals"
+              hidden: true
+
+      - name: total_deals
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            plan_total_deals:
+              type: sum
+              label: "Total Deals"
+
+      - name: overall_won_deals
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            benchmark_won_deals:
+              type: max
+              hidden: true
+
+      - name: overall_closed_deals
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            benchmark_closed_deals:
+              type: max
+              hidden: true

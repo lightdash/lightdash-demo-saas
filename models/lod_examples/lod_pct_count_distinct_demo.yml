@@ -1,0 +1,51 @@
+models:
+  - name: lod_pct_count_distinct_demo
+    meta:
+      label: "LOD Demo: % of Total + Count Distinct Bug"
+      description: >
+        Demonstrates the percent_of_total + count_distinct bug (GitHub #19665).
+
+
+        When customers belong to multiple product groups, COUNT DISTINCT per
+        group sums to MORE than the true total distinct count. Lightdash
+        computes percent_of_total as value / SUM(grouped_counts), which
+        inflates the denominator.
+
+
+        Data: 12 unique customers, but SUM of per-product distinct counts = 14
+        because customers 1 and 3 appear in two product groups each.
+
+
+        Correct denominator: 12 (true COUNT DISTINCT across all products)
+
+        Broken denominator: 14 (SUM of grouped COUNT DISTINCTs)
+
+
+        With LOD EXCLUDE on product_name, the denominator would be
+        COUNT DISTINCT across all rows, ignoring the product grouping.
+
+
+        Related issues: GitHub #19665
+
+    columns:
+      - name: product_name
+        description: "Product purchased (A, B, C, or D). Some customers buy multiple products."
+        meta:
+          dimension:
+            type: string
+
+      - name: customer_id
+        description: >
+          Customer ID. Some customers appear in multiple product groups,
+          causing COUNT DISTINCT per group to sum to more than the true total.
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            unique_customers:
+              type: count_distinct
+              label: "Unique Customers"
+              description: >
+                Distinct customers for this product group. When summed across
+                all products, total = 14 (not 12) because of overlapping membership.

@@ -1,0 +1,89 @@
+models:
+  - name: lod_two_step_agg_demo
+    meta:
+      label: "LOD Demo: Two-Step Aggregation"
+      primary_key: account_id
+      description: >
+        Demonstrates the two-step aggregation problem.
+
+
+        You want "average number of deals per account, by segment."
+        This requires two aggregation steps:
+
+          1. COUNT deals per account (inner)
+
+          2. AVG of those counts across accounts (outer)
+
+
+        Lightdash metrics always aggregate at the query grain, so there is
+        no way to nest aggregations. The workaround is to pre-compute step 1
+        in dbt (this model does that), but this is inflexible — if you later
+        need MEDIAN instead of AVG, or a different inner metric, you need a
+        new model.
+
+
+        With LOD FIXED, this could be a single metric:
+
+          AVG({FIXED account_id: COUNT(deal_id)})
+
+
+        The workaround AVG in this model happens to produce correct results
+        because the inner aggregation is pre-computed. Use this model to compare
+        against what a naive approach (without pre-computation) would produce.
+
+
+        Related customers: Wellthy, Searchlight Capital
+
+        Related issues: GitHub #15365, #19350
+
+    columns:
+      - name: account_id
+        meta:
+          dimension:
+            type: string
+            hidden: true
+
+      - name: account_name
+        meta:
+          dimension:
+            type: string
+
+      - name: segment
+        description: "Market segment (SMB, Midmarket, Enterprise)"
+        meta:
+          dimension:
+            type: string
+
+      - name: industry
+        meta:
+          dimension:
+            type: string
+
+      - name: deal_count
+        description: >
+          Pre-computed count of deals for this account.
+          This is the INNER aggregation (step 1) done in dbt.
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            avg_deals_per_account:
+              type: average
+              label: "Avg Deals per Account (Workaround)"
+              description: >
+                Average number of deals per account. Only correct because
+                deal_count was pre-computed at account grain in dbt.
+                Without this workaround, there is no way to express
+                AVG(COUNT(deals)) as a single Lightdash metric.
+              round: 1
+            total_deals:
+              type: sum
+              label: "Total Deals"
+              description: Sum of all deal counts.
+            max_deals_per_account:
+              type: max
+              label: "Max Deals (Single Account)"
+            min_deals_per_account:
+              type: min
+              label: "Min Deals (Single Account)"
