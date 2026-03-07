@@ -4,8 +4,9 @@ models:
       primary_key: account_id
       # This filter means that unless you are an admin, you can't see Enterprise account
       sql_filter: ${lightdash.attributes.is_admin_saas_demo} = 'true' or segment != 'Enterprise' 
-      description: List of all customer and prospective customer Accounts pulled from our CRM 
-      joins:
+      description: List of all customer and prospective customer Accounts pulled from our CRM
+
+    joins:
         - join: deals
           sql_on: ${accounts.account_id} = ${deals.account_id}
           type: left
