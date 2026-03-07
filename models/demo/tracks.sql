@@ -7,7 +7,7 @@ select
     -- it adds the difference between the current date and a fixed date (2025-01-01)
     -- to the original date fields, effectively shifting them into the future
     {{ date_add_cross_db('t.event_timestamp', date_diff_cross_db('current_date()', '\'2025-01-01\'', 'day')) }} as timestamp
-from 
+from
     {{ ref('tracks_raw') }} t
 
 -- the below cleans synthetically created data
