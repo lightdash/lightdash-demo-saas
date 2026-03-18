@@ -1,0 +1,340 @@
+models:
+  - name: customer_360
+    meta:
+      description: "One row per account with rolled-up deal, user, lead, activity, and product usage metrics. Built for self-serve analytics."
+      primary_key: account_id
+      order_fields_by: 'index'
+
+    columns:
+      # --- Account attributes ---
+      - name: account_id
+        description: "The unique Account ID"
+        meta:
+          dimension:
+            type: number
+            label: Account ID
+          metrics:
+            unique_accounts:
+              type: count_distinct
+              description: Total unique accounts
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+      - name: account_name
+        description: "Company name"
+        meta:
+          dimension:
+            type: string
+      - name: industry
+        description: "Stock market industry"
+        meta:
+          dimension:
+            type: string
+      - name: segment
+        description: "Market segment (SMB, Midmarket, Enterprise)"
+        meta:
+          dimension:
+            type: string
+      - name: estimated_annual_recurring_revenue
+        description: "Estimated ARR for this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+            format: '$#,##0'
+          metrics:
+            total_estimated_arr:
+              type: sum
+              label: "Total Estimated ARR"
+              format: '$#,##0'
+              groups: ['Account']
+
+      # --- Deal metrics ---
+      - name: total_deals
+        description: "Total number of deals for this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_deals:
+              type: sum
+              label: "Total Deals"
+              groups: ['Deals']
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - sales
+      - name: won_deals
+        description: "Number of won deals"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_won_deals:
+              type: sum
+              label: "Won Deals"
+              groups: ['Deals']
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - sales
+      - name: lost_deals
+        description: "Number of lost deals"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_lost_deals:
+              type: sum
+              label: "Lost Deals"
+              groups: ['Deals']
+      - name: open_deals
+        description: "Number of deals still in pipeline"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_open_deals:
+              type: sum
+              label: "Open Deals"
+              groups: ['Deals']
+      - name: total_pipeline_amount
+        description: "Total deal value across all stages"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_pipeline_amount:
+              type: sum
+              label: "Total Pipeline Amount"
+              format: '$#,##0'
+              groups: ['Deal Amounts']
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - sales
+      - name: won_amount
+        description: "Total closed-won deal value"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_won_amount:
+              type: sum
+              label: "Won Amount"
+              format: '$#,##0'
+              groups: ['Deal Amounts']
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - sales
+      - name: average_deal_amount
+        description: "Average deal value for this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            avg_deal_amount:
+              type: average
+              label: "Avg Deal Amount"
+              format: '$#,##0'
+              groups: ['Deal Amounts']
+      - name: total_seats
+        description: "Total seats across all deals"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_seats:
+              type: sum
+              label: "Total Seats"
+              groups: ['Deals']
+      - name: first_deal_date
+        description: "Date of the earliest deal"
+        meta:
+          dimension:
+            type: date
+            label: "First Deal Date"
+      - name: latest_deal_date
+        description: "Date of the most recent deal"
+        meta:
+          dimension:
+            type: date
+            label: "Latest Deal Date"
+
+      # --- User metrics ---
+      - name: total_users
+        description: "Number of users on this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_users:
+              type: sum
+              label: "Total Users"
+              groups: ['Users']
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+      - name: marketing_opted_in_users
+        description: "Users opted into marketing"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_marketing_opted_in:
+              type: sum
+              label: "Marketing Opted-In Users"
+              groups: ['Users']
+      - name: first_user_created_at
+        description: "Earliest user signup date"
+        meta:
+          dimension:
+            type: date
+            label: "First User Created"
+      - name: latest_user_login
+        description: "Most recent user login"
+        meta:
+          dimension:
+            type: date
+            label: "Latest User Login"
+      - name: average_user_experience_years
+        description: "Average years of experience across users"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            avg_user_experience:
+              type: average
+              label: "Avg User Experience (yrs)"
+              round: 1
+              groups: ['Users']
+
+      # --- Lead metrics ---
+      - name: total_leads
+        description: "Total leads attributed to this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_leads:
+              type: sum
+              label: "Total Leads"
+              groups: ['Leads']
+      - name: converted_leads
+        description: "Leads that converted"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_converted_leads:
+              type: sum
+              label: "Converted Leads"
+              groups: ['Leads']
+      - name: total_lead_cost
+        description: "Total spend on leads for this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_lead_cost:
+              type: sum
+              label: "Total Lead Cost"
+              format: '$#,##0'
+              groups: ['Leads']
+
+      # --- Activity metrics ---
+      - name: total_activities
+        description: "Total SDR activities (calls, emails, etc.)"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_activities:
+              type: sum
+              label: "Total Activities"
+              groups: ['Activities']
+      - name: call_activities
+        description: "Number of call activities"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_call_activities:
+              type: sum
+              label: "Call Activities"
+              groups: ['Activities']
+      - name: email_activities
+        description: "Number of email activities"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_email_activities:
+              type: sum
+              label: "Email Activities"
+              groups: ['Activities']
+      - name: total_call_duration_seconds
+        description: "Total call time in seconds"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_call_duration_seconds:
+              type: sum
+              label: "Total Call Duration (s)"
+              groups: ['Activities']
+
+      # --- Product usage metrics ---
+      - name: total_events
+        description: "Total product events tracked"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_events:
+              type: sum
+              label: "Total Events"
+              groups: ['Product Usage']
+      - name: active_users
+        description: "Users with at least one product event"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_active_users:
+              type: sum
+              label: "Active Users"
+              groups: ['Product Usage']
+      - name: latest_event_timestamp
+        description: "Most recent product event"
+        meta:
+          dimension:
+            type: timestamp
+            label: "Latest Product Event"
