@@ -1,0 +1,32 @@
+version: 1
+name: "Accounts by Industry"
+slug: c360-accounts-by-industry
+spaceSlug: customer-360
+tableName: customer_360
+updatedAt: "2026-03-18T00:00:00.000Z"
+
+metricQuery:
+  exploreName: customer_360
+  dimensions:
+    - customer_360_industry
+  metrics:
+    - customer_360_unique_accounts
+  tableCalculations: []
+  filters: {}
+  sorts:
+    - fieldId: customer_360_unique_accounts
+      descending: true
+  limit: 10
+
+chartConfig:
+  type: pie
+  config:
+    groupFieldIds:
+      - customer_360_industry
+    metricId: customer_360_unique_accounts
+    isDonut: true
+    valueLabel: inside
+    showValue: false
+    showPercentage: true
+    showLegend: true
+    legendPosition: vertical

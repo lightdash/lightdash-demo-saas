@@ -1,0 +1,23 @@
+version: 1
+name: "Total Accounts"
+slug: c360-total-accounts
+spaceSlug: customer-360
+tableName: customer_360
+updatedAt: "2026-03-18T00:00:00.000Z"
+
+metricQuery:
+  exploreName: customer_360
+  dimensions: []
+  metrics:
+    - customer_360_unique_accounts
+  tableCalculations: []
+  filters: {}
+  sorts: []
+  limit: 1
+
+chartConfig:
+  type: big_number
+  config:
+    selectedField: customer_360_unique_accounts
+    label: "Total Accounts"
+    showBigNumberLabel: true

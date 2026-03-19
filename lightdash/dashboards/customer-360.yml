@@ -1,0 +1,118 @@
+version: 1
+name: "Customer 360"
+slug: customer-360
+spaceSlug: customer-360
+description: "One-stop view of account health across deals, users, leads, activities, and product usage."
+
+tabs: []
+
+tiles:
+  # Row 1: KPI banner (y=0, h=3)
+  - type: saved_chart
+    x: 0
+    y: 0
+    w: 9
+    h: 3
+    properties:
+      chartSlug: c360-total-accounts
+      title: "Total Accounts"
+
+  - type: saved_chart
+    x: 9
+    y: 0
+    w: 9
+    h: 3
+    properties:
+      chartSlug: c360-total-won-amount
+      title: "Won Revenue"
+
+  - type: saved_chart
+    x: 18
+    y: 0
+    w: 9
+    h: 3
+    properties:
+      chartSlug: c360-total-users
+      title: "Total Users"
+
+  - type: saved_chart
+    x: 27
+    y: 0
+    w: 9
+    h: 3
+    properties:
+      chartSlug: c360-total-events
+      title: "Product Events"
+
+  # Row 2: Segment analysis (y=3, h=8)
+  - type: saved_chart
+    x: 0
+    y: 3
+    w: 18
+    h: 8
+    properties:
+      chartSlug: c360-pipeline-by-segment
+      title: "Pipeline vs Won by Segment"
+
+  - type: saved_chart
+    x: 18
+    y: 3
+    w: 18
+    h: 8
+    properties:
+      chartSlug: c360-accounts-by-industry
+      title: "Accounts by Industry"
+
+  # Row 3: Deal outcomes + markdown (y=11, h=8)
+  - type: saved_chart
+    x: 0
+    y: 11
+    w: 24
+    h: 8
+    properties:
+      chartSlug: c360-deals-by-segment
+      title: "Deal Outcomes by Segment"
+
+  - type: markdown
+    x: 24
+    y: 11
+    w: 12
+    h: 8
+    properties:
+      title: "How to use this dashboard"
+      content: |
+        This dashboard gives a **360-degree view** of every account.
+
+        **KPIs** — headline metrics across the full customer base.
+
+        **Segment charts** — compare pipeline, revenue, and deal outcomes across SMB, Midmarket, and Enterprise.
+
+        **Account table** — drill into individual accounts sorted by won revenue. Use the segment filter to narrow down.
+
+  # Row 4: Account detail table (y=19, h=10)
+  - type: saved_chart
+    x: 0
+    y: 19
+    w: 36
+    h: 10
+    properties:
+      chartSlug: c360-account-detail-table
+      title: "Account Detail"
+
+filters:
+  dimensions:
+    - target:
+        fieldId: customer_360_segment
+        tableName: customer_360
+      operator: equals
+      values: []
+      label: "Segment"
+      tileTargets: {}
+
+    - target:
+        fieldId: customer_360_industry
+        tableName: customer_360
+      operator: equals
+      values: []
+      label: "Industry"
+      tileTargets: {}

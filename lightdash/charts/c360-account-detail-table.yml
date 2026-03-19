@@ -1,0 +1,58 @@
+version: 1
+name: "Account Detail Table"
+slug: c360-account-detail-table
+spaceSlug: customer-360
+tableName: customer_360
+updatedAt: "2026-03-18T00:00:00.000Z"
+
+metricQuery:
+  exploreName: customer_360
+  dimensions:
+    - customer_360_account_name
+    - customer_360_segment
+    - customer_360_industry
+  metrics:
+    - customer_360_sum_total_deals
+    - customer_360_sum_won_amount
+    - customer_360_sum_total_users
+    - customer_360_sum_total_events
+  tableCalculations: []
+  filters: {}
+  sorts:
+    - fieldId: customer_360_sum_won_amount
+      descending: true
+  limit: 50
+
+chartConfig:
+  type: table
+  config:
+    showColumnCalculation: true
+    hideRowNumbers: false
+    columns:
+      customer_360_account_name:
+        frozen: true
+        name: "Account"
+      customer_360_segment:
+        name: "Segment"
+      customer_360_industry:
+        name: "Industry"
+      customer_360_sum_total_deals:
+        name: "Deals"
+      customer_360_sum_won_amount:
+        name: "Won Revenue"
+        displayStyle: bar
+        color: "#10b981"
+      customer_360_sum_total_users:
+        name: "Users"
+      customer_360_sum_total_events:
+        name: "Events"
+    conditionalFormattings:
+      - target:
+          fieldId: customer_360_sum_won_amount
+        color:
+          start: "#FFFFFF"
+          end: "#10b981"
+        rule:
+          min: "auto"
+          max: "auto"
+        applyTo: cell

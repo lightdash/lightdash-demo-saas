@@ -1,0 +1,23 @@
+version: 1
+name: "Total Users"
+slug: c360-total-users
+spaceSlug: customer-360
+tableName: customer_360
+updatedAt: "2026-03-18T00:00:00.000Z"
+
+metricQuery:
+  exploreName: customer_360
+  dimensions: []
+  metrics:
+    - customer_360_sum_total_users
+  tableCalculations: []
+  filters: {}
+  sorts: []
+  limit: 1
+
+chartConfig:
+  type: big_number
+  config:
+    selectedField: customer_360_sum_total_users
+    label: "Total Users"
+    showBigNumberLabel: true

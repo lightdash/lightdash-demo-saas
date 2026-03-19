@@ -1,0 +1,63 @@
+version: 1
+name: "Deal Outcomes by Segment"
+slug: c360-deals-by-segment
+spaceSlug: customer-360
+tableName: customer_360
+updatedAt: "2026-03-18T00:00:00.000Z"
+
+metricQuery:
+  exploreName: customer_360
+  dimensions:
+    - customer_360_segment
+  metrics:
+    - customer_360_sum_won_deals
+    - customer_360_sum_lost_deals
+    - customer_360_sum_open_deals
+  tableCalculations: []
+  filters: {}
+  sorts:
+    - fieldId: customer_360_sum_won_deals
+      descending: true
+  limit: 10
+
+chartConfig:
+  type: cartesian
+  config:
+    layout:
+      xField: customer_360_segment
+      yField:
+        - customer_360_sum_won_deals
+        - customer_360_sum_lost_deals
+        - customer_360_sum_open_deals
+      stack: true
+    eChartsConfig:
+      legend:
+        show: true
+      series:
+        - type: bar
+          stack: "deals"
+          encode:
+            xRef:
+              field: customer_360_segment
+            yRef:
+              field: customer_360_sum_won_deals
+          name: "Won"
+          color: "#10b981"
+        - type: bar
+          stack: "deals"
+          encode:
+            xRef:
+              field: customer_360_segment
+            yRef:
+              field: customer_360_sum_lost_deals
+          name: "Lost"
+          color: "#ef4444"
+        - type: bar
+          stack: "deals"
+          encode:
+            xRef:
+              field: customer_360_segment
+            yRef:
+              field: customer_360_sum_open_deals
+          name: "Open"
+          color: "#f59e0b"

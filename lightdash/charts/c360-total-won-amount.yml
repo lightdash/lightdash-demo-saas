@@ -1,0 +1,24 @@
+version: 1
+name: "Total Won Revenue"
+slug: c360-total-won-amount
+spaceSlug: customer-360
+tableName: customer_360
+updatedAt: "2026-03-18T00:00:00.000Z"
+
+metricQuery:
+  exploreName: customer_360
+  dimensions: []
+  metrics:
+    - customer_360_sum_won_amount
+  tableCalculations: []
+  filters: {}
+  sorts: []
+  limit: 1
+
+chartConfig:
+  type: big_number
+  config:
+    selectedField: customer_360_sum_won_amount
+    label: "Total Won Revenue"
+    showBigNumberLabel: true
+    style: "K"
