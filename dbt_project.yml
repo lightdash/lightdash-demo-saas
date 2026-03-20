@@ -27,9 +27,17 @@ models:
 
 seeds:
   lightdash_demo_saas:
-    +column_types:
-      created_at: timestamp
-      first_logged_in_at: timestamp
-      latest_logged_in_at: timestamp
-      event_timestamp: timestamp
-      created_date: timestamp
+    users_raw:
+      +column_types:
+        created_at: timestamp
+        first_logged_in_at: timestamp
+        latest_logged_in_at: timestamp
+    marketing_leads:
+      +column_types:
+        created_at: timestamp
+    tracks_raw:
+      +column_types:
+        event_timestamp: timestamp
+    deals_raw:
+      +column_types:
+        created_date: timestamp
