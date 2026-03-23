@@ -1,0 +1,423 @@
+models:
+  - name: customer_360
+    meta:
+      primary_key: account_id
+      label: "Customer 360"
+      description: "Comprehensive account-level view combining data from accounts, users, deals, leads, sales activities, and product usage into a single customer profile."
+    columns:
+      # ── Account identifiers ──
+      - name: account_id
+        description: "The Account ID from our database"
+        meta:
+          dimension:
+            type: number
+            label: Account ID
+            urls:
+              - label: 'Open in CRM'
+                url: https://demo_saas.com/example/account/${ value.raw }
+          metrics:
+            unique_accounts:
+              type: count_distinct
+              description: Total number of unique accounts
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+      - name: account_name
+        description: "Name of this company account"
+        meta:
+          dimension:
+            type: string
+      - name: industry
+        description: "Stock market industry for this account"
+        meta:
+          dimension:
+            type: string
+      - name: segment
+        description: "Market segment (SMB, Midmarket, Enterprise)"
+        meta:
+          dimension:
+            type: string
+
+      # ── Revenue ──
+      - name: estimated_annual_recurring_revenue
+        description: "Estimated annual recurring revenue for this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            total_estimated_arr:
+              type: sum
+              label: "Total Estimated ARR"
+              format: 'usd'
+
+      # ── User metrics ──
+      - name: total_users
+        description: "Number of users associated with this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_users:
+              type: sum
+              label: "Total Users"
+      - name: first_user_created_at
+        description: "When the first user on this account was created"
+        meta:
+          dimension:
+            type: timestamp
+            time_intervals: [DAY, WEEK, MONTH, QUARTER, YEAR]
+      - name: most_recent_login_at
+        description: "Most recent login across all users on this account"
+        meta:
+          dimension:
+            type: timestamp
+            time_intervals: [DAY, WEEK, MONTH, QUARTER, YEAR]
+      - name: avg_experience_in_years
+        description: "Average years of experience across account users"
+        meta:
+          dimension:
+            type: number
+            round: 1
+            hidden: true
+          metrics:
+            average_user_experience:
+              type: average
+              label: "Avg User Experience (Years)"
+              round: 1
+      - name: users_opted_into_marketing
+        description: "Number of users who opted into marketing communications"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_users_opted_into_marketing:
+              type: sum
+              label: "Users Opted Into Marketing"
+
+      # ── Deal metrics ──
+      - name: total_deals
+        description: "Total number of deals for this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_deals:
+              type: sum
+              label: "Total Deals"
+      - name: won_deals
+        description: "Number of won deals"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_won_deals:
+              type: sum
+              label: "Won Deals"
+      - name: lost_deals
+        description: "Number of lost deals"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_lost_deals:
+              type: sum
+              label: "Lost Deals"
+      - name: open_deals
+        description: "Number of deals still in progress"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_open_deals:
+              type: sum
+              label: "Open Deals"
+      - name: total_deal_amount
+        description: "Total deal value across all stages"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_deal_amount:
+              type: sum
+              label: "Total Deal Amount"
+              format: 'usd'
+      - name: won_deal_amount
+        description: "Total value of won deals"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_won_deal_amount:
+              type: sum
+              label: "Won Deal Amount"
+              format: 'usd'
+              spotlight:
+                visibility: show
+                categories:
+                  - kpi
+                  - sales
+      - name: avg_deal_amount
+        description: "Average deal value"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            average_deal_amount:
+              type: average
+              label: "Avg Deal Amount"
+              format: 'usd'
+      - name: total_seats
+        description: "Total seats across all deals"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_seats:
+              type: sum
+              label: "Total Seats"
+      - name: first_deal_date
+        description: "Date of the first deal created"
+        meta:
+          dimension:
+            type: date
+            time_intervals: [DAY, WEEK, MONTH, QUARTER, YEAR]
+      - name: latest_deal_date
+        description: "Date of the most recent deal created"
+        meta:
+          dimension:
+            type: date
+            time_intervals: [DAY, WEEK, MONTH, QUARTER, YEAR]
+
+      # ── Lead metrics ──
+      - name: total_leads
+        description: "Total number of leads associated with this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_leads:
+              type: sum
+              label: "Total Leads"
+      - name: converted_leads
+        description: "Number of leads that converted"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_converted_leads:
+              type: sum
+              label: "Converted Leads"
+      - name: qualified_leads
+        description: "Number of qualified leads"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_qualified_leads:
+              type: sum
+              label: "Qualified Leads"
+      - name: disqualified_leads
+        description: "Number of disqualified leads"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_disqualified_leads:
+              type: sum
+              label: "Disqualified Leads"
+      - name: total_lead_cost
+        description: "Total marketing spend on leads for this account"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_lead_cost:
+              type: sum
+              label: "Total Lead Cost"
+              format: 'usd'
+      - name: first_lead_date
+        description: "Date the first lead was created"
+        meta:
+          dimension:
+            type: timestamp
+            time_intervals: [DAY, WEEK, MONTH, QUARTER, YEAR]
+      - name: latest_lead_date
+        description: "Date the most recent lead was created"
+        meta:
+          dimension:
+            type: timestamp
+            time_intervals: [DAY, WEEK, MONTH, QUARTER, YEAR]
+
+      # ── Activity metrics ──
+      - name: total_activities
+        description: "Total sales activities (calls, demos, contracts)"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_activities:
+              type: sum
+              label: "Total Activities"
+      - name: total_calls
+        description: "Number of calls made"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_calls:
+              type: sum
+              label: "Total Calls"
+      - name: total_demos
+        description: "Number of demos held"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_demos:
+              type: sum
+              label: "Total Demos"
+      - name: total_contracts_sent
+        description: "Number of contracts sent"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_contracts_sent:
+              type: sum
+              label: "Total Contracts Sent"
+      - name: total_call_duration_seconds
+        description: "Total time spent on calls in seconds"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_call_duration:
+              type: sum
+              label: "Total Call Duration (sec)"
+      - name: first_activity_date
+        description: "Date of the first sales activity"
+        meta:
+          dimension:
+            type: timestamp
+            time_intervals: [DAY, WEEK, MONTH, QUARTER, YEAR]
+      - name: latest_activity_date
+        description: "Date of the most recent sales activity"
+        meta:
+          dimension:
+            type: timestamp
+            time_intervals: [DAY, WEEK, MONTH, QUARTER, YEAR]
+
+      # ── Product usage ──
+      - name: total_events
+        description: "Total product events tracked"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_total_events:
+              type: sum
+              label: "Total Events"
+      - name: active_users
+        description: "Number of users with at least one product event"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            sum_active_users:
+              type: sum
+              label: "Active Users"
+      - name: first_event_at
+        description: "Timestamp of the first product event"
+        meta:
+          dimension:
+            type: timestamp
+            time_intervals: [DAY, WEEK, MONTH, QUARTER, YEAR]
+      - name: latest_event_at
+        description: "Timestamp of the most recent product event"
+        meta:
+          dimension:
+            type: timestamp
+            time_intervals: [DAY, WEEK, MONTH, QUARTER, YEAR]
+
+      # ── Computed ratios ──
+      - name: win_rate
+        description: "Percentage of deals won (won / total)"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            average_win_rate:
+              type: average
+              label: "Avg Win Rate"
+              format: 'percent'
+              round: 1
+      - name: lead_conversion_rate
+        description: "Percentage of leads that converted"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            average_lead_conversion_rate:
+              type: average
+              label: "Avg Lead Conversion Rate"
+              format: 'percent'
+              round: 1
+      - name: cost_per_converted_lead
+        description: "Average marketing cost per converted lead"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            average_cost_per_converted_lead:
+              type: average
+              label: "Avg Cost per Converted Lead"
+              format: 'usd'
+      - name: events_per_user
+        description: "Average product events per user"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            average_events_per_user:
+              type: average
+              label: "Avg Events per User"
+              round: 1
+      - name: revenue_per_user
+        description: "Won deal revenue divided by total users"
+        meta:
+          dimension:
+            type: number
+            hidden: true
+          metrics:
+            average_revenue_per_user:
+              type: average
+              label: "Avg Revenue per User"
+              format: 'usd'
