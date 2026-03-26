@@ -5,7 +5,7 @@ models:
         is_admin_saas_demo: 'true'
       primary_key: lead_id
       ai_hint: |
-          CloseRate Kevin: Primary leads model for analyzing top-of-funnel performance and SDR effectiveness. Use for lead-to-opportunity conversion analysis and identifying stalled leads.
+        CloseRate Kevin: Primary leads model for analyzing top-of-funnel performance and SDR effectiveness. Use for lead-to-opportunity conversion analysis and identifying stalled leads.
 
       joins:
         - join: users
@@ -13,18 +13,19 @@ models:
           type: left
           relationship: many-to-one
         - join: deals
-          sql_on: ${leads.deal_id} = ${deals.deal_id}   
+          sql_on: ${leads.deal_id} = ${deals.deal_id}
           type: left
           relationship: many-to-one
 
       parameters:
         utm_toggle:
           label: "Lead source toggle"
-          description: "Group leads by marketing lead source, campaign name, or campaign medium"
+          description: "Group leads by marketing lead source, campaign name, or campaign
+            medium"
           options:
-                - "lead_source"
-                - "utm_medium"
-                - "campaign_name"
+            - "lead_source"
+            - "utm_medium"
+            - "campaign_name"
           default: "lead_source"
           multiple: false
 
@@ -34,7 +35,7 @@ models:
           description: "Percentage of leads that converted"
           sql: "(${converted_leads} / NULLIF(${unique_lead_count}, 0))"
           format: percent
-          groups: ['Lead Performance']
+          groups: [ 'Lead Performance' ]
           spotlight:
             visibility: show
             categories:
@@ -49,7 +50,7 @@ models:
           description: "Average number of days it takes for a lead to convert"
           sql: DATE_DIFF(${converted_at}, ${created_at}, DAY)
           format: '0.0'
-          groups: ['Lead Performance']
+          groups: [ 'Lead Performance' ]
           spotlight:
             visibility: show
             categories:
@@ -63,7 +64,7 @@ models:
           description: "Average cost per converted lead"
           sql: SAFE_DIVIDE(${total_lead_cost}, ${converted_leads})
           format: '$#,##0.00'
-          groups: ['Lead Performance']
+          groups: [ 'Lead Performance' ]
           spotlight:
             visibility: show
             categories:
@@ -91,10 +92,10 @@ models:
                 Combine with stage-specific metrics like contacted_leads, qualified_leads, converted_leads to calculate stage-to-stage conversion rates.
             open_leads:
               type: count_distinct
-              groups: ['Lead Counts']
+              groups: [ 'Lead Counts' ]
               description: Count unique leads with status = 'Open'
               filters:
-                - lead_status: ['new', 'contacted', 'qualified']
+                - lead_status: [ 'new', 'contacted', 'qualified' ]
               spotlight:
                 visibility: show
                 categories:
@@ -102,7 +103,7 @@ models:
                   - marketing
             contacted_leads:
               type: count_distinct
-              groups: ['Lead Counts']
+              groups: [ 'Lead Counts' ]
               description: Count unique leads with status = 'Contacted'
               filters:
                 - lead_status: 'contacted'
@@ -113,7 +114,7 @@ models:
                   - marketing
             qualified_leads:
               type: count_distinct
-              groups: ['Lead Counts']
+              groups: [ 'Lead Counts' ]
               description: Count unique leads with status = 'Contacted'
               filters:
                 - lead_status: 'qualified'
@@ -124,7 +125,7 @@ models:
                   - marketing
             converted_leads:
               type: count_distinct
-              groups: ['Lead Counts']
+              groups: [ 'Lead Counts' ]
               description: Count unique leads with status = 'Converted'
               filters:
                 - lead_status: 'converted'
@@ -135,7 +136,7 @@ models:
                   - marketing
             disqualified_leads:
               type: count_distinct
-              groups: ['Lead Counts']
+              groups: [ 'Lead Counts' ]
               description: Count unique leads with status = 'Disqulified'
               filters:
                 - lead_status: 'disqualified'
@@ -144,6 +145,16 @@ models:
                 categories:
                   - leads
                   - marketing
+            lead_id_count_distinct_of_lead_i_d:
+              label: Count distinct of Lead ID
+              description: Count distinct of Lead ID on the table Leads with filters
+                leads.sdr_team
+              type: count_distinct
+              format: "#,##0.0"
+              filters:
+                - sdr_team:
+                    - Team Australia
+                    - Team Japan
       - name: user_id
         description: "The identifier for a user"
         meta:
@@ -187,10 +198,12 @@ models:
           additional_dimensions:
             is_paid_marketing:
               type: boolean
-              sql: IF(LOWER(lead_source) IN ('google ads', 'facebook ads', 'linkedin'), TRUE, FALSE)
+              sql: IF(LOWER(lead_source) IN ('google ads', 'facebook ads', 'linkedin'), TRUE,
+                FALSE)
             utm_toggle:
               label: "Lead source toggle"
-              description: "Group leads by marketing lead source, campaign name, or campaign medium"
+              description: "Group leads by marketing lead source, campaign name, or campaign
+                medium"
               type: string
               sql: |
                 case 
@@ -198,13 +211,15 @@ models:
                   when ${lightdash.parameters.leads.utm_toggle} = 'utm_medium' then ${utm_medium}
                   when ${lightdash.parameters.leads.utm_toggle} = 'campaign_name' then ${campaign_name}
                 end
-            selected_dim: 
+            selected_dim:
               label: Selected dimension
               type: string
-              description: The dimension that is currently selected in the utm_toggle parameter
+              description: The dimension that is currently selected in the utm_toggle
+                parameter
               sql: ${lightdash.parameters.leads.utm_toggle}}
       - name: campaign_name
-        description: "Name of the marketing campaign associated with the lead (if available)"
+        description: "Name of the marketing campaign associated with the lead (if
+          available)"
         meta:
           dimension:
             type: string
@@ -225,7 +240,7 @@ models:
               type: sum
               description: "The sum of lead_cost for selected leads"
               format: '$#,##0'
-              groups: ['Lead Costs']
+              groups: [ 'Lead Costs' ]
               ai_hint: |
                 Sum of attributed lead acquisition costs. Useful for calculating CAC and evaluating marketing ROI when joined to deals.total_amount.
               spotlight:
@@ -237,14 +252,15 @@ models:
               type: average
               description: "The average lead cost for selected leads"
               format: '$#,##0.00'
-              groups: ['Lead Costs']
+              groups: [ 'Lead Costs' ]
               spotlight:
                 visibility: show
                 categories:
                   - leads
                   - marketing
       - name: lead_status
-        description: "Current status of the lead (e.g., Open, Contacted, Converted, Disqualified)"
+        description: "Current status of the lead (e.g., Open, Contacted, Converted,
+          Disqualified)"
         meta:
           dimension:
             type: string
@@ -259,10 +275,21 @@ models:
             type: timestamp
             time_intervals:
               [
-                'DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER',
-                'DAY_OF_MONTH_NUM', 'DAY_OF_YEAR_NUM', 'WEEK_NUM', 'MONTH_NUM',
-                'QUARTER_NUM', 'YEAR_NUM', 'HOUR_OF_DAY_NUM',
-                'DAY_OF_WEEK_NAME', 'MONTH_NAME', 'QUARTER_NAME'
+                'DAY',
+                'WEEK',
+                'MONTH',
+                'YEAR',
+                'QUARTER',
+                'DAY_OF_MONTH_NUM',
+                'DAY_OF_YEAR_NUM',
+                'WEEK_NUM',
+                'MONTH_NUM',
+                'QUARTER_NUM',
+                'YEAR_NUM',
+                'HOUR_OF_DAY_NUM',
+                'DAY_OF_WEEK_NAME',
+                'MONTH_NAME',
+                'QUARTER_NAME'
               ]
       - name: converted_at
         description: "The timestamp at which the lead was converted"
@@ -271,10 +298,21 @@ models:
             type: timestamp
             time_intervals:
               [
-                'DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER',
-                'DAY_OF_MONTH_NUM', 'DAY_OF_YEAR_NUM', 'WEEK_NUM', 'MONTH_NUM',
-                'QUARTER_NUM', 'YEAR_NUM', 'HOUR_OF_DAY_NUM',
-                'DAY_OF_WEEK_NAME', 'MONTH_NAME', 'QUARTER_NAME'
+                'DAY',
+                'WEEK',
+                'MONTH',
+                'YEAR',
+                'QUARTER',
+                'DAY_OF_MONTH_NUM',
+                'DAY_OF_YEAR_NUM',
+                'WEEK_NUM',
+                'MONTH_NUM',
+                'QUARTER_NUM',
+                'YEAR_NUM',
+                'HOUR_OF_DAY_NUM',
+                'DAY_OF_WEEK_NAME',
+                'MONTH_NAME',
+                'QUARTER_NAME'
               ]
       - name: sdr_team
         description: "The team the SDR belongs to"
