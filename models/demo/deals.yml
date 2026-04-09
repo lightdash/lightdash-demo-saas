@@ -17,6 +17,14 @@ models:
                 - 1500
           default: 1000
           multiple: false
+        date_range:
+          label: "Date Range"
+          description: "Choose a date range for period-over-period comparison"
+          options:
+            - "yesterday"
+            - "last 7 days"
+            - "last 30 days"
+          default: "last 7 days"
 
     joins:
       - join: activities
@@ -131,6 +139,29 @@ models:
         dimension:
           type: date
           time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
+        additional_dimensions:
+          created_date_period:
+            description: Date period bucket (current period, previous period, previous year, or out of range) driven by the Date Range parameter
+            type: string
+            sql: >
+              CASE
+                WHEN (
+                  (${lightdash.parameters.deals.date_range} = 'yesterday' AND DATE(${created_date}) = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 7 days' AND DATE(${created_date}) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY) AND DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 30 days' AND DATE(${created_date}) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY) AND DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))
+                ) THEN 'current period'
+                WHEN (
+                  (${lightdash.parameters.deals.date_range} = 'yesterday' AND DATE(${created_date}) = DATE_SUB(CURRENT_DATE(), INTERVAL 2 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 7 days' AND DATE(${created_date}) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY) AND DATE_SUB(CURRENT_DATE(), INTERVAL 8 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 30 days' AND DATE(${created_date}) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 60 DAY) AND DATE_SUB(CURRENT_DATE(), INTERVAL 31 DAY))
+                ) THEN 'previous period'
+                WHEN (
+                  (${lightdash.parameters.deals.date_range} = 'yesterday' AND DATE(${created_date}) = DATE_SUB(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR), INTERVAL 1 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 7 days' AND DATE(${created_date}) BETWEEN DATE_SUB(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR), INTERVAL 7 DAY) AND DATE_SUB(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR), INTERVAL 1 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 30 days' AND DATE(${created_date}) BETWEEN DATE_SUB(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR), INTERVAL 30 DAY) AND DATE_SUB(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR), INTERVAL 1 DAY))
+                ) THEN 'previous year'
+                ELSE 'out of range'
+              END
     - name: account_id
       description: "The Account ID from our database"
       meta:
@@ -243,3 +274,75 @@ models:
             format: '$#,##0'
             filters:
               - stage: 'Won'
+
+          current_period_amount:
+            groups: ['Period over Period']
+            label: Current Period Amount
+            description: Total deal amount for the current period (driven by Date Range parameter)
+            type: number
+            format: '$#,##0'
+            sql: >
+              SUM(CASE
+                WHEN (
+                  (${lightdash.parameters.deals.date_range} = 'yesterday' AND DATE(${TABLE}.created_date) = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 7 days' AND DATE(${TABLE}.created_date) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 7 DAY) AND DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 30 days' AND DATE(${TABLE}.created_date) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY) AND DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY))
+                ) THEN ${TABLE}.amount
+                ELSE 0
+              END)
+
+          previous_period_amount:
+            groups: ['Period over Period']
+            label: Previous Period Amount
+            description: Total deal amount for the previous period (driven by Date Range parameter)
+            type: number
+            format: '$#,##0'
+            sql: >
+              SUM(CASE
+                WHEN (
+                  (${lightdash.parameters.deals.date_range} = 'yesterday' AND DATE(${TABLE}.created_date) = DATE_SUB(CURRENT_DATE(), INTERVAL 2 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 7 days' AND DATE(${TABLE}.created_date) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 14 DAY) AND DATE_SUB(CURRENT_DATE(), INTERVAL 8 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 30 days' AND DATE(${TABLE}.created_date) BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 60 DAY) AND DATE_SUB(CURRENT_DATE(), INTERVAL 31 DAY))
+                ) THEN ${TABLE}.amount
+                ELSE 0
+              END)
+
+          previous_year_amount:
+            groups: ['Period over Period']
+            label: Previous Year Amount
+            description: Total deal amount for the same period last year (driven by Date Range parameter)
+            type: number
+            format: '$#,##0'
+            sql: >
+              SUM(CASE
+                WHEN (
+                  (${lightdash.parameters.deals.date_range} = 'yesterday' AND DATE(${TABLE}.created_date) = DATE_SUB(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR), INTERVAL 1 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 7 days' AND DATE(${TABLE}.created_date) BETWEEN DATE_SUB(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR), INTERVAL 7 DAY) AND DATE_SUB(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR), INTERVAL 1 DAY))
+                  OR (${lightdash.parameters.deals.date_range} = 'last 30 days' AND DATE(${TABLE}.created_date) BETWEEN DATE_SUB(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR), INTERVAL 30 DAY) AND DATE_SUB(DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR), INTERVAL 1 DAY))
+                ) THEN ${TABLE}.amount
+                ELSE 0
+              END)
+
+          pct_change_vs_previous_period:
+            groups: ['Period over Period']
+            label: "% Change vs Previous Period"
+            description: Percentage change in deal amount compared to the previous period
+            type: number
+            format: percent
+            sql: >
+              SAFE_DIVIDE(
+                ${current_period_amount} - ${previous_period_amount},
+                ${previous_period_amount}
+              )
+
+          pct_change_vs_previous_year:
+            groups: ['Period over Period']
+            label: "% Change vs Previous Year"
+            description: Percentage change in deal amount compared to the same period last year
+            type: number
+            format: percent
+            sql: >
+              SAFE_DIVIDE(
+                ${current_period_amount} - ${previous_year_amount},
+                ${previous_year_amount}
+              )
