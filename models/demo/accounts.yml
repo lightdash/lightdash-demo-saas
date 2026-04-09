@@ -72,16 +72,4 @@ models:
         meta:
           dimension:
             type: string
-      - name: estimated_annual_recurring_revenue
-        description: "Estimated annual recurring revenue for this business"
-        meta:
-          dimension:
-            type: number
-            hidden: true
-          metrics:
-            total_estimated_annual_recurring_revenue:
-              type: sum
-              label: "Total Estimated ARR"
-              description: "Sum of all estimated annual recurring revenue"
-              format: 'usd'
             
