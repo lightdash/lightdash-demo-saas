@@ -1,0 +1,197 @@
+models:
+- name: pop_deals_demo
+  meta:
+    label: "PoP Deals Demo"
+    description: >
+      Demo model showing how to build period-over-period percentage change metrics
+      using parameters. Users select a time range and see current period values alongside
+      % change vs previous period and previous year.
+    primary_key: deal_id
+    order_fields_by: 'index'
+
+    parameters:
+      date_range:
+        label: "Date Range"
+        description: "Choose a date range for period-over-period comparison"
+        options:
+          - "last month"
+          - "last 3 months"
+          - "last 6 months"
+        default: "last 3 months"
+
+  columns:
+    - name: deal_id
+      meta:
+        dimension:
+          type: string
+          hidden: true
+
+    - name: account_id
+      meta:
+        dimension:
+          type: number
+          hidden: true
+
+    - name: stage
+      description: "Deal stage (New, Qualified, PoC, Negotiation, Won, Lost)"
+      meta:
+        dimension:
+          type: string
+
+    - name: plan
+      description: "Plan type (Basic or Professional)"
+      meta:
+        dimension:
+          type: string
+
+    - name: seats
+      meta:
+        dimension:
+          type: number
+          hidden: true
+
+    - name: created_date
+      description: "The date the deal was created"
+      meta:
+        dimension:
+          type: date
+          time_intervals: ['DAY', 'WEEK', 'MONTH', 'MONTH_NAME', 'YEAR', 'QUARTER']
+        additional_dimensions:
+          created_date_period:
+            label: Date Period
+            description: >
+              Categorizes each deal as current period, previous period, previous year,
+              or out of range based on the Date Range parameter selection
+            type: string
+            sql: >
+              CASE
+                WHEN DATE(${created_date}) BETWEEN
+                  CASE
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last month' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 3 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 3 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 6 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 6 MONTH)
+                  END
+                  AND DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 DAY)
+                THEN 'current period'
+
+                WHEN DATE(${created_date}) BETWEEN
+                  CASE
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last month' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 2 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 3 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 6 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 6 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 12 MONTH)
+                  END
+                  AND
+                  CASE
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last month' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 MONTH) - 1
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 3 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 3 MONTH) - 1
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 6 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 6 MONTH) - 1
+                  END
+                THEN 'previous period'
+
+                WHEN DATE(${created_date}) BETWEEN
+                  CASE
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last month' THEN DATE_SUB(DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 YEAR), INTERVAL 1 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 3 months' THEN DATE_SUB(DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 YEAR), INTERVAL 3 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 6 months' THEN DATE_SUB(DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 YEAR), INTERVAL 6 MONTH)
+                  END
+                  AND DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 YEAR) - 1
+                THEN 'previous year'
+
+                ELSE 'out of range'
+              END
+
+    - name: amount
+      description: "Deal amount"
+      meta:
+        dimension:
+          type: number
+          hidden: true
+        metrics:
+          total_amount:
+            type: sum
+            label: Total Amount
+            description: Sum of deal amounts
+            format: '$#,##0'
+
+          current_period_amount:
+            groups: ['Period over Period']
+            label: Current Period Amount
+            description: Total deal amount for the selected date range
+            type: number
+            format: '$#,##0'
+            sql: >
+              SUM(CASE
+                WHEN DATE(${TABLE}.created_date) BETWEEN
+                  CASE
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last month' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 3 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 3 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 6 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 6 MONTH)
+                  END
+                  AND DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 DAY)
+                THEN ${TABLE}.amount
+              END)
+
+          previous_period_amount:
+            groups: ['Period over Period']
+            label: Previous Period Amount
+            description: Total deal amount for the equivalent previous period
+            type: number
+            format: '$#,##0'
+            sql: >
+              SUM(CASE
+                WHEN DATE(${TABLE}.created_date) BETWEEN
+                  CASE
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last month' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 2 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 3 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 6 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 6 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 12 MONTH)
+                  END
+                  AND
+                  CASE
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last month' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 MONTH) - 1
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 3 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 3 MONTH) - 1
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 6 months' THEN DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 6 MONTH) - 1
+                  END
+                THEN ${TABLE}.amount
+              END)
+
+          previous_year_amount:
+            groups: ['Period over Period']
+            label: Previous Year Amount
+            description: Total deal amount for the same period one year ago
+            type: number
+            format: '$#,##0'
+            sql: >
+              SUM(CASE
+                WHEN DATE(${TABLE}.created_date) BETWEEN
+                  CASE
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last month' THEN DATE_SUB(DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 YEAR), INTERVAL 1 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 3 months' THEN DATE_SUB(DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 YEAR), INTERVAL 3 MONTH)
+                    WHEN ${lightdash.parameters.pop_deals_demo.date_range} = 'last 6 months' THEN DATE_SUB(DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 YEAR), INTERVAL 6 MONTH)
+                  END
+                  AND DATE_SUB(DATE_TRUNC(CURRENT_DATE(), MONTH), INTERVAL 1 YEAR) - 1
+                THEN ${TABLE}.amount
+              END)
+
+          pct_change_vs_previous_period:
+            groups: ['Period over Period']
+            label: "% Change vs Previous Period"
+            description: Percentage change in deal amount compared to the previous period
+            type: number
+            format: percent
+            sql: >
+              SAFE_DIVIDE(
+                ${current_period_amount} - ${previous_period_amount},
+                ${previous_period_amount}
+              )
+
+          pct_change_vs_previous_year:
+            groups: ['Period over Period']
+            label: "% Change vs Previous Year"
+            description: Percentage change in deal amount compared to the same period last year
+            type: number
+            format: percent
+            sql: >
+              SAFE_DIVIDE(
+                ${current_period_amount} - ${previous_year_amount},
+                ${previous_year_amount}
+              )
