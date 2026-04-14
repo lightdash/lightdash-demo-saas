@@ -243,10 +243,3 @@ models:
             format: '$#,##0'
             filters:
               - stage: 'Won'
-          min_won_deal_amount:
-            groups: ['Deal Amounts']
-            type: min
-            description: The minimum deal amount for won deals
-            format: '$#,##0'
-            filters:
-              - stage: 'Won'
