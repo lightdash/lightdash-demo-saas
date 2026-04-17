@@ -54,7 +54,7 @@ models:
 
     columns:
       - name: plan
-        description: "Deal plan type (Basic, Professional)"
+        description: "Deal plan type (Basic, Professional) -hello"
         meta:
           dimension:
             type: string
