@@ -1,76 +1,114 @@
 models:
   - name: tracks
     meta:
-      required_filters:
-        - timestamp: 'inThePast 12 months'
-      required_attributes:
-        is_admin_saas_demo: 'true'
+      description: Product event tracking — one row per event emitted by a user in the application.
       primary_key: id
+      ai_hint: |
+          This is a product analytics events table. Each row is a single tracked event (login,
+          feature usage, workspace action, etc.) tied to a user via user_id.
+          Use this for product engagement, feature adoption, DAU/WAU/MAU, and funnel analysis.
       joins:
         - join: users
           sql_on: ${tracks.user_id} = ${users.user_id}
           type: left
           relationship: many-to-one
-        - join: accounts
-          sql_on: ${users.account_id} = ${accounts.account_id}
-          type: left
-          relationship: many-to-one
 
     columns:
+      - name: id
+        description: "Unique identifier for the tracked event"
+        tests:
+          - not_null
+          - unique
+        meta:
+          dimension:
+            type: string
+            label: Event ID
+          metrics:
+            total_events:
+              type: count
+              description: "Total number of tracked events"
+              groups: ['Event Volume']
+            total_logins:
+              label: Total Logins
+              description: "Count of successful login events"
+              type: count
+              filters:
+                - name: login_successful
+              groups: ['Event Volume']
+            total_failed_logins:
+              label: Total Failed Logins
+              description: "Count of failed login events"
+              type: count
+              filters:
+                - name: login_failed
+              groups: ['Event Volume']
+            total_reports_generated:
+              label: Total Reports Generated
+              description: "Count of report_generated events"
+              type: count
+              filters:
+                - name: report_generated
+              groups: ['Feature Usage']
+            total_workflows_created:
+              label: Total Workflows Created
+              description: "Count of workflow_created events"
+              type: count
+              filters:
+                - name: workflow_created
+              groups: ['Feature Usage']
+
       - name: user_id
-        description: "The unique identifier for a user"
+        description: "The user who triggered the event"
+        tests:
+          - not_null
         meta:
           dimension:
             type: string
             label: User ID
           metrics:
-            unique_user_count:
+            active_users:
               type: count_distinct
-              description: The unique number of users based on distinct users IDs
-      - name: id
-        description: "The unique identifier for an event"
-        meta:
-          dimension:
-            type: string
-            label: Track ID
-          metrics:
-            event_count:
+              label: Active Users
+              description: "Distinct users with at least one tracked event"
+              groups: ['Engagement']
+            users_with_successful_login:
               type: count_distinct
-              description: The unique number of events
+              label: Users With Successful Login
+              description: "Distinct users that have logged in successfully"
+              filters:
+                - name: login_successful
+              groups: ['Engagement']
+
       - name: name
-        description: "The name of the event that has been triggered on the platform"
+        description: "Name of the event (e.g. login_successful, report_generated)"
+        tests:
+          - not_null
         meta:
           dimension:
             type: string
+            label: Event Name
+          metrics:
+            unique_event_names:
+              type: count_distinct
+              label: Unique Event Names
+              description: "Distinct number of event names observed"
+              groups: ['Event Volume']
+
       - name: timestamp
-        description: "The timestamp at which the event was triggered"
+        description: "Timestamp when the event occurred"
+        tests:
+          - not_null
         meta:
           dimension:
             type: timestamp
-            time_intervals:
-              [
-                'RAW',
-                'DAY',
-                'WEEK',
-                'MONTH',
-                'YEAR',
-                'QUARTER',
-                'DAY_OF_WEEK_INDEX',
-                'DAY_OF_MONTH_NUM',
-                'DAY_OF_YEAR_NUM',
-                'WEEK_NUM',
-                'MONTH_NUM',
-                'QUARTER_NUM',
-                'YEAR_NUM',
-                'HOUR_OF_DAY_NUM',
-                'DAY_OF_WEEK_NAME',
-                'MONTH_NAME',
-                'QUARTER_NAME'
-              ]
-          additional_dimensions:
-            days_since_user_created:
-              type: number
-              description: "The number of days between when the user was created and this event."
-              sql: DATE_DIFF(${TABLE}.timestamp, ${users.created_at}, DAY)
-            
-        
+            label: Event Timestamp
+            time_intervals: ['DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER', 'MONTH_NAME', 'QUARTER_NAME']
+
+    metrics:
+      events_per_active_user:
+        type: number
+        label: Events per Active User
+        description: "Average number of tracked events per active user"
+        sql: SAFE_DIVIDE(${total_events}, ${active_users})
+        format: '#,##0.00'
+        groups: ['Engagement']
