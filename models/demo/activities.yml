@@ -163,3 +163,8 @@ models:
               label: Average call time
               description: "Average call time in seconds"
               groups: ['Call Metrics']
+            min_call_time:
+              type: min
+              label: Minimum call time
+              description: "Minimum call time in seconds"
+              groups: ['Call Metrics']
