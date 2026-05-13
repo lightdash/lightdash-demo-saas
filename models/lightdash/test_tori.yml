@@ -1,0 +1,43 @@
+version: 2
+models:
+  - name: test_tori
+    description: SQL model for Test tori
+    meta:
+      label: Test tori
+    columns:
+      - name: city
+        meta:
+          dimension:
+            type: string
+      - name: state
+        meta:
+          dimension:
+            type: string
+      - name: user_id
+        meta:
+          dimension:
+            type: string
+      - name: valid_to
+        meta:
+          dimension:
+            type: timestamp
+      - name: address_id
+        meta:
+          dimension:
+            type: string
+      - name: valid_from
+        meta:
+          dimension:
+            type: timestamp
+      - name: postal_code
+        meta:
+          dimension:
+            type: string
+      - name: street_address
+        meta:
+          dimension:
+            type: string
+      - name: country_iso_code
+        meta:
+          dimension:
+            type: string
