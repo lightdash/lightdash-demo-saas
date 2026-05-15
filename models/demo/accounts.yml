@@ -84,4 +84,10 @@ models:
               label: "Total Estimated ARR"
               description: "Sum of all estimated annual recurring revenue"
               format: 'usd'
+      - name: arr_band
+        description: "Bucketed ARR tier for this account: Small (<$1M), Medium ($1M-$10M), or Large ($10M+)"
+        meta:
+          dimension:
+            type: string
+            label: ARR Band
             
