@@ -1,0 +1,48 @@
+models:
+  - name: fct_user_tracks
+    config:
+      meta:
+        required_attributes:
+          is_admin_saas_demo: 'true'
+        primary_key: id
+        joins:
+          - join: dim_users
+            sql_on: ${fct_user_tracks.user_id} = ${dim_users.user_id}
+            type: left
+            relationship: many-to-one
+
+    columns:
+      - name: user_id
+        description: "The unique identifier for a user"
+        meta:
+          dimension:
+            type: string
+            label: User ID
+          metrics:
+            unique_user_count:
+              type: count_distinct
+              description: The unique number of users based on distinct users IDs
+      - name: event_id
+        description: "The unique identifier for an event"
+        meta:
+          dimension:
+            type: string
+            label: Track ID
+          metrics:
+            event_count:
+              type: count_distinct
+              description: The unique number of events
+      - name: event_name
+        description: "The name of the event that has been triggered on the platform"
+        meta:
+          dimension:
+            type: string
+          metrics:
+            distinct_event_types:
+              type: count_distinct
+              description: Number of distinct event types triggered — a proxy for product breadth of usage
+      - name: timestamp
+        description: "The timestamp at which the event was triggered"
+        meta:
+          dimension:
+            type: timestamp
