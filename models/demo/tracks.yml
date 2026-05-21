@@ -3,8 +3,6 @@ models:
     meta:
       required_filters:
         - timestamp: 'inThePast 12 months'
-      required_attributes:
-        is_admin_saas_demo: 'true'
       primary_key: id
       joins:
         - join: users
