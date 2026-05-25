@@ -5,7 +5,7 @@ models:
     primary_key: deal_id
     order_fields_by: 'index'
     ai_hint: |
-          CloseRate Kevin: Primary deals model for analyzing pipeline progression and win/loss performance. Use for stage-to-stage conversion analysis and calculating win rates.
+          Primary deals model for analyzing pipeline progression and win/loss performance. Use for stage-to-stage conversion analysis and calculating win rates.
 
     metrics:
         selected_kpi:
