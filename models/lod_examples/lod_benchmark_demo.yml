@@ -1,7 +1,7 @@
 models:
   - name: lod_benchmark_demo
     meta:
-      label: "LOD Demo: Benchmark Unaffected by Filters"
+      label: "Level of Detail Demo: Benchmark Unaffected by Filters"
       description: >
         Demonstrates the need for benchmark/target metrics that stay constant
         regardless of dimension filters.
