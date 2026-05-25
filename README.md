@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains customer relationship data that tracks the complete journey from company acquisition through individual user engagement. The data follows a hierarchical structure designed to provide insights into sales performance, user adoption, and customer success patterns.
+This repository contains customer relationship data that tracks the complete journey from company acquisition through to individual user engagement. The data follows a hierarchical structure designed to provide insights into sales performance, user adoption, and customer success patterns.
 
 ## Data Structure
 
