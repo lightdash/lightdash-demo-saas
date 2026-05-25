@@ -68,3 +68,14 @@ parameters:
           - 1500
     default: 1000
     multiple: false
+
+  kpi_selector:
+    label: "KPI Metric"
+    description: "Select which metric to display in the chart"
+    options:
+      - total_revenue
+      - won_revenue
+      - deal_count
+      - win_rate
+    default: total_revenue
+    multiple: false
