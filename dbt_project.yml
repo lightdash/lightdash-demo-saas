@@ -15,9 +15,6 @@ clean-targets:
 models:
   lightdash_demo_saas:
     +materialized: table
-    fanouts_examples:
-     +meta:
-        group_label: fanouts
     maps_examples:
      +meta:
         group_label: maps
