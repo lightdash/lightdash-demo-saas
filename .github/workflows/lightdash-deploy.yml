@@ -9,7 +9,30 @@ env:
   DBT_VERSION: "1.9.0"
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      dbt: ${{ steps.filter.outputs.dbt }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            dbt:
+              - 'models/**'
+              - 'seeds/**'
+              - 'macros/**'
+              - 'tests/**'
+              - 'dbt_project.yml'
+              - 'lightdash.config.yml'
+              - '.github/workflows/lightdash-deploy.yml'
+
   deploy:
+    needs: changes
+    if: needs.changes.outputs.dbt == 'true'
     runs-on: ubuntu-latest
 
     steps:
