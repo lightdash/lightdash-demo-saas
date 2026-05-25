@@ -1,0 +1,57 @@
+models:
+  - name: stg_users
+    columns:
+      - name: user_id
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: string
+      - name: account_id
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: string
+      - name: email
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: string
+      - name: job_title
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: string
+      - name: is_marketing_opted_in
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: boolean
+      - name: experience_in_years
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: number
+      - name: created_at
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: timestamp
+      - name: first_logged_in_at
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: timestamp
+      - name: latest_logged_in_at
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: timestamp
