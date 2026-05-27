@@ -18,16 +18,16 @@ models:
     demo:
       +tags: lightdash_demo
     maps_examples:
-     +meta:
+      +meta:
         group_label: maps
-        +tags: lightdash_demo
+      +tags: lightdash_demo
     lod_examples:
-     +meta:
+      +meta:
         group_label: lod
-    pop_examples:
+    pop_example:
       +meta:
         group_label: pop
-        +tags: lightdash_demo
+      +tags: lightdash_demo
 
 seeds:
   lightdash_demo_saas:
