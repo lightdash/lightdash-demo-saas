@@ -15,12 +15,19 @@ clean-targets:
 models:
   lightdash_demo_saas:
     +materialized: table
+    demo:
+      +tags: lightdash_demo
     maps_examples:
      +meta:
         group_label: maps
+        +tags: lightdash_demo
     lod_examples:
      +meta:
         group_label: lod
+    pop_examples:
+      +meta:
+        group_label: pop
+        +tags: lightdash_demo
 
 seeds:
   lightdash_demo_saas:
