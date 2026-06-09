@@ -3,6 +3,28 @@ models:
     meta:
       primary_key: deal_id
       description: One row per deal in our CRM. Tracks pipeline stage, plan, seats, and amount.
+      parameters:
+        kpi_selector:
+          label: KPI Metric
+          description: Choose which KPI the Selected KPI metric should display
+          options:
+            - total_revenue
+            - won_revenue
+            - deal_count
+            - win_rate
+          default: total_revenue
+      metrics:
+        selected_kpi:
+          label: Selected KPI
+          description: Dynamic metric that changes based on the KPI Metric parameter selection
+          type: number
+          sql: |
+            CASE
+              WHEN ${lightdash.parameters.kpi_selector} = 'total_revenue' THEN ${deals.total_amount}
+              WHEN ${lightdash.parameters.kpi_selector} = 'won_revenue' THEN ${deals.total_won_amount}
+              WHEN ${lightdash.parameters.kpi_selector} = 'deal_count' THEN ${deals.unique_deals}
+              WHEN ${lightdash.parameters.kpi_selector} = 'win_rate' THEN ${deals.win_rate} * 100
+            END
       joins:
         - join: accounts
           sql_on: ${deals.account_id} = ${accounts.account_id}
