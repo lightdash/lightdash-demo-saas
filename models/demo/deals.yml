@@ -164,14 +164,6 @@ models:
               when stage = 'Won' then 5
               when stage = 'Lost' then 6
               end
-    - name: plan
-      description: "The plan the prospect is interested in (Basic or Professional)"
-      meta:
-        dimension:
-          type: string
-          colors:
-            'Basic': "#C0C0C0"
-            'Professional': "#FFD700"
     - name: seats
       description: "The number of seats they are purchasing"
       meta:
