@@ -1,0 +1,60 @@
+chartConfig:
+  config:
+    eChartsConfig:
+      legend:
+        show: true
+      series:
+        - encode:
+            xRef:
+              field: accounts_segment
+            yRef:
+              field: deals_win_rate
+          isFilteredOut: false
+          label:
+            position: top
+            show: true
+          type: bar
+          yAxisIndex: 0
+    layout:
+      stack: true
+      xField: accounts_segment
+      yField:
+        - deals_win_rate
+  type: cartesian
+contentType: chart
+dashboardSlug: sales-overview-wip
+description: Deal win rate broken down by customer segment
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensionOverrides: {}
+  dimensions:
+    - accounts_segment
+    - accounts_industry
+  exploreName: accounts
+  filters:
+    dimensions:
+      and: []
+      id: a1b2c3d4-0002-4000-8000-000000000002
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - deals_win_rate
+  sorts:
+    - descending: true
+      fieldId: deals_win_rate
+  tableCalculations: []
+name: Win Rate by Segment
+pivotConfig:
+  columns:
+    - accounts_industry
+slug: win-rate-by-segment
+spaceSlug: shared/demo-space/sales-marketing
+tableConfig:
+  columnOrder:
+    - accounts_segment
+    - accounts_industry
+    - deals_win_rate
+tableName: accounts
+verification: null
+version: 1

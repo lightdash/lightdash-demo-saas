@@ -1,0 +1,50 @@
+chartConfig:
+  config:
+    comparisonFormat: raw
+    comparisonLabel: Compared to Previous Month
+    flipColors: false
+    selectedField: deals_win_rate
+    showBigNumberLabel: false
+    showComparison: true
+  type: big_number
+contentType: chart
+dashboardSlug: sales-overview-wip
+description: ""
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensionOverrides: {}
+  dimensions:
+    - deals_plan
+    - deals_created_date_month
+  exploreName: deals
+  filters:
+    dimensions:
+      and:
+        - id: 3d4d8335-8973-4432-bdc8-4d171f42a2e2
+          operator: equals
+          required: false
+          target:
+            fieldId: deals_plan
+          values:
+            - Basic
+      id: 552d1e26-5b32-4895-a03a-01695b00745c
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - deals_win_rate
+  sorts:
+    - descending: true
+      fieldId: deals_created_date_month
+  tableCalculations: []
+name: Win Rate Basic Plan
+slug: win-rate-basic-plan
+spaceSlug: shared/demo-space/sales-marketing
+tableConfig:
+  columnOrder:
+    - deals_plan
+    - deals_created_date_month
+    - deals_win_rate
+tableName: deals
+verification: null
+version: 1

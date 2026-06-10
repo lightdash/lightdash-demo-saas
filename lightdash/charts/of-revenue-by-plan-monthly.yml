@@ -1,0 +1,111 @@
+chartConfig:
+  config:
+    eChartsConfig:
+      series:
+        - encode:
+            xRef:
+              field: deals_created_date_month
+            yRef:
+              field: _of_deal_value
+              pivotValues:
+                - field: deals_plan
+                  value: Enterprise
+          isFilteredOut: false
+          label:
+            position: inside
+            show: true
+          stack: _of_deal_value
+          type: bar
+          yAxisIndex: 0
+        - encode:
+            xRef:
+              field: deals_created_date_month
+            yRef:
+              field: _of_deal_value
+              pivotValues:
+                - field: deals_plan
+                  value: Professional
+          isFilteredOut: false
+          label:
+            position: inside
+            show: true
+          stack: _of_deal_value
+          type: bar
+          yAxisIndex: 0
+        - encode:
+            xRef:
+              field: deals_created_date_month
+            yRef:
+              field: _of_deal_value
+              pivotValues:
+                - field: deals_plan
+                  value: Basic
+          isFilteredOut: false
+          label:
+            position: inside
+            show: true
+          stack: _of_deal_value
+          type: bar
+          yAxisIndex: 0
+      tooltip: ""
+    layout:
+      flipAxes: false
+      stack: stack
+      xField: deals_created_date_month
+      yField:
+        - _of_deal_value
+    metadata:
+      _of_total_deal_value.Basic:
+        color: "#a78bfa"
+      test.Basic:
+        color: "#ffc658"
+      test.Professional:
+        color: "#a78bfa"
+  type: cartesian
+contentType: chart
+dashboardSlug: sales-overview-wip
+description: ""
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensionOverrides: {}
+  dimensions:
+    - deals_created_date_month
+    - deals_plan
+  exploreName: deals
+  filters: {}
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - deals_total_amount
+  sorts:
+    - descending: true
+      fieldId: deals_created_date_month
+  tableCalculations:
+    - displayName: "% of Deal Value"
+      format:
+        round: 1
+        separator: default
+        type: percent
+      name: _of_deal_value
+      sql: |-
+        ((${deals.total_amount} /
+        sum(${deals.total_amount}) over (
+            partition by ${deals.created_date_month}
+        )))
+      type: number
+name: "% of Revenue by Plan Monthly"
+pivotConfig:
+  columns:
+    - deals_plan
+slug: of-revenue-by-plan-monthly
+spaceSlug: shared/demo-space/sales-marketing
+tableConfig:
+  columnOrder:
+    - deals_created_date_month
+    - deals_plan
+    - deals_total_amount
+    - _of_deal_value
+tableName: deals
+verification: null
+version: 1

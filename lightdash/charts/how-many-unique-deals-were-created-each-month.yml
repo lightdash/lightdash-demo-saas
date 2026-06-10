@@ -1,0 +1,61 @@
+chartConfig:
+  config:
+    eChartsConfig:
+      series:
+        - color: "#ff7eb9"
+          encode:
+            xRef:
+              field: deals_created_date_month
+            yRef:
+              field: deals_unique_deals
+          isFilteredOut: false
+          label:
+            position: top
+            show: true
+            showLabel: false
+            showSeriesName: false
+            showValue: true
+          type: line
+          yAxisIndex: 0
+      showAxisTicks: false
+      tooltip: >-
+        <b>Month:</b> ${deals_created_date_month}<br/><b>Unique Deals:</b>
+        ${deals_unique_deals}
+    layout:
+      flipAxes: false
+      stack: none
+      xField: deals_created_date_month
+      yField:
+        - deals_unique_deals
+  type: cartesian
+contentType: chart
+dashboardSlug: sales-overview-wip
+description: >-
+  Tracks the monthly trend of unique deal creation over time, showing when deal
+  activity peaks and declines.
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensionOverrides: {}
+  dimensions:
+    - deals_created_date_month
+  exploreName: deals
+  filters: {}
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - deals_unique_deals
+  sorts:
+    - descending: true
+      fieldId: deals_created_date_month
+  tableCalculations: []
+name: How many unique deals were created each month?
+slug: how-many-unique-deals-were-created-each-month
+spaceSlug: shared/demo-space/sales-marketing
+tableConfig:
+  columnOrder:
+    - deals_created_date_month
+    - deals_unique_deals
+tableName: deals
+verification: null
+version: 1

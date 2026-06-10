@@ -1,0 +1,50 @@
+chartConfig:
+  config:
+    comparisonFormat: raw
+    comparisonLabel: Compared to Previous Month
+    flipColors: false
+    selectedField: deals_win_rate
+    showBigNumberLabel: false
+    showComparison: true
+  type: big_number
+contentType: chart
+dashboardSlug: sales-overview-wip
+description: ""
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensionOverrides: {}
+  dimensions:
+    - deals_plan
+    - deals_created_date_month
+  exploreName: deals
+  filters:
+    dimensions:
+      and:
+        - id: 3d4d8335-8973-4432-bdc8-4d171f42a2e2
+          operator: equals
+          required: false
+          target:
+            fieldId: deals_plan
+          values:
+            - Professional
+      id: 7b0d397d-3a86-4f64-bdd4-04eb9a4f2408
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - deals_win_rate
+  sorts:
+    - descending: true
+      fieldId: deals_created_date_month
+  tableCalculations: []
+name: Win Rate Professional
+slug: win-rate-professional
+spaceSlug: shared/demo-space/sales-marketing
+tableConfig:
+  columnOrder:
+    - deals_plan
+    - deals_created_date_month
+    - deals_win_rate
+tableName: deals
+verification: null
+version: 1

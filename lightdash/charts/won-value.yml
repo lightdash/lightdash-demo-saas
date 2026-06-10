@@ -1,0 +1,50 @@
+chartConfig:
+  config:
+    comparisonFormat: percentage
+    comparisonLabel: Compared to last month
+    flipColors: false
+    label: Closed Won Value
+    selectedField: deals_total_amount
+    showBigNumberLabel: false
+    showComparison: true
+  type: big_number
+contentType: chart
+dashboardSlug: sales-overview-wip
+description: Total won deal value this month relative to the previous
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensionOverrides: {}
+  dimensions:
+    - deals_created_date_month
+  exploreName: deals
+  filters:
+    dimensions:
+      and:
+        - id: cf43bc99-6f61-42fc-bb8b-d14766fef1ce
+          operator: equals
+          required: false
+          target:
+            fieldId: deals_stage
+          values:
+            - Won
+            - Closed Won
+      id: bbe783e5-0311-46ef-ba99-37b9bbd0cc92
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - deals_total_amount
+  sorts:
+    - descending: true
+      fieldId: deals_total_amount
+  tableCalculations: []
+name: Closed Won Value
+slug: won-value
+spaceSlug: shared/demo-space/sales-marketing
+tableConfig:
+  columnOrder:
+    - deals_created_date_month
+    - deals_total_amount
+tableName: deals
+verification: null
+version: 1

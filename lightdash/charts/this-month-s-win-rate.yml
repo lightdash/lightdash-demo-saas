@@ -1,0 +1,39 @@
+chartConfig:
+  config:
+    comparisonFormat: percentage
+    comparisonLabel: Compared to Last Month
+    flipColors: false
+    label: This Month's Win Rate
+    selectedField: deals_win_rate
+    showBigNumberLabel: true
+    showComparison: true
+  type: big_number
+contentType: chart
+dashboardSlug: sales-overview-wip
+description: This month's win rate so far
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensionOverrides: {}
+  dimensions:
+    - deals_created_date_month
+  exploreName: deals
+  filters: {}
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - deals_win_rate
+  sorts:
+    - descending: true
+      fieldId: deals_win_rate
+  tableCalculations: []
+name: Win Rate
+slug: this-month-s-win-rate
+spaceSlug: shared/demo-space/sales-marketing
+tableConfig:
+  columnOrder:
+    - deals_created_date_month
+    - deals_win_rate
+tableName: deals
+verification: null
+version: 1
