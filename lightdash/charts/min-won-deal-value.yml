@@ -1,0 +1,34 @@
+chartConfig:
+  config:
+    label: Min Won Deal Value
+    selectedField: deals_min_won_deal_value
+    showBigNumberLabel: true
+    showComparison: false
+  type: big_number
+contentType: chart
+dashboardSlug: sales-overview-wip
+description: The smallest deal value among won deals
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensionOverrides: {}
+  dimensions: []
+  exploreName: deals
+  filters: {}
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - deals_min_won_deal_value
+  sorts:
+    - descending: false
+      fieldId: deals_min_won_deal_value
+  tableCalculations: []
+name: Min Won Deal Value
+slug: min-won-deal-value
+spaceSlug: shared/demo-space/sales-marketing
+tableConfig:
+  columnOrder:
+    - deals_min_won_deal_value
+tableName: deals
+verification: null
+version: 1

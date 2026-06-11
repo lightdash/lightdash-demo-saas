@@ -458,6 +458,18 @@ tiles:
     w: 11
     x: 25
     "y": 12
+  - h: 3
+    properties:
+      chartName: Min Won Deal Value
+      chartSlug: min-won-deal-value
+      hideTitle: false
+      title: ""
+    tabUuid: 27d2573e-5c2f-4551-b86e-45d70c13ac5c
+    tileSlug: min-won-deal-value
+    type: saved_chart
+    w: 11
+    x: 25
+    "y": 19
   - h: 4
     properties:
       chartName: Q3 Revenue YoY

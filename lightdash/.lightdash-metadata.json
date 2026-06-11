@@ -1,27 +1,27 @@
 {
   "version": 1,
   "charts": {
-    "avg-deal-size-by-segment": "2026-06-10T18:25:09.781Z",
-    "win-rate-by-segment": "2026-06-10T18:25:09.781Z",
-    "won-deals-by-industry": "2026-06-10T18:25:09.781Z",
-    "win-rate-professional": "2026-06-10T18:25:09.781Z",
-    "pipeline-value": "2026-06-10T18:25:09.781Z",
-    "2025-revenue": "2026-06-10T18:25:09.781Z",
-    "sales-funnel": "2026-06-10T18:25:09.781Z",
-    "win-rate-basic-plan": "2026-06-10T18:25:09.781Z",
-    "this-month-s-win-rate": "2026-06-10T18:25:09.781Z",
-    "top-10-industries-by-avg-won-deal-value": "2026-06-10T18:25:09.781Z",
-    "of-revenue-by-plan-monthly": "2026-06-10T18:25:09.781Z",
-    "monthly-won-deals-and-cumulative-deal-value": "2026-06-10T18:25:09.781Z",
-    "won-value": "2026-06-10T18:25:09.781Z",
-    "enterprise-win-rate": "2026-06-10T18:25:09.781Z",
-    "yoy-revenue": "2026-06-10T18:25:09.781Z",
-    "how-many-unique-deals-were-created-each-month": "2026-06-10T18:25:09.781Z",
-    "won-revenue-by-segment": "2026-06-10T18:25:09.781Z",
-    "how-does-basic-plan-deal-revenue-compare-year-over-year-from-march-2025-to-march-2026": "2026-06-10T18:25:09.781Z",
-    "avg-days-in-sales-cycle": "2026-06-10T18:25:10.024Z"
+    "avg-deal-size-by-segment": "2026-06-11T20:29:41.949Z",
+    "win-rate-by-segment": "2026-06-11T20:29:41.949Z",
+    "won-deals-by-industry": "2026-06-11T20:29:41.949Z",
+    "win-rate-professional": "2026-06-11T20:29:41.949Z",
+    "pipeline-value": "2026-06-11T20:29:41.949Z",
+    "2025-revenue": "2026-06-11T20:29:41.949Z",
+    "sales-funnel": "2026-06-11T20:29:41.949Z",
+    "win-rate-basic-plan": "2026-06-11T20:29:41.949Z",
+    "this-month-s-win-rate": "2026-06-11T20:29:41.949Z",
+    "top-10-industries-by-avg-won-deal-value": "2026-06-11T20:29:41.949Z",
+    "of-revenue-by-plan-monthly": "2026-06-11T20:29:41.949Z",
+    "monthly-won-deals-and-cumulative-deal-value": "2026-06-11T20:29:41.949Z",
+    "won-value": "2026-06-11T20:29:41.949Z",
+    "enterprise-win-rate": "2026-06-11T20:29:41.949Z",
+    "yoy-revenue": "2026-06-11T20:29:41.949Z",
+    "how-many-unique-deals-were-created-each-month": "2026-06-11T20:29:41.949Z",
+    "won-revenue-by-segment": "2026-06-11T20:29:41.949Z",
+    "how-does-basic-plan-deal-revenue-compare-year-over-year-from-march-2025-to-march-2026": "2026-06-11T20:29:41.949Z",
+    "avg-days-in-sales-cycle": "2026-06-11T20:29:42.359Z"
   },
   "dashboards": {
-    "sales-overview-wip": "2026-06-10T18:25:09.340Z"
+    "sales-overview-wip": "2026-06-11T20:29:41.401Z"
   }
 }
