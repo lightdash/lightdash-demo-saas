@@ -87,6 +87,7 @@ models:
                   - marketing
               ai_hint: |
                 CloseRate Kevin: Use unique_lead_count as your base metric for total lead volume.
+                For weekly or monthly time series, group by created_at with the desired grain (WEEK or MONTH). Apply any date-range filter to created_at (the timestamp), not to the pre-truncated created_at_week dimension — filtering on the truncated field causes grain-mismatch and returns zero rows.
                 Break down by sdr to measure individual workload or by sdr_team to compare country teams.
                 Combine with stage-specific metrics like contacted_leads, qualified_leads, converted_leads to calculate stage-to-stage conversion rates.
             open_leads:
@@ -257,6 +258,11 @@ models:
         meta:
           dimension:
             type: timestamp
+            ai_hint: |
+              CloseRate Kevin: Primary date dimension for lead time-series analysis.
+              WEEK and MONTH grains are both populated — if a weekly query returns zero rows, the most common cause is applying the date-range filter to created_at_week (already truncated) rather than to created_at.
+              Always filter on created_at when scoping to a relative window (e.g. last 6 months), then group by the desired grain (WEEK or MONTH).
+              The lead dates are dynamically offset so the data always reflects recent history relative to today.
             time_intervals:
               [
                 'DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER',
