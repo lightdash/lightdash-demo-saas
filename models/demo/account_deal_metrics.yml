@@ -84,6 +84,13 @@ models:
               type: sum
               format: 'usd'
 
+      - name: created_date
+        description: "The date the deal was created"
+        meta:
+          dimension:
+            type: date
+            time_intervals: ['DAY', 'WEEK', 'MONTH', 'QUARTER', 'YEAR']
+
       - name: total_accounts_in_segment
         description: >
           Pre-computed total number of accounts in this segment, calculated

@@ -36,7 +36,8 @@ account_deals as (
         d.deal_id,
         d.plan,
         d.stage,
-        d.amount
+        d.amount,
+        d.created_date
     from accounts a
     inner join deals d on a.account_id = d.account_id
 )
@@ -51,6 +52,7 @@ select
     ad.plan,
     ad.stage,
     ad.amount,
+    ad.created_date,
     st.total_accounts_in_segment
 from account_deals ad
 left join segment_totals st on ad.segment = st.segment
