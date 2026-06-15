@@ -84,4 +84,10 @@ models:
               label: "Total Estimated ARR"
               description: "Sum of all estimated annual recurring revenue"
               format: 'usd'
+            avg_arr_per_account:
+              type: number
+              label: "Avg ARR per Account"
+              description: "Average estimated annual recurring revenue per account, calculated as Total Estimated ARR divided by Unique Accounts"
+              sql: "${total_estimated_annual_recurring_revenue} / NULLIF(${unique_accounts}, 0)"
+              format: 'usd'
             
