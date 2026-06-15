@@ -21,6 +21,11 @@ models:
             END
 
     joins:
+      - join: accounts
+        sql_on: ${deals.account_id} = ${accounts.account_id}
+        type: left
+        relationship: many-to-one
+        fields: [account_name, industry, segment]
       - join: activities
         sql_on: ${deals.deal_id} = ${activities.deal_id}
         type: left
