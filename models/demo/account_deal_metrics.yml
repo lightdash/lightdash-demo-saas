@@ -19,6 +19,19 @@ models:
           format: percent
           sql: CAST(${unique_accounts_with_won_deals} AS FLOAT64) / NULLIF(${segment_total_accounts}, 0)
 
+      joins:
+        - join: deals
+          sql_on: ${account_deal_metrics.deal_id} = ${deals.deal_id}
+          type: left
+          relationship: many-to-one
+          fields:
+            - created_date_day
+            - created_date_week
+            - created_date_month
+            - created_date_month_name
+            - created_date_quarter
+            - created_date_year
+
     columns:
       - name: account_id
         meta:
