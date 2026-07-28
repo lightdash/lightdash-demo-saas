@@ -17,17 +17,17 @@ models:
           default: "activity_type"
           multiple: false
 
-    metrics:
-      avg_activities_per_lead:
-        type: average
-        description: "Average number of activities per lead"
-        sql: SAFE_DIVIDE(${total_activities}, NULLIF(${lead_id_total_leads},0))
-        groups: ['Activity Performance']
-      demos_held:
-        type: count
-        description: "Total number of demo activities held"
-        sql: CASE WHEN ${activity_type} = 'demo_held' THEN 1 ELSE NULL END
-        groups: ['Activity Performance']
+      metrics:
+        avg_activities_per_lead:
+          type: average
+          description: "Average number of activities per lead"
+          sql: SAFE_DIVIDE(${total_activities}, NULLIF(${lead_id_total_leads},0))
+          groups: ['Activity Performance']
+        demos_held:
+          type: count
+          description: "Total number of demo activities held"
+          sql: CASE WHEN ${activity_type} = 'demo_held' THEN 1 ELSE NULL END
+          groups: ['Activity Performance']
 
     columns:
       - name: activity_id
