@@ -1,0 +1,27 @@
+models:
+  - name: stg_user_tracks
+    columns:
+      - name: user_id
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: string
+      - name: id
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: string
+      - name: name
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: string
+      - name: timestamp
+        description: ""
+        config:
+          meta:
+            dimension:
+              type: timestamp

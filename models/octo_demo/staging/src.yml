@@ -1,0 +1,6 @@
+sources:
+  - name: octo_demo
+    schema: dbt_jhitchcock
+    tables:
+      - name: users_raw
+      - name: tracks_raw
