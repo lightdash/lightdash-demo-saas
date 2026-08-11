@@ -19,9 +19,10 @@ models:
 
       metrics:
         avg_activities_per_lead:
-          type: average
+          type: number
           description: "Average number of activities per lead"
           sql: SAFE_DIVIDE(${total_activities}, NULLIF(${lead_id_total_leads},0))
+          format: '0.0'
           groups: ['Activity Performance']
         demos_held:
           type: count
@@ -80,23 +81,24 @@ models:
           dimension:
             type: string
             label: Lead ID
-          lead_id_total_leads:
-            label: Total Leads
-            description: 'Count distinct of Lead id on the table Activities '
-            type: count_distinct
-            format: '#,##0.000'
-            filters: []
+          metrics:
+            lead_id_total_leads:
+              label: Total Leads
+              description: 'Count distinct of Lead id on the table Activities '
+              type: count_distinct
+              format: '#,##0.000'
       - name: deal_id
         description: "The deal this activity is associated with"
         meta:
           dimension:
             type: string
             label: Deal ID
-          lead_id_total_leads:
-            label: Total Deals
-            description: 'Count distinct of Lead id on the table Activities '
-            type: count_distinct
-            format: '#,##0.000'
+          metrics:
+            deal_id_total_deals:
+              label: Total Deals
+              description: 'Count distinct of Deal id on the table Activities '
+              type: count_distinct
+              format: '#,##0.000'
       - name: sdr_name
         description: "Sales Development Rep who performed the activity"
         tests:

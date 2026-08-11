@@ -179,6 +179,13 @@ models:
                 visibility: show
                 categories:
                   - sales
+            deal_count:
+              type: count_distinct
+              description: "The number of unique deals associated with leads"
+              spotlight:
+                visibility: show
+                categories:
+                  - sales
       - name: lead_source
         description: "The name of the source which drew in the lead"
         meta:
@@ -208,6 +215,15 @@ models:
         meta:
           dimension:
             type: string
+          metrics:
+            unique_campaign_count:
+              type: count_distinct
+              description: "The unique number of marketing campaigns"
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
+                  - marketing
       - name: utm_medium
         description: "UTM medium used for the lead (e.g., email, cpc, social)"
         meta:

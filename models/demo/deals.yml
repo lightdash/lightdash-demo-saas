@@ -242,6 +242,21 @@ models:
               visibility: show
               categories:
                 - sales
+          total_open_amount:
+            groups: ['Deal Amounts']
+            type: sum
+            description: The sum of deal amount for open deals (not yet Won or Lost)
+            format: '$#,##0'
+            filters:
+              - stage: ['New', 'Qualified', 'PoC', 'Negotiation']
+            ai_hint: |
+              CloseRate Kevin: Use total_open_amount to measure the value of open pipeline (deals still in progress).
+              Track over time to monitor pipeline coverage. Compare against total_won_amount to gauge future revenue potential.
+            spotlight:
+              visibility: show
+              categories:
+                - kpi
+                - sales
           total_amount_thousands:
             groups: ['Deal Amounts']
             description: The sum of deal amount for selected deals, shown in thousands
@@ -257,6 +272,20 @@ models:
               visibility: show
               categories:
                 - kpi
+          average_won_amount:
+            groups: ['Deal Amounts']
+            type: average
+            description: The average deal amount for won deals
+            format: '$#,##0'
+            filters:
+              - stage: 'Won'
+            ai_hint: |
+              CloseRate Kevin: Use average_won_amount to measure average won deal size.
+              Compare across segments, industries, or time periods to spot changes in deal quality.
+            spotlight:
+              visibility: show
+              categories:
+                - sales
           max_won_deal_amount:
             groups: ['Deal Amounts']
             type: max
