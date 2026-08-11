@@ -39,6 +39,7 @@ models:
                 visibility: show
                 categories:
                   - kpi
+                  - marketing
             unique_smb_accounts:
               label: Unique SMB Accounts
               type: count_distinct
@@ -77,7 +78,7 @@ models:
         meta:
           dimension:
             type: number
-            hidden: true
+            hidden: false
           metrics:
             total_estimated_annual_recurring_revenue:
               type: sum
