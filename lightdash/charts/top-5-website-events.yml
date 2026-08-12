@@ -1,0 +1,71 @@
+chartConfig:
+  config:
+    eChartsConfig:
+      legend:
+        show: false
+      series:
+        - color: "#FFC54D"
+          encode:
+            xRef:
+              field: tracks_name
+            yRef:
+              field: tracks_event_count
+          isFilteredOut: false
+          label:
+            position: inside
+            show: true
+          type: bar
+          yAxisIndex: 0
+      tooltip: ""
+      xAxis:
+        - inverse: true
+          name: "Event "
+          sortType: default
+      yAxis:
+        - {}
+        - name: Total Events
+    layout:
+      flipAxes: true
+      xField: tracks_name
+      yField:
+        - tracks_event_count
+  type: cartesian
+contentType: chart
+dashboardSlug: wip-product-analytics
+description: ""
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensions:
+    - tracks_name
+  exploreName: tracks
+  filters: {}
+  limit: 5
+  metricOverrides: {}
+  metrics:
+    - tracks_event_count
+    - tracks_unique_user_count
+  sorts:
+    - descending: true
+      fieldId: tracks_event_count
+  tableCalculations:
+    - displayName: Events per User
+      format:
+        separator: default
+        type: default
+      name: events_per_user
+      sql: ROUND(${tracks.event_count} / ${tracks.unique_user_count}, 2)
+      type: number
+  timezone: project_timezone
+name: Top 5 Website Events
+slug: top-5-website-events
+spaceSlug: executive-reporting-git-owned
+tableConfig:
+  columnOrder:
+    - tracks_name
+    - tracks_event_count
+    - tracks_unique_user_count
+    - events_per_user
+tableName: tracks
+verification: null
+version: 1

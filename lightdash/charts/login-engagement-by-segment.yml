@@ -1,0 +1,81 @@
+chartConfig:
+  config:
+    groupColorOverrides:
+      Enterprise: "#8001FE"
+      Midmarket: "#D1CCFF"
+      SMB: "#4C0198"
+    groupFieldIds:
+      - accounts_segment
+    groupLabelOverrides: {}
+    groupSortOverrides:
+      - Enterprise
+      - Midmarket
+      - SMB
+    groupValueOptionOverrides: {}
+    isDonut: true
+    legendMaxItemLength: 30
+    legendPosition: horizontal
+    metricId: tracks_event_count
+    showLegend: true
+    showPercentage: true
+    showValue: false
+    valueLabel: inside
+  type: pie
+contentType: chart
+dashboardSlug: wip-product-analytics
+description: What % of successful logins are completed by each customer segment?
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensions:
+    - accounts_segment
+  exploreName: tracks
+  filters:
+    dimensions:
+      and:
+        - id: b14a6c24-3f56-49f3-9f77-e07ba3e8f8ce
+          operator: inThePast
+          required: true
+          settings:
+            unitOfTime: months
+          target:
+            fieldId: tracks_timestamp
+          values:
+            - 12
+        - id: 034963f2-5065-40e6-88f0-051bbe433b75
+          operator: equals
+          required: false
+          target:
+            fieldId: tracks_name
+          values:
+            - login_successful
+      id: a79eba3b-6f5b-430f-9fc8-6625364ced9d
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - tracks_event_count
+    - tracks_unique_user_count
+  sorts:
+    - descending: true
+      fieldId: tracks_event_count
+  tableCalculations:
+    - displayName: Avg. Events per User
+      format:
+        separator: default
+        type: default
+      name: avg_events_per_user
+      sql: Round(${tracks.event_count} / ${tracks.unique_user_count}, 2)
+      type: number
+  timezone: project_timezone
+name: Login Engagement
+slug: login-engagement-by-segment
+spaceSlug: executive-reporting-git-owned
+tableConfig:
+  columnOrder:
+    - accounts_segment
+    - tracks_event_count
+    - tracks_unique_user_count
+    - avg_events_per_user
+tableName: tracks
+verification: null
+version: 1

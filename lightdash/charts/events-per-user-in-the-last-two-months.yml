@@ -1,0 +1,116 @@
+chartConfig:
+  config:
+    conditionalFormattings: []
+    eChartsConfig:
+      grid:
+        containLabel: true
+      legend:
+        orient: horizontal
+        show: true
+        type: plain
+      series:
+        - color: "#BFAAF9"
+          encode:
+            xRef:
+              field: tracks_timestamp_day
+            yRef:
+              field: tracks_unique_user_count
+          isFilteredOut: false
+          label:
+            position: top
+            show: true
+          type: bar
+          yAxisIndex: 0
+        - color: "#4C0198"
+          encode:
+            xRef:
+              field: tracks_timestamp_day
+            yRef:
+              field: avg_events_per_user
+          isFilteredOut: false
+          label:
+            position: top
+            show: true
+          showSymbol: true
+          smooth: false
+          type: line
+          yAxisIndex: 1
+      showAxisTicks: false
+      title:
+        text: Average User Events Per Day (Last 2 Months)
+      tooltip: "- Unique Users: ${tracks_unique_user_count}"
+      xAxis:
+        - name: Day
+          type: time
+      yAxis:
+        - name: Total Events
+          type: value
+        - name: Avg. Events per User
+    layout:
+      flipAxes: false
+      showGridX: false
+      stack: none
+      xField: tracks_timestamp_day
+      yField:
+        - tracks_unique_user_count
+        - avg_events_per_user
+  type: cartesian
+contentType: chart
+dashboardSlug: wip-product-analytics
+description: ""
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensions:
+    - tracks_timestamp_day
+  exploreName: tracks
+  filters:
+    dimensions:
+      and:
+        - id: f2e9e930-6edd-4621-9b04-7a5254b37d6c
+          operator: inThePast
+          required: false
+          settings:
+            completed: false
+            unitOfTime: days
+          target:
+            fieldFilterType: date
+            fieldId: tracks_timestamp_day
+          values:
+            - 58
+      id: a5ed8af9-cad9-4699-bdb8-c0110faf07f8
+  limit: 62
+  metricOverrides: {}
+  metrics:
+    - tracks_event_count
+    - tracks_unique_user_count
+  sorts:
+    - descending: false
+      fieldId: tracks_timestamp_day
+  tableCalculations:
+    - displayName: Avg. Events per User
+      format:
+        separator: default
+        type: default
+      name: avg_events_per_user
+      sql: ROUND(${tracks.event_count} / ${tracks.unique_user_count}, 2)
+      type: number
+  timezone: project_timezone
+name: Events per User
+slug: events-per-user-in-the-last-two-months
+spaceSlug: executive-reporting-git-owned
+tableConfig:
+  columnOrder:
+    - tracks_timestamp_day
+    - tracks_event_count
+    - tracks_unique_user_count
+    - avg_events_per_user
+tableName: tracks
+verification:
+  verifiedAt: "2026-08-12T16:56:20.065Z"
+  verifiedBy:
+    firstName: Tori
+    lastName: Whaley
+    userUuid: 61fc45a7-4b03-4d61-8e3c-2b0d9b4467e1
+verified: true
+version: 1

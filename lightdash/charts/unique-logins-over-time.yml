@@ -1,0 +1,137 @@
+chartConfig:
+  config:
+    spec:
+      $schema: https://vega.github.io/schema/vega-lite/v5.json
+      data:
+        name: table
+      description: Waterfall chart showing changes in active unique users per day.
+      encoding:
+        x:
+          axis:
+            format: "%b %d"
+            grid: false
+            labelAngle: -45
+            tickCount: day
+          field: tracks_timestamp_day
+          timeUnit: yearmonthdate
+          title: Date
+          type: temporal
+      layer:
+        - encoding:
+            color:
+              field: type
+              legend:
+                title: Change Type
+              scale:
+                domain:
+                  - increase
+                  - decrease
+                  - no_change
+                range:
+                  - "#BFAAF9"
+                  - "#F28B82"
+                  - "#E5E7EB"
+              type: nominal
+            tooltip:
+              - field: tracks_timestamp_day
+                timeUnit: yearmonthdate
+                title: Date
+              - field: tracks_unique_user_count
+                title: Total Users
+              - field: change
+                title: Change
+            "y":
+              field: base
+              title: Unique Active Users
+              type: quantitative
+            y2:
+              field: end
+          mark:
+            opacity: 1
+            type: bar
+        - encoding:
+            text:
+              field: change
+              format: +,d
+              type: quantitative
+            x:
+              field: tracks_timestamp_day
+              type: temporal
+            "y":
+              field: end
+              type: quantitative
+          mark:
+            align: left
+            baseline: middle
+            color: "#333"
+            dx: 50
+            dy: 10
+            fontWeight: bold
+            type: text
+      transform:
+        - sort:
+            - field: tracks_timestamp_day
+          window:
+            - as: previous_value
+              field: tracks_unique_user_count
+              op: lag
+        - as: change
+          calculate: datum.tracks_unique_user_count - datum.previous_value
+        - as: type
+          calculate: >-
+            datum.change > 0 ? 'increase' : datum.change < 0 ? 'decrease' :
+            'no_change'
+        - as: base
+          calculate: datum.previous_value || 0
+        - as: end
+          calculate: datum.base + datum.change
+  type: custom
+contentType: chart
+dashboardSlug: wip-product-analytics
+description: See how the number of unique users logging in evolves day to day
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensions:
+    - tracks_timestamp_day
+  exploreName: tracks
+  filters:
+    dimensions:
+      and:
+        - id: b14a6c24-3f56-49f3-9f77-e07ba3e8f8ce
+          operator: inThePast
+          required: true
+          settings:
+            completed: false
+            unitOfTime: days
+          target:
+            fieldId: tracks_timestamp
+          values:
+            - 58
+        - id: 401b9c4c-4ba7-4303-a1d3-774f1bdf615c
+          operator: equals
+          required: false
+          target:
+            fieldId: tracks_name
+          values:
+            - login_successful
+      id: 2ab57088-d1c2-43bd-8fd7-3b449238d1f9
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - tracks_unique_user_count
+  sorts:
+    - descending: true
+      fieldId: tracks_timestamp_day
+  tableCalculations: []
+  timezone: project_timezone
+name: Unique Logins
+slug: unique-logins-over-time
+spaceSlug: executive-reporting-git-owned
+tableConfig:
+  columnOrder:
+    - tracks_timestamp_day
+    - tracks_unique_user_count
+tableName: tracks
+verification: null
+version: 1

@@ -1,0 +1,112 @@
+chartConfig:
+  config:
+    eChartsConfig:
+      series:
+        - color: "#8001FE"
+          encode:
+            xRef:
+              field: users_created_at_month
+            yRef:
+              field: _of_users_opting_in_and_out_of_marketing
+              pivotValues:
+                - field: users_is_marketing_opted_in
+                  value: true
+          isFilteredOut: false
+          label:
+            position: inside
+            show: true
+          name: Marketing Opt IN
+          stack: _of_users_opting_in_and_out_of_marketing
+          type: bar
+          yAxisIndex: 0
+        - color: "#ffc54db8"
+          encode:
+            xRef:
+              field: users_created_at_month
+            yRef:
+              field: _of_users_opting_in_and_out_of_marketing
+              pivotValues:
+                - field: users_is_marketing_opted_in
+                  value: false
+          isFilteredOut: false
+          label:
+            position: inside
+            show: true
+          name: Marketing Opt OUT
+          stack: _of_users_opting_in_and_out_of_marketing
+          type: bar
+          yAxisIndex: 0
+      tooltip: ""
+      xAxis:
+        - name: User Created Month
+      yAxis:
+        - name: "% Users"
+        - {}
+    layout:
+      xField: users_created_at_month
+      yField:
+        - _of_users_opting_in_and_out_of_marketing
+    metadata:
+      _of_users_opting_in_and_out_of_marketing.false:
+        color: "#ffc54db8"
+      _of_users_opting_in_and_out_of_marketing.true:
+        color: "#8001FE"
+  type: cartesian
+contentType: chart
+dashboardSlug: wip-product-analytics
+description: ""
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensions:
+    - users_created_at_month
+    - users_is_marketing_opted_in
+  exploreName: users
+  filters:
+    dimensions:
+      and:
+        - id: d5b98573-635e-49f4-a078-ece591caf292
+          operator: inThePast
+          required: false
+          settings:
+            completed: false
+            unitOfTime: months
+          target:
+            fieldId: users_created_at_month
+          values:
+            - 12
+      id: 4dc36e3f-1626-4d64-9b3b-c085b81eb731
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - users_unique_users
+  sorts:
+    - descending: true
+      fieldId: users_created_at_month
+  tableCalculations:
+    - displayName: "% of Users Opting in and out of Marketing"
+      format:
+        round: 1
+        separator: default
+        type: percent
+      name: _of_users_opting_in_and_out_of_marketing
+      sql: >
+        ROUND((${users.unique_users} / SUM(${users.unique_users}) OVER
+        (PARTITION BY ${users.created_at_month})),2)
+      type: number
+  timezone: project_timezone
+name: "% of Users Opting IN/OUT of Marketing Over Time"
+pivotConfig:
+  columns:
+    - users_is_marketing_opted_in
+slug: of-users-opting-in-out-of-marketing-over-time
+spaceSlug: executive-reporting-git-owned
+tableConfig:
+  columnOrder:
+    - users_created_at_month
+    - users_is_marketing_opted_in
+    - users_unique_users
+    - _of_users_opting_in_and_out_of_marketing
+tableName: users
+verification: null
+version: 1

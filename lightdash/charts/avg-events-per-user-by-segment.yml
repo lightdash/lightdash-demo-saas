@@ -1,0 +1,89 @@
+chartConfig:
+  config:
+    columns:
+      tracks_event_count:
+        visible: false
+      tracks_unique_user_count:
+        visible: false
+    conditionalFormattings:
+      - color:
+          end: "#D1CCFF"
+          start: "#ffffff"
+        rule:
+          max: 3
+          min: 1
+        target:
+          fieldId: avg_events_per_user
+    hideRowNumbers: true
+    metricsAsRows: false
+    showColumnCalculation: false
+    showResultsTotal: false
+    showRowCalculation: false
+    showSubtotals: false
+    showTableNames: false
+  type: table
+contentType: chart
+dashboardSlug: wip-product-analytics
+description: ""
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensions:
+    - accounts_segment
+    - tracks_name
+  exploreName: tracks
+  filters:
+    dimensions:
+      and:
+        - id: b14a6c24-3f56-49f3-9f77-e07ba3e8f8ce
+          operator: inThePast
+          required: true
+          settings:
+            unitOfTime: months
+          target:
+            fieldId: tracks_timestamp
+          values:
+            - 12
+        - id: 034963f2-5065-40e6-88f0-051bbe433b75
+          operator: equals
+          required: false
+          target:
+            fieldId: tracks_name
+          values:
+            - login_successful
+            - api_call_made
+            - workspace_created
+      id: be19fae8-eaea-429b-8d38-61807b5793b3
+  limit: 500
+  metricOverrides: {}
+  metrics:
+    - tracks_event_count
+    - tracks_unique_user_count
+  sorts:
+    - descending: true
+      fieldId: tracks_event_count
+  tableCalculations:
+    - displayName: Avg. Events per User
+      format:
+        separator: default
+        type: default
+      name: avg_events_per_user
+      sql: Round(${tracks.event_count} / ${tracks.unique_user_count}, 2)
+      type: number
+  timezone: project_timezone
+name: Avg. Events per User by Segment
+pivotConfig:
+  columns:
+    - accounts_segment
+slug: avg-events-per-user-by-segment
+spaceSlug: executive-reporting-git-owned
+tableConfig:
+  columnOrder:
+    - accounts_segment
+    - tracks_name
+    - tracks_event_count
+    - tracks_unique_user_count
+    - avg_events_per_user
+tableName: tracks
+verification: null
+version: 1

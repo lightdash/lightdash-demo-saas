@@ -1,0 +1,54 @@
+chartConfig:
+  config:
+    groupColorOverrides:
+      Enterprise: "#2E8B57"
+      Midmarket: "#FFD700"
+      SMB: "#7B68EE"
+    groupFieldIds:
+      - accounts_segment
+    isDonut: true
+    legendPosition: horizontal
+    metricId: tracks_unique_user_count
+    showLegend: true
+    showPercentage: true
+    showValue: false
+    valueLabel: inside
+  type: pie
+contentType: chart
+dashboardSlug: wip-product-analytics
+description: ""
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensions:
+    - accounts_segment
+  exploreName: tracks
+  filters:
+    dimensions:
+      and:
+        - id: cb256b2d-b923-400c-9b14-6c974fb7ea34
+          operator: equals
+          target:
+            fieldId: tracks_name
+          values:
+            - workspace_created
+      id: workspace-filter
+  limit: 10
+  metricOverrides: {}
+  metrics:
+    - tracks_unique_user_count
+  sorts:
+    - descending: true
+      fieldId: tracks_unique_user_count
+  tableCalculations: []
+  timezone: project_timezone
+name: Workspace Created by Segment
+slug: workspace-created-by-segment
+spaceSlug: executive-reporting-git-owned
+tableConfig:
+  columnOrder:
+    - accounts_segment
+    - tracks_unique_user_count
+tableName: tracks
+verification: null
+version: 1

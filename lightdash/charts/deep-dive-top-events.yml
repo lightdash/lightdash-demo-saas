@@ -1,0 +1,79 @@
+chartConfig:
+  config:
+    columns:
+      tracks_event_count:
+        name: Total Events
+      tracks_unique_user_count:
+        name: Unique Users
+    conditionalFormattings:
+      - color:
+          end: "#D1CCFF"
+          start: "#ffffff"
+        rule:
+          max: auto
+          min: auto
+        target:
+          fieldId: tracks_event_count
+      - color:
+          end: "#D1CCFF"
+          start: "#ffffff"
+        rule:
+          max: auto
+          min: auto
+        target:
+          fieldId: tracks_unique_user_count
+      - color:
+          end: "#D1CCFF"
+          start: "#ffffff"
+        rule:
+          max: auto
+          min: auto
+        target:
+          fieldId: events_per_user
+    hideRowNumbers: false
+    metricsAsRows: false
+    showColumnCalculation: false
+    showResultsTotal: false
+    showRowCalculation: false
+    showSubtotals: false
+    showTableNames: true
+  type: table
+contentType: chart
+dashboardSlug: wip-product-analytics
+description: ""
+metricQuery:
+  additionalMetrics: []
+  customDimensions: []
+  dimensions:
+    - tracks_name
+  exploreName: tracks
+  filters: {}
+  limit: 10
+  metricOverrides: {}
+  metrics:
+    - tracks_event_count
+    - tracks_unique_user_count
+  sorts:
+    - descending: true
+      fieldId: tracks_event_count
+  tableCalculations:
+    - displayName: Events per User
+      format:
+        separator: default
+        type: default
+      name: events_per_user
+      sql: ROUND(${tracks.event_count} / ${tracks.unique_user_count}, 2)
+      type: number
+  timezone: project_timezone
+name: Deep Dive - Top Events
+slug: deep-dive-top-events
+spaceSlug: executive-reporting-git-owned
+tableConfig:
+  columnOrder:
+    - tracks_name
+    - tracks_event_count
+    - tracks_unique_user_count
+    - events_per_user
+tableName: tracks
+verification: null
+version: 1

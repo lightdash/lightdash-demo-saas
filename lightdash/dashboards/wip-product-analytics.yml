@@ -1,0 +1,337 @@
+config:
+  isDateZoomDisabled: false
+  pinnedParameters: []
+contentType: dashboard
+description: >-
+  Track your platform’s daily heartbeat - from event volume to engagement flow,
+  and spot where users are most active.
+filters:
+  dimensions:
+    - disabled: false
+      label: Day
+      operator: inThePast
+      settings:
+        completed: false
+        unitOfTime: days
+      target:
+        fieldId: tracks_timestamp_day
+        tableName: tracks
+      tileTargets:
+        events-per-user-in-the-last-two-months:
+          fieldId: tracks_timestamp_day
+          tableName: tracks
+      values:
+        - 15
+    - disabled: true
+      operator: equals
+      target:
+        fieldId: accounts_industry
+        tableName: accounts
+      tileTargets:
+        events-per-user-in-the-last-two-months:
+          fieldId: accounts_industry
+          tableName: accounts
+      values: []
+  metrics: []
+  tableCalculations: []
+name: Plumly Product Pulse Dashboard
+parameters: {}
+slug: wip-product-analytics
+spaceSlug: executive-reporting-git-owned
+tabs: []
+tiles:
+  - h: 6
+    properties:
+      content: >-
+
+
+        ---
+
+        This dashboard shows how Plumly’s users are engaging day by day —
+        helping you spot bursts of activity and steady growth across the
+        platform.
+
+
+        **📊 Event Volume** — total daily interactions happening across Plumly.
+
+        <br />
+
+
+        **👥 User Activity** — average actions per unique user (because every
+        click counts!).
+
+        <br />
+
+
+        **🍇 Engagement Flow** — a waterfall view showing daily shifts in active
+        logins and energy levels.
+
+
+        ---
+
+
+        If something looks unusually sweet (or a little sour 🍋),drop a note in
+        [#data-collab!](https://lightdash.slack.com/archives/C02FSS5HL2E) so the
+        team can take a closer look!
+      hideFrame: false
+      title: 🍑 Plumly Daily Engagement Dashboard
+    tabSlug: null
+    type: markdown
+    w: 23
+    x: 0
+    "y": 0
+  - h: 6
+    properties:
+      content: >-
+        <img
+        src="https://raw.githubusercontent.com/lightdash/lightdash-demo-saas/cd6440498b5fb0e8db1742ea867edabacfb8b792/assets/plumly/plumly-logo-horizontal.png"
+        alt="Plumly" style="width:100%;max-width:210px" />
+
+
+        **Turn thoughts into action — beautifully.**
+
+
+        Plumly is a subscription gifting platform that helps people send curated
+        treats, tiny luxuries, and thoughtful surprises all wrapped in color and
+        joy. Plumly makes giving feel easy, personal, and a little bit sweet.
+      hideFrame: false
+      title: ""
+    tabSlug: null
+    type: markdown
+    w: 13
+    x: 23
+    "y": 0
+  - h: 9
+    properties:
+      chartName: Events per User
+      chartSlug: events-per-user-in-the-last-two-months
+      hideTitle: false
+      title: ""
+    tabSlug: null
+    tileSlug: events-per-user-in-the-last-two-months
+    type: saved_chart
+    w: 19
+    x: 0
+    "y": 6
+  - h: 9
+    properties:
+      chartName: Unique Logins
+      chartSlug: unique-logins-over-time
+      hideTitle: false
+      title: ""
+    tabSlug: null
+    tileSlug: unique-logins-over-time
+    type: saved_chart
+    w: 17
+    x: 19
+    "y": 6
+  - h: 2
+    properties:
+      content: >-
+        <div><img
+        src="https://raw.githubusercontent.com/lightdash/lightdash-demo-saas/cd6440498b5fb0e8db1742ea867edabacfb8b792/assets/plumly/plumly-badge-purple.png"
+        alt="Plumly" style="width:30%;max-width:58px" /><img
+        src="https://raw.githubusercontent.com/lightdash/lightdash-demo-saas/cd6440498b5fb0e8db1742ea867edabacfb8b792/assets/plumly/plumly-badge-purple.png"
+        alt="Plumly" style="width:30%;max-width:58px" /><img
+        src="https://raw.githubusercontent.com/lightdash/lightdash-demo-saas/cd6440498b5fb0e8db1742ea867edabacfb8b792/assets/plumly/plumly-badge-purple.png"
+        alt="Plumly" style="width:30%;max-width:58px" /></div>
+      hideFrame: false
+      title: ""
+    tabSlug: null
+    type: markdown
+    w: 8
+    x: 0
+    "y": 15
+  - h: 2
+    properties:
+      content: >-
+        See which events drive the most user interaction and how efficiently
+        they convert engagement. Compare event popularity, unique user
+        participation, and events per user.
+      hideFrame: false
+      title: Top Engaged Events at a Glance
+    tabSlug: null
+    type: markdown
+    w: 20
+    x: 8
+    "y": 15
+  - h: 2
+    properties:
+      content: >-
+        <div><img
+        src="https://raw.githubusercontent.com/lightdash/lightdash-demo-saas/cd6440498b5fb0e8db1742ea867edabacfb8b792/assets/plumly/plumly-badge-purple.png"
+        alt="Plumly" style="width:30%;max-width:58px" /><img
+        src="https://raw.githubusercontent.com/lightdash/lightdash-demo-saas/cd6440498b5fb0e8db1742ea867edabacfb8b792/assets/plumly/plumly-badge-purple.png"
+        alt="Plumly" style="width:30%;max-width:58px" /><img
+        src="https://raw.githubusercontent.com/lightdash/lightdash-demo-saas/cd6440498b5fb0e8db1742ea867edabacfb8b792/assets/plumly/plumly-badge-purple.png"
+        alt="Plumly" style="width:30%;max-width:58px" /></div>
+      hideFrame: false
+      title: ""
+    tabSlug: null
+    type: markdown
+    w: 8
+    x: 28
+    "y": 15
+  - h: 9
+    properties:
+      chartName: Top 5 Website Events
+      chartSlug: top-5-website-events
+      hideTitle: false
+      title: ""
+    tabSlug: null
+    tileSlug: top-5-website-events
+    type: saved_chart
+    w: 23
+    x: 0
+    "y": 17
+  - h: 9
+    properties:
+      chartName: Deep Dive - Top Events
+      chartSlug: deep-dive-top-events
+      hideTitle: false
+      title: ""
+    tabSlug: null
+    tileSlug: deep-dive-top-events
+    type: saved_chart
+    w: 13
+    x: 23
+    "y": 17
+  - h: 4
+    properties:
+      content: >-
+
+
+        ---
+
+
+        Explore how each segment interacts across Plumly’s key touchpoints:
+
+
+        **- 🔑 Logins** — where users first pop in for a taste.
+
+        <br />
+
+        **- 📱 API Calls** — behind-the-scenes actions keeping things juicy.
+
+        <br />
+
+        **- 🖌️ Workspace Creation** — the creative core where users make Plumly
+        their own.
+
+
+        See which segments are driving the ripest engagement — and where there’s
+        room to grow. 🌱
+      hideFrame: false
+      title: 🍇 Engagement by Segment
+    tabSlug: null
+    type: markdown
+    w: 36
+    x: 0
+    "y": 26
+  - h: 8
+    properties:
+      chartName: Login Engagement
+      chartSlug: login-engagement-by-segment
+      hideTitle: false
+      title: ""
+    tabSlug: null
+    tileSlug: login-engagement-by-segment
+    type: saved_chart
+    w: 12
+    x: 0
+    "y": 30
+  - h: 8
+    properties:
+      chartName: API Call Engagement
+      chartSlug: api-call-engagement-by-segment
+      hideTitle: false
+      title: ""
+    tabSlug: null
+    tileSlug: api-call-engagement-by-segment
+    type: saved_chart
+    w: 12
+    x: 12
+    "y": 30
+  - h: 8
+    properties:
+      chartName: Workspace Created by Segment
+      chartSlug: workspace-created-by-segment
+      hideTitle: false
+      title: ""
+    tabSlug: null
+    tileSlug: workspace-created-by-segment
+    type: saved_chart
+    w: 12
+    x: 24
+    "y": 30
+  - h: 5
+    properties:
+      chartName: Avg. Events per User by Segment
+      chartSlug: avg-events-per-user-by-segment
+      hideTitle: false
+      title: ""
+    tabSlug: null
+    tileSlug: avg-events-per-user-by-segment
+    type: saved_chart
+    w: 36
+    x: 0
+    "y": 38
+  - h: 12
+    properties:
+      chartName: "% of Users Opting IN/OUT of Marketing Over Time"
+      chartSlug: of-users-opting-in-out-of-marketing-over-time
+      hideTitle: false
+      title: ""
+    tabSlug: null
+    tileSlug: of-users-opting-in-out-of-marketing-over-time
+    type: saved_chart
+    w: 30
+    x: 0
+    "y": 43
+  - h: 4
+    properties:
+      content: >-
+        <div><img
+        src="https://raw.githubusercontent.com/lightdash/lightdash-demo-saas/cd6440498b5fb0e8db1742ea867edabacfb8b792/assets/plumly/plumly-badge-yellow.png"
+        alt="Plumly" style="width:100%;max-width:170px" /></div>
+      hideFrame: false
+      title: ""
+    tabSlug: null
+    type: markdown
+    w: 6
+    x: 30
+    "y": 43
+  - h: 4
+    properties:
+      content: >-
+        <div><img
+        src="https://raw.githubusercontent.com/lightdash/lightdash-demo-saas/cd6440498b5fb0e8db1742ea867edabacfb8b792/assets/plumly/plumly-badge-purple.png"
+        alt="Plumly" style="width:100%;max-width:180px" /></div>
+      hideFrame: false
+      title: ""
+    tabSlug: null
+    type: markdown
+    w: 6
+    x: 30
+    "y": 47
+  - h: 4
+    properties:
+      content: >-
+        <div><img
+        src="https://raw.githubusercontent.com/lightdash/lightdash-demo-saas/cd6440498b5fb0e8db1742ea867edabacfb8b792/assets/plumly/plumly-badge-yellow.png"
+        alt="Plumly" style="width:100%;max-width:170px" /></div>
+      hideFrame: false
+      title: ""
+    tabSlug: null
+    type: markdown
+    w: 6
+    x: 30
+    "y": 51
+verification:
+  verifiedAt: "2026-08-12T16:55:50.333Z"
+  verifiedBy:
+    firstName: Tori
+    lastName: Whaley
+    userUuid: 61fc45a7-4b03-4d61-8e3c-2b0d9b4467e1
+verified: true
+version: 1
