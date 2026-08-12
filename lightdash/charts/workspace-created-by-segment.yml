@@ -1,19 +1,33 @@
 chartConfig:
   config:
-    groupColorOverrides:
-      Enterprise: "#2E8B57"
-      Midmarket: "#FFD700"
-      SMB: "#7B68EE"
-    groupFieldIds:
-      - accounts_segment
-    isDonut: true
-    legendPosition: horizontal
-    metricId: tracks_unique_user_count
-    showLegend: true
-    showPercentage: true
-    showValue: false
-    valueLabel: inside
-  type: pie
+    eChartsConfig:
+      legend:
+        show: false
+      series:
+        - color: "#8001FE"
+          encode:
+            xRef:
+              field: accounts_segment
+            yRef:
+              field: tracks_unique_user_count
+          isFilteredOut: false
+          label:
+            position: top
+            show: true
+          type: bar
+          yAxisIndex: 0
+      tooltip: ""
+      xAxis:
+        - name: Segment
+          sortType: default
+      yAxis:
+        - name: Unique Users
+    layout:
+      flipAxes: false
+      xField: accounts_segment
+      yField:
+        - tracks_unique_user_count
+  type: cartesian
 contentType: chart
 dashboardSlug: wip-product-analytics
 description: ""

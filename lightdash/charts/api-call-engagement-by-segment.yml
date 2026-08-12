@@ -1,26 +1,33 @@
 chartConfig:
   config:
-    groupColorOverrides:
-      Enterprise: "#feed01"
-      Midmarket: "#FFC54D"
-      SMB: "#FFEFCC"
-    groupFieldIds:
-      - accounts_segment
-    groupLabelOverrides: {}
-    groupSortOverrides:
-      - Enterprise
-      - Midmarket
-      - SMB
-    groupValueOptionOverrides: {}
-    isDonut: true
-    legendMaxItemLength: 30
-    legendPosition: horizontal
-    metricId: tracks_event_count
-    showLegend: true
-    showPercentage: true
-    showValue: false
-    valueLabel: inside
-  type: pie
+    eChartsConfig:
+      legend:
+        show: false
+      series:
+        - color: "#8001FE"
+          encode:
+            xRef:
+              field: accounts_segment
+            yRef:
+              field: tracks_event_count
+          isFilteredOut: false
+          label:
+            position: top
+            show: true
+          type: bar
+          yAxisIndex: 0
+      tooltip: ""
+      xAxis:
+        - name: Segment
+          sortType: default
+      yAxis:
+        - name: API Calls
+    layout:
+      flipAxes: false
+      xField: accounts_segment
+      yField:
+        - tracks_event_count
+  type: cartesian
 contentType: chart
 dashboardSlug: wip-product-analytics
 description: ""
