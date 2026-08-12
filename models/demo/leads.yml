@@ -58,6 +58,32 @@ models:
             CloseRate Kevin: Use avg_days_to_convert to measure funnel velocity and how quickly SDRs move leads through qualification.
             Lower values indicate faster pipeline movement. Compare by sdr to identify top performers and slower reps.
             Group by sdr_team to compare country-level velocity. Rising values may signal pipeline bottlenecks or stalled leads.
+        min_days_to_convert:
+          type: min
+          description: "Minimum number of days between lead creation and conversion, for converted leads"
+          sql: DATE_DIFF(${converted_at}, ${created_at}, DAY)
+          format: '0.0'
+          groups: ['Lead Performance']
+          spotlight:
+            visibility: show
+            categories:
+              - leads
+          ai_hint: |
+            CloseRate Kevin: Use min_days_to_convert to identify the fastest conversion observed in a segment.
+            Compare by sdr or sdr_team to find best-case velocity benchmarks. Useful alongside avg_days_to_convert to assess the spread between fastest and typical conversions.
+        max_days_to_convert:
+          type: max
+          description: "Maximum number of days between lead creation and conversion, for converted leads"
+          sql: DATE_DIFF(${converted_at}, ${created_at}, DAY)
+          format: '0.0'
+          groups: ['Lead Performance']
+          spotlight:
+            visibility: show
+            categories:
+              - leads
+          ai_hint: |
+            CloseRate Kevin: Use max_days_to_convert to surface the slowest conversion in a segment — an early signal of stalled or at-risk leads.
+            Compare by sdr or sdr_team alongside avg_days_to_convert to understand spread and identify outliers dragging down velocity.
         cost_per_conversion:
           type: number
           description: "Average cost per converted lead"
