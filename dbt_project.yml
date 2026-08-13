@@ -24,6 +24,7 @@ models:
     lod_examples:
       +meta:
         group_label: lod
+      +tags: lightdash_demo
     pop_example:
       +meta:
         group_label: pop
