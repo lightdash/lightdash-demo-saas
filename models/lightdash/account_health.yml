@@ -1,0 +1,51 @@
+version: 2
+models:
+  - name: account_health
+    description: SQL model for Account health
+    meta:
+      label: Account health
+    columns:
+      - name: segment
+        meta:
+          dimension:
+            type: string
+      - name: industry
+        meta:
+          dimension:
+            type: string
+      - name: won_deals
+        meta:
+          dimension:
+            type: number
+      - name: account_id
+        meta:
+          dimension:
+            type: string
+      - name: account_name
+        meta:
+          dimension:
+            type: string
+      - name: events_last_90d
+        meta:
+          dimension:
+            type: number
+      - name: revenue_per_seat
+        meta:
+          dimension:
+            type: number
+      - name: seat_utilisation
+        meta:
+          dimension:
+            type: number
+      - name: total_seats_sold
+        meta:
+          dimension:
+            type: number
+      - name: total_won_amount
+        meta:
+          dimension:
+            type: number
+      - name: active_users_last_90d
+        meta:
+          dimension:
+            type: number
