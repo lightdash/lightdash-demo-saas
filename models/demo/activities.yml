@@ -4,16 +4,16 @@ models:
       description: Activities performed on leads (calls, emails, meetings, etc.)
       primary_key: activity_id
       ai_hint: |
-          This is an activities table containing sdr activities information and derived facts.
-          Use this for sdr performance reporting, or sales pipeline efficiency analysis.
+        This is an activities table containing sdr activities information and derived facts.
+        Use this for sdr performance reporting, or sales pipeline efficiency analysis.
 
       parameters:
         type_channel_toggle:
           label: "Activity Type/Channel"
           description: "Filter activities by type or channel"
           options:
-                - "activity_type"
-                - "activity_channel"
+            - "activity_type"
+            - "activity_channel"
           default: "activity_type"
           multiple: false
 
@@ -23,12 +23,12 @@ models:
           description: "Average number of activities per lead"
           sql: SAFE_DIVIDE(${total_activities}, NULLIF(${lead_id_total_leads},0))
           format: '0.0'
-          groups: ['Activity Performance']
+          groups: [ 'Activity Performance' ]
         demos_held:
           type: count
           description: "Total number of demo activities held"
           sql: CASE WHEN ${activity_type} = 'demo_held' THEN 1 ELSE NULL END
-          groups: ['Activity Performance']
+          groups: [ 'Activity Performance' ]
 
     columns:
       - name: activity_id
@@ -44,35 +44,37 @@ models:
             total_activities:
               type: count
               description: "Total number of activity records"
-              groups: ['Activity Performance']
+              groups: [ 'Activity Performance' ]
             activity_id_total_calls_made:
               label: Total Calls Made
               description: >-
-                Count of Activity id on the table Activities with filters
-                activities.activity_type
+                Count of Activity id on the table Activities with filters activities.activity_type
               type: count
               format: '#,##0.000'
               filters:
                 - activity_type: call_made
-              groups: ['Activity Performance']
+              groups: [ 'Activity Performance' ]
             activity_id_total_demos_held:
               label: Total Demos Held
               description: >-
-                Count of Activity id on the table Activities with filters
-                activities.activity_type
+                Count of Activity id on the table Activities with filters activities.activity_type
               type: count
               filters:
                 - activity_type: demo_held
-              groups: ['Activity Performance']
+              groups: [ 'Activity Performance' ]
             activity_id_total_contracts_sent:
               label: Total Contracts Sent
               description: >-
-                Count of Activity id on the table Activities with filters
-                activities.activity_type
+                Count of Activity id on the table Activities with filters activities.activity_type
               type: count
               filters:
                 - activity_type: contract_sent
-              groups: ['Activity Performance']
+              groups: [ 'Activity Performance' ]
+            activity_id_count_distinct_of_activity_i_d:
+              label: Count distinct of Activity ID
+              description: "Count distinct of Activity ID on the table Activities "
+              type: count_distinct
+              filters: []
       - name: lead_id
         description: "The lead this activity is associated with"
         tests:
@@ -117,14 +119,14 @@ models:
           additional_dimensions:
             type_channel_toggle:
               label: "Activity Type/Channel"
-              type: string 
+              type: string
               description: Use this dimension to swap between activity type and activity channel
               sql: |
                 case 
                   when ${lightdash.parameters.activities.type_channel_toggle} = 'activity_type' then ${activity_type}
                   when ${lightdash.parameters.activities.type_channel_toggle} = 'activity_channel' then ${activity_channel}
                 end
-            selected_dim: 
+            selected_dim:
               label: Selected dimension
               type: string
               description: The dimension that is currently selected in the type_channel_toggle parameter
@@ -143,7 +145,7 @@ models:
         meta:
           dimension:
             type: timestamp
-            time_intervals: ['DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER', 'MONTH_NAME', 'QUARTER_NAME']
+            time_intervals: [ 'DAY', 'WEEK', 'MONTH', 'YEAR', 'QUARTER', 'MONTH_NAME', 'QUARTER_NAME' ]
 
       - name: notes
         description: "Free-text notes for the activity"
@@ -159,14 +161,14 @@ models:
             total_call_time:
               type: sum
               description: "Total call time in seconds"
-              groups: ['Call Metrics']
+              groups: [ 'Call Metrics' ]
             avg_call_time:
               type: average
               label: Average call time
               description: "Average call time in seconds"
-              groups: ['Call Metrics']
+              groups: [ 'Call Metrics' ]
             min_call_time:
               type: min
               label: Minimum call time
               description: "Minimum call time in seconds"
-              groups: ['Call Metrics']
+              groups: [ 'Call Metrics' ]
