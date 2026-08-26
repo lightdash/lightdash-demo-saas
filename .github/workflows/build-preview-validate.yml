@@ -1,0 +1,148 @@
+name: build-preview-validate
+
+on:
+  pull_request:
+    branches: [ "main", "master" ]
+
+env:
+  DBT_VERSION: "1.9.0"
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    if: github.actor != 'dependabot[bot]'
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      dbt: ${{ steps.filter.outputs.dbt }}
+    steps:
+      - uses: actions/checkout@v6
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            dbt:
+              - 'models/**'
+              - 'seeds/**'
+              - 'macros/**'
+              - 'tests/**'
+              - 'dbt_project.yml'
+              - 'lightdash.config.yml'
+              - '.github/workflows/build-preview-validate.yml'
+
+  build-preview-validate:
+    needs: changes
+    if: needs.changes.outputs.dbt == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.10.x"
+
+      - name: Copy Google credentials file
+        env:
+          GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+        if: "${{ env.GOOGLE_CREDENTIALS != '' }}"
+        uses: jsdaniell/create-json@v1.2.3
+        with:
+          name: "googlecredentials.json"
+          json: ${{ env.GOOGLE_CREDENTIALS }}
+
+      - name: Move credentials to /tmp
+        run: mv googlecredentials.json /tmp || true
+
+      - name: Locate dbt_project.yml
+        run: echo "PROJECT_DIR=$(find . -name "dbt_project.yml" | sed 's/dbt_project.yml//g')" >> $GITHUB_ENV
+
+      - name: Get lightdash version
+        uses: sergeysova/jq-action@v2
+        id: version
+        env:
+          LIGHTDASH_URL: ${{ secrets.LIGHTDASH_URL }}
+        with:
+          cmd: curl -s "${LIGHTDASH_URL}/api/v1/health" | jq -r '.results.version'
+
+      - name: Copy profiles.yml
+        env:
+          config: ${{ secrets.DBT_PROFILE }}
+        run: echo -e "$config" > profiles.yml
+
+      - name: Install dbt
+        run: |
+          pip install dbt-core==$DBT_VERSION dbt-bigquery==$DBT_VERSION
+          dbt deps --project-dir "$PROJECT_DIR"
+
+      - name: Install lightdash CLI
+        run: npm install -g "@lightdash/cli@${{ steps.version.outputs.value }}" || npm install -g @lightdash/cli@latest
+
+      - name: Set preview name and schema
+        run: |
+          echo "PREVIEW_NAME=validate-${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          echo "DBT_SCHEMA=dbt_pr_${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+
+      - name: Build dbt to dev schema
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: '/tmp/googlecredentials.json'
+        run: dbt build --project-dir "$PROJECT_DIR" --profiles-dir . --no-version-check --target dev
+
+      - name: Lightdash start preview
+        env:
+          LIGHTDASH_API_KEY: ${{ secrets.LIGHTDASH_API_KEY }}
+          LIGHTDASH_PROJECT: ${{ secrets.LIGHTDASH_PROJECT }}
+          LIGHTDASH_URL: ${{ secrets.LIGHTDASH_URL }}
+          GOOGLE_APPLICATION_CREDENTIALS: '/tmp/googlecredentials.json'
+        run: lightdash start-preview --project-dir "$PROJECT_DIR" --profiles-dir . --name "$PREVIEW_NAME" --target dev
+
+      - name: Lightdash validate against preview
+        id: validate
+        env:
+          LIGHTDASH_API_KEY: ${{ secrets.LIGHTDASH_API_KEY }}
+          LIGHTDASH_PROJECT: ${{ secrets.LIGHTDASH_PROJECT }}
+          LIGHTDASH_URL: ${{ secrets.LIGHTDASH_URL }}
+          GOOGLE_APPLICATION_CREDENTIALS: '/tmp/googlecredentials.json'
+        continue-on-error: true
+        run: |
+          set +e
+          OUTPUT=$(lightdash validate --preview --project-dir "$PROJECT_DIR" --profiles-dir . --target dev 2>&1)
+          set -e
+          FILTERED_OUTPUT=$(echo "$OUTPUT" | sed -n '/Validating/,$p')
+          echo "$FILTERED_OUTPUT"
+          {
+            echo "validation_output<<EOF"
+            echo "$FILTERED_OUTPUT"
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
+
+      - name: Lightdash stop preview
+        if: always()
+        env:
+          LIGHTDASH_API_KEY: ${{ secrets.LIGHTDASH_API_KEY }}
+          LIGHTDASH_PROJECT: ${{ secrets.LIGHTDASH_PROJECT }}
+          LIGHTDASH_URL: ${{ secrets.LIGHTDASH_URL }}
+        run: lightdash stop-preview --name "$PREVIEW_NAME" || true
+
+      - uses: jwalton/gh-find-current-pr@v1
+        id: finder
+
+      - name: Comment validation results on PR
+        if: steps.finder.outputs.pr != ''
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          number: ${{ steps.finder.outputs.pr }}
+          header: build-preview-validate
+          message: |
+            ## Lightdash Validation Results (via preview)
+
+            Built dbt to the dev schema, spun up a temporary Lightdash preview from this branch, and ran `lightdash validate` against it. The preview is torn down at the end of the run.
+
+            ```
+            ${{ steps.validate.outputs.validation_output }}
+            ```
+
+            > Informational — does not block merging.
