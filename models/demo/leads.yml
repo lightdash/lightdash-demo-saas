@@ -275,6 +275,16 @@ models:
                 categories:
                   - leads
                   - marketing
+            min_lead_cost:
+              type: min
+              description: "The minimum lead cost for selected leads"
+              format: '$#,##0.00'
+              groups: ['Lead Costs']
+              spotlight:
+                visibility: show
+                categories:
+                  - leads
+                  - marketing
             avg_lead_cost:
               type: average
               description: "The average lead cost for selected leads"
