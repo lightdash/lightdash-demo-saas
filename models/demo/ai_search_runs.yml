@@ -1,0 +1,74 @@
+models:
+- name: ai_search_runs
+  description: One row per prompt run against an AI model. Citations and fan-out queries are stored on the run as repeated fields.
+  meta:
+    label: AI Search Runs
+    primary_key: run_id
+
+  columns:
+    - name: run_id
+      description: "Unique identifier of the prompt run"
+      meta:
+        dimension:
+          type: string
+          label: Run ID
+        metrics:
+          run_count:
+            type: count_distinct
+            label: Run count
+            description: Number of prompt runs
+    - name: run_at
+      description: "When the prompt was run"
+      meta:
+        dimension:
+          type: timestamp
+    - name: model_name
+      description: "AI model that answered the prompt"
+      meta:
+        dimension:
+          label: Model
+    - name: prompt_topic
+      description: "Topic the prompt asks about"
+    - name: brand
+      description: "Brand being tracked in the answer"
+    - name: brand_mentioned
+      description: "Whether the answer mentioned the tracked brand"
+      meta:
+        metrics:
+          brand_mention_rate:
+            type: average
+            label: Brand mention rate
+            description: Share of runs in which the tracked brand was mentioned
+            sql: "CASE WHEN ${TABLE}.brand_mentioned THEN 1 ELSE 0 END"
+            format: percent
+            round: 1
+
+    # STRUCT leaves: ordinary dimensions on the run
+    - name: location.country
+      description: "Country the prompt was run from"
+    - name: location.city
+      description: "City the prompt was run from"
+
+    # ARRAY<STRUCT> leaves: their own "Citations" group, one row per citation
+    - name: citations.domain
+      description: "Domain cited in the answer"
+      meta:
+        metrics:
+          citation_count:
+            type: count
+            label: Citation count
+            description: Number of citations
+    - name: citations.source_type
+      description: "Type of source cited (news, community, brand owned...)"
+    - name: citations.position
+      description: "Position of the citation within the answer (1 = first)"
+      meta:
+        metrics:
+          avg_citation_position:
+            type: average
+            label: Average citation position
+            round: 1
+
+    # ARRAY<STRING>: list the array itself, Lightdash adds value + offset
+    - name: fanout_queries
+      description: "Search queries the model fanned out to while answering"
